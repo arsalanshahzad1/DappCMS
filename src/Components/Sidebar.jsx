@@ -72,21 +72,32 @@ function Sidebar() {
                                 Second Contract products
                             </div>
                         </NavLink>
-                        <div className='DropDownItem'>
-                            Second contract order
-                        </div>
-                        <div className='DropDownItem'>
-                            AI quantitative products
-                        </div>
-                        <div className='DropDownItem'>
-                            Mining machine products
-                        </div>
-                        <div className='DropDownItem'>
-                            Quantitative order
-                        </div>
-                        <div className='DropDownItem'>
-                            Mining machine order
-                        </div>
+                        <NavLink to="/second-contract-order">
+
+                            <div className='DropDownItem'>
+                                Second contract order
+                            </div>
+                        </NavLink>
+                        <NavLink to='/ai-quantitative-product'>
+                            <div className='DropDownItem'>
+                                AI quantitative products
+                            </div>
+                        </NavLink>
+                        <NavLink to="/mining-machine-products">
+                            <div className='DropDownItem'>
+                                Mining machine products
+                            </div>
+                        </NavLink>
+                        <NavLink to="/quantitative-order">
+                            <div className='DropDownItem'>
+                                Quantitative order
+                            </div>
+                        </NavLink>
+                        <NavLink to="/mining-machine-order">
+                            <div className='DropDownItem'>
+                                Mining machine order
+                            </div>
+                        </NavLink>
                     </div>
                 }
                 <div className='Sidebar-items'>
@@ -166,9 +177,11 @@ function Sidebar() {
                         <div className='DropDownItem'>
                             Top up order
                         </div>
-                        <div className='DropDownItem'>
-                            Withdrawal management
-                        </div>
+                        <NavLink to="/withdrawal-management">
+                            <div className='DropDownItem'>
+                                Withdrawal management
+                            </div>
+                        </NavLink>
                         <div className='DropDownItem'>
                             Payment record
                         </div>
