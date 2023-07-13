@@ -8,9 +8,10 @@ function SecondContractProduct() {
         "AND (all conditions are required to match)"
     );
     const [selectQueryField, setSelectQueryField] = useState(false);
-    const [selectQueryFieldValue, setselectQueryFieldValue] = useState("select query field");
-    const [QueryEqualto, setQueryEqualto] = useState('equal')
-    const [showQueryEqualto, setshowQueryEqualto] = useState(false)
+    const [selectQueryFieldValue, setselectQueryFieldValue] =
+        useState("select query field");
+    const [QueryEqualto, setQueryEqualto] = useState("equal");
+    const [showQueryEqualto, setshowQueryEqualto] = useState(false);
     return (
         <div>
             <div data-v-19a4ac8a className="ant-card">
@@ -3777,6 +3778,11 @@ function SecondContractProduct() {
                                                                                             <li
                                                                                                 role="treeitem"
                                                                                                 className="ant-select-tree-treenode-switcher-open"
+                                                                                                onClick={(e) =>
+                                                                                                    setselectQueryFieldValue(
+                                                                                                        e.target.textContent
+                                                                                                    )
+                                                                                                }
                                                                                             >
                                                                                                 <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
                                                                                                 <span
@@ -3795,11 +3801,7 @@ function SecondContractProduct() {
                                                                                                                     verticalAlign:
                                                                                                                         "inherit",
                                                                                                                 }}
-                                                                                                                onClick={(e) =>
-                                                                                                                    setselectQueryFieldValue(
-                                                                                                                        e.target.textContent
-                                                                                                                    )
-                                                                                                                }
+                                                                                                                
                                                                                                             >
                                                                                                                 product name
                                                                                                             </font>
@@ -3810,6 +3812,11 @@ function SecondContractProduct() {
                                                                                             <li
                                                                                                 role="treeitem"
                                                                                                 className="ant-select-tree-treenode-switcher-open"
+                                                                                                onClick={(e) =>
+                                                                                                    setselectQueryFieldValue(
+                                                                                                        e.target.textContent
+                                                                                                    )
+                                                                                                }
                                                                                             >
                                                                                                 <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
                                                                                                 <span
@@ -3828,11 +3835,7 @@ function SecondContractProduct() {
                                                                                                                     verticalAlign:
                                                                                                                         "inherit",
                                                                                                                 }}
-                                                                                                                onClick={(e) =>
-                                                                                                                    setselectQueryFieldValue(
-                                                                                                                        e.target.textContent
-                                                                                                                    )
-                                                                                                                }
+                                                                                                                
                                                                                                             >
                                                                                                                 Delivery time (seconds)
                                                                                                             </font>
@@ -3843,6 +3846,11 @@ function SecondContractProduct() {
                                                                                             <li
                                                                                                 role="treeitem"
                                                                                                 className="ant-select-tree-treenode-switcher-open"
+                                                                                                onClick={(e) =>
+                                                                                                    setselectQueryFieldValue(
+                                                                                                        e.target.textContent
+                                                                                                    )
+                                                                                                }
                                                                                             >
                                                                                                 <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
                                                                                                 <span
@@ -3861,11 +3869,7 @@ function SecondContractProduct() {
                                                                                                                     verticalAlign:
                                                                                                                         "inherit",
                                                                                                                 }}
-                                                                                                                onClick={(e) =>
-                                                                                                                    setselectQueryFieldValue(
-                                                                                                                        e.target.textContent
-                                                                                                                    )
-                                                                                                                }
+                                                                                                                
                                                                                                             >
                                                                                                                 odds
                                                                                                             </font>
@@ -3876,6 +3880,11 @@ function SecondContractProduct() {
                                                                                             <li
                                                                                                 role="treeitem"
                                                                                                 className="ant-select-tree-treenode-switcher-open"
+                                                                                                onClick={(e) =>
+                                                                                                    setselectQueryFieldValue(
+                                                                                                        e.target.textContent
+                                                                                                    )
+                                                                                                }
                                                                                             >
                                                                                                 <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
                                                                                                 <span
@@ -3894,11 +3903,7 @@ function SecondContractProduct() {
                                                                                                                     verticalAlign:
                                                                                                                         "inherit",
                                                                                                                 }}
-                                                                                                                onClick={(e) =>
-                                                                                                                    setselectQueryFieldValue(
-                                                                                                                        e.target.textContent
-                                                                                                                    )
-                                                                                                                }
+                                                                                                                
                                                                                                             >
                                                                                                                 maximum amount
                                                                                                             </font>
@@ -3909,6 +3914,11 @@ function SecondContractProduct() {
                                                                                             <li
                                                                                                 role="treeitem"
                                                                                                 className="ant-select-tree-treenode-switcher-open"
+                                                                                                onClick={(e) =>
+                                                                                                    setselectQueryFieldValue(
+                                                                                                        e.target.textContent
+                                                                                                    )
+                                                                                                }
                                                                                             >
                                                                                                 <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
                                                                                                 <span
@@ -3927,11 +3937,7 @@ function SecondContractProduct() {
                                                                                                                     verticalAlign:
                                                                                                                         "inherit",
                                                                                                                 }}
-                                                                                                                onClick={(e) =>
-                                                                                                                    setselectQueryFieldValue(
-                                                                                                                        e.target.textContent
-                                                                                                                    )
-                                                                                                                }
+                                                                                                               
                                                                                                             >
                                                                                                                 minimum amount
                                                                                                             </font>
@@ -3942,6 +3948,11 @@ function SecondContractProduct() {
                                                                                             <li
                                                                                                 role="treeitem"
                                                                                                 className="ant-select-tree-treenode-switcher-open"
+                                                                                                onClick={(e) =>
+                                                                                                    setselectQueryFieldValue(
+                                                                                                        e.target.textContent
+                                                                                                    )
+                                                                                                }
                                                                                             >
                                                                                                 <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
                                                                                                 <span
@@ -3960,11 +3971,7 @@ function SecondContractProduct() {
                                                                                                                     verticalAlign:
                                                                                                                         "inherit",
                                                                                                                 }}
-                                                                                                                onClick={(e) =>
-                                                                                                                    setselectQueryFieldValue(
-                                                                                                                        e.target.textContent
-                                                                                                                    )
-                                                                                                                }
+                                                                                                                
                                                                                                             >
                                                                                                                 Remark
                                                                                                             </font>
@@ -4240,16 +4247,306 @@ function SecondContractProduct() {
                                                                                     </font>
                                                                                 </div>
                                                                             </div>
-                                                                            {showQueryEqualto &&
-                                                                                <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '110px', left: '0px', top: '35px', display: 'flex' }}><div id="19513122-2649-4ce2-c6e5-003c222ab6a0" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)' }}><ul role="listbox" tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root"><li role="option" aria-selected="true" className="ant-select-dropdown-menu-item ant-select-dropdown-menu-item-selected" unselectable="on" style={{ userSelect: 'none' }}><font style={{ verticalAlign: 'inherit' }}><font onClick={(e)=>setQueryEqualto(e.target.textContent)} style={{ verticalAlign: 'inherit' }}>equal</font></font></li><li role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}><font style={{ verticalAlign: 'inherit' }}><font onClick={(e)=>setQueryEqualto(e.target.textContent)} style={{ verticalAlign: 'inherit' }}>Include</font></font></li><li role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}><font style={{ verticalAlign: 'inherit' }}><font style={{ verticalAlign: 'inherit' }} onClick={(e)=>setQueryEqualto(e.target.textContent)}>start with</font></font></li><li role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}><font style={{ verticalAlign: 'inherit' }}><font style={{ verticalAlign: 'inherit' }} onClick={(e)=>setQueryEqualto(e.target.textContent)}>ends with</font></font></li><li role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}><font style={{ verticalAlign: 'inherit' }}><font style={{ verticalAlign: 'inherit' }} onClick={(e)=>setQueryEqualto(e.target.textContent)}>in</font></font></li><li role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}><font style={{ verticalAlign: 'inherit' }}><font style={{ verticalAlign: 'inherit' }} onClick={(e)=>setQueryEqualto(e.target.textContent)}>not equal to</font></font></li><li role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}><font style={{ verticalAlign: 'inherit' }}><font style={{ verticalAlign: 'inherit' }} onClick={(e)=>setQueryEqualto(e.target.textContent)}>more than the</font></font></li><li role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}><font style={{ verticalAlign: 'inherit' }}><font style={{ verticalAlign: 'inherit' }} onClick={(e)=>setQueryEqualto(e.target.textContent)}>greater or equal to</font></font></li><li role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}><font style={{ verticalAlign: 'inherit' }}><font style={{ verticalAlign: 'inherit' }} onClick={(e)=>setQueryEqualto(e.target.textContent)}>less than</font></font></li><li role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}><font style={{ verticalAlign: 'inherit' }}><font style={{ verticalAlign: 'inherit' }} onClick={(e)=>setQueryEqualto(e.target.textContent)}>less than or equal to</font></font></li></ul></div></div>
-                                                                            }
+                                                                            {showQueryEqualto && (
+                                                                                <div
+                                                                                    className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft"
+                                                                                    style={{
+                                                                                        width: "110px",
+                                                                                        left: "0px",
+                                                                                        top: "35px",
+                                                                                        display: "flex",
+                                                                                    }}
+                                                                                >
+                                                                                    <div
+                                                                                        id="19513122-2649-4ce2-c6e5-003c222ab6a0"
+                                                                                        tabIndex={-1}
+                                                                                        className="ant-select-dropdown-content"
+                                                                                        style={{
+                                                                                            overflow: "auto",
+                                                                                            transform: "translateZ(0px)",
+                                                                                        }}
+                                                                                    >
+                                                                                        <ul
+                                                                                            role="listbox"
+                                                                                            tabIndex={0}
+                                                                                            className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root"
+                                                                                        >
+                                                                                            <li
+                                                                                                role="option"
+                                                                                                aria-selected="true"
+                                                                                                className="ant-select-dropdown-menu-item ant-select-dropdown-menu-item-selected"
+                                                                                                unselectable="on"
+                                                                                                style={{ userSelect: "none" }}
+                                                                                                onClick={(e) =>
+                                                                                                    setQueryEqualto(
+                                                                                                        e.target.textContent
+                                                                                                    )
+                                                                                                }
+                                                                                            >
+                                                                                                <font
+                                                                                                    style={{
+                                                                                                        verticalAlign: "inherit",
+                                                                                                    }}
+                                                                                                >
+                                                                                                    <font
+
+                                                                                                        style={{
+                                                                                                            verticalAlign: "inherit",
+                                                                                                        }}
+                                                                                                    >
+                                                                                                        equal
+                                                                                                    </font>
+                                                                                                </font>
+                                                                                            </li>
+                                                                                            <li
+                                                                                                role="option"
+                                                                                                className="ant-select-dropdown-menu-item"
+                                                                                                unselectable="on"
+                                                                                                style={{ userSelect: "none" }}
+                                                                                                onClick={(e) =>
+                                                                                                    setQueryEqualto(
+                                                                                                        e.target.textContent
+                                                                                                    )
+                                                                                                }
+                                                                                            >
+                                                                                                <font
+                                                                                                    style={{
+                                                                                                        verticalAlign: "inherit",
+                                                                                                    }}
+                                                                                                >
+                                                                                                    <font
+
+                                                                                                        style={{
+                                                                                                            verticalAlign: "inherit",
+                                                                                                        }}
+                                                                                                    >
+                                                                                                        Include
+                                                                                                    </font>
+                                                                                                </font>
+                                                                                            </li>
+                                                                                            <li
+                                                                                                role="option"
+                                                                                                className="ant-select-dropdown-menu-item"
+                                                                                                unselectable="on"
+                                                                                                style={{ userSelect: "none" }}
+                                                                                                onClick={(e) =>
+                                                                                                    setQueryEqualto(
+                                                                                                        e.target.textContent
+                                                                                                    )
+                                                                                                }
+                                                                                            >
+                                                                                                <font
+                                                                                                    style={{
+                                                                                                        verticalAlign: "inherit",
+                                                                                                    }}
+                                                                                                >
+                                                                                                    <font
+                                                                                                        style={{
+                                                                                                            verticalAlign: "inherit",
+                                                                                                        }}
+
+                                                                                                    >
+                                                                                                        start with
+                                                                                                    </font>
+                                                                                                </font>
+                                                                                            </li>
+                                                                                            <li
+                                                                                                onClick={(e) =>
+                                                                                                    setQueryEqualto(
+                                                                                                        e.target.textContent
+                                                                                                    )
+                                                                                                }
+                                                                                                role="option"
+                                                                                                className="ant-select-dropdown-menu-item"
+                                                                                                unselectable="on"
+                                                                                                style={{ userSelect: "none" }}
+                                                                                            >
+                                                                                                <font
+                                                                                                    style={{
+                                                                                                        verticalAlign: "inherit",
+                                                                                                    }}
+                                                                                                >
+                                                                                                    <font
+                                                                                                        style={{
+                                                                                                            verticalAlign: "inherit",
+                                                                                                        }}
+                                                                                                    >
+                                                                                                        ends with
+                                                                                                    </font>
+                                                                                                </font>
+                                                                                            </li>
+                                                                                            <li
+                                                                                                role="option"
+                                                                                                className="ant-select-dropdown-menu-item"
+                                                                                                unselectable="on"
+                                                                                                style={{ userSelect: "none" }}
+                                                                                                onClick={(e) =>
+                                                                                                    setQueryEqualto(
+                                                                                                        e.target.textContent
+                                                                                                    )
+                                                                                                }
+                                                                                            >
+                                                                                                <font
+                                                                                                    style={{
+                                                                                                        verticalAlign: "inherit",
+                                                                                                    }}
+                                                                                                >
+                                                                                                    <font
+                                                                                                        style={{
+                                                                                                            verticalAlign: "inherit",
+                                                                                                        }}
+
+                                                                                                    >
+                                                                                                        in
+                                                                                                    </font>
+                                                                                                </font>
+                                                                                            </li>
+                                                                                            <li
+                                                                                                role="option"
+                                                                                                className="ant-select-dropdown-menu-item"
+                                                                                                unselectable="on"
+                                                                                                style={{ userSelect: "none" }}
+                                                                                                onClick={(e) =>
+                                                                                                    setQueryEqualto(
+                                                                                                        e.target.textContent
+                                                                                                    )
+                                                                                                }
+                                                                                            >
+                                                                                                <font
+                                                                                                    style={{
+                                                                                                        verticalAlign: "inherit",
+                                                                                                    }}
+                                                                                                >
+                                                                                                    <font
+                                                                                                        style={{
+                                                                                                            verticalAlign: "inherit",
+                                                                                                        }}
+
+                                                                                                    >
+                                                                                                        not equal to
+                                                                                                    </font>
+                                                                                                </font>
+                                                                                            </li>
+                                                                                            <li
+                                                                                                role="option"
+                                                                                                className="ant-select-dropdown-menu-item"
+                                                                                                unselectable="on"
+                                                                                                style={{ userSelect: "none" }}
+                                                                                                onClick={(e) =>
+                                                                                                    setQueryEqualto(
+                                                                                                        e.target.textContent
+                                                                                                    )
+                                                                                                }
+                                                                                            >
+                                                                                                <font
+                                                                                                    style={{
+                                                                                                        verticalAlign: "inherit",
+                                                                                                    }}
+                                                                                                >
+                                                                                                    <font
+                                                                                                        style={{
+                                                                                                            verticalAlign: "inherit",
+                                                                                                        }}
+
+                                                                                                    >
+                                                                                                        more than the
+                                                                                                    </font>
+                                                                                                </font>
+                                                                                            </li>
+                                                                                            <li
+                                                                                                role="option"
+                                                                                                className="ant-select-dropdown-menu-item"
+                                                                                                unselectable="on"
+                                                                                                style={{ userSelect: "none" }}
+                                                                                                onClick={(e) =>
+                                                                                                    setQueryEqualto(
+                                                                                                        e.target.textContent
+                                                                                                    )
+                                                                                                }
+                                                                                            >
+                                                                                                <font
+                                                                                                    style={{
+                                                                                                        verticalAlign: "inherit",
+                                                                                                    }}
+                                                                                                >
+                                                                                                    <font
+                                                                                                        style={{
+                                                                                                            verticalAlign: "inherit",
+                                                                                                        }}
+
+                                                                                                    >
+                                                                                                        greater or equal to
+                                                                                                    </font>
+                                                                                                </font>
+                                                                                            </li>
+                                                                                            <li
+                                                                                                role="option"
+                                                                                                className="ant-select-dropdown-menu-item"
+                                                                                                unselectable="on"
+                                                                                                style={{ userSelect: "none" }}
+                                                                                                onClick={(e) =>
+                                                                                                    setQueryEqualto(
+                                                                                                        e.target.textContent
+                                                                                                    )
+                                                                                                }
+                                                                                            >
+                                                                                                <font
+                                                                                                    style={{
+                                                                                                        verticalAlign: "inherit",
+                                                                                                    }}
+                                                                                                >
+                                                                                                    <font
+                                                                                                        style={{
+                                                                                                            verticalAlign: "inherit",
+                                                                                                        }}
+
+                                                                                                    >
+                                                                                                        less than
+                                                                                                    </font>
+                                                                                                </font>
+                                                                                            </li>
+                                                                                            <li
+                                                                                                role="option"
+                                                                                                className="ant-select-dropdown-menu-item"
+                                                                                                unselectable="on"
+                                                                                                style={{ userSelect: "none" }}
+                                                                                                onClick={(e) =>
+                                                                                                    setQueryEqualto(
+                                                                                                        e.target.textContent
+                                                                                                    )
+                                                                                                }
+                                                                                            >
+                                                                                                <font
+                                                                                                    style={{
+                                                                                                        verticalAlign: "inherit",
+                                                                                                    }}
+                                                                                                >
+                                                                                                    <font
+                                                                                                        style={{
+                                                                                                            verticalAlign: "inherit",
+                                                                                                        }}
+
+                                                                                                    >
+                                                                                                        less than or equal to
+                                                                                                    </font>
+                                                                                                </font>
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                            )}
 
                                                                             <span
                                                                                 unselectable="on"
                                                                                 className="ant-select-arrow"
                                                                                 style={{ userSelect: "none" }}
                                                                             >
-                                                                                <i onClick={() => setshowQueryEqualto(!showQueryEqualto)}
+                                                                                <i
+                                                                                    onClick={() =>
+                                                                                        setshowQueryEqualto(
+                                                                                            !showQueryEqualto
+                                                                                        )
+                                                                                    }
                                                                                     aria-label="icon: down"
                                                                                     className="anticon anticon-down ant-select-arrow-icon"
                                                                                 >
