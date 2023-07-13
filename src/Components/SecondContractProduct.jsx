@@ -3,10 +3,14 @@ import "../assets/styles/table.css";
 function SecondContractProduct() {
     const [showPopUp, setshowPopUp] = useState(0);
     const [queryPopUp, setQueryPopUp] = useState(false);
-    const [queryFieldPopUp, setQueryFieldPopUp] = useState(false)
+    const [queryFieldPopUp, setQueryFieldPopUp] = useState(false);
     const [queryPopUpValue, setqueryPopUpValue] = useState(
         "AND (all conditions are required to match)"
     );
+    const [selectQueryField, setSelectQueryField] = useState(false);
+    const [selectQueryFieldValue, setselectQueryFieldValue] = useState("select query field");
+    const [QueryEqualto, setQueryEqualto] = useState('equal')
+    const [showQueryEqualto, setshowQueryEqualto] = useState(false)
     return (
         <div>
             <div data-v-19a4ac8a className="ant-card">
@@ -3701,7 +3705,7 @@ function SecondContractProduct() {
                                                                                                 verticalAlign: "inherit",
                                                                                             }}
                                                                                         >
-                                                                                            select query field
+                                                                                            {selectQueryFieldValue}
                                                                                         </font>
                                                                                     </font>
                                                                                 </span>
@@ -3711,6 +3715,11 @@ function SecondContractProduct() {
                                                                                 style={{ outline: "none" }}
                                                                             >
                                                                                 <i
+                                                                                    onClick={() =>
+                                                                                        setSelectQueryField(
+                                                                                            !selectQueryField
+                                                                                        )
+                                                                                    }
                                                                                     aria-label="icon: down"
                                                                                     className="anticon anticon-down ant-select-arrow-icon"
                                                                                 >
@@ -3728,10 +3737,445 @@ function SecondContractProduct() {
                                                                                     </svg>
                                                                                 </i>
                                                                             </span>
+                                                                            {selectQueryField && (
+                                                                                <div
+                                                                                    className="ant-select-dropdown ant-select-tree-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft"
+                                                                                    style={{
+                                                                                        maxHeight: "400px",
+                                                                                        overflow: "auto",
+                                                                                        left: "0px",
+                                                                                        top: "35px",
+                                                                                        minWidth: "241px",
+                                                                                    }}
+                                                                                >
+                                                                                    <div
+                                                                                        role="listbox"
+                                                                                        id="rc-tree-select-list_10"
+                                                                                        tabIndex={-1}
+                                                                                        className="ant-select-dropdown-content"
+                                                                                    >
+                                                                                        <span className="ant-select-dropdown-search">
+                                                                                            <span className="ant-select-search__field__wrap">
+                                                                                                <input
+                                                                                                    type="text"
+                                                                                                    aria-label="filter select"
+                                                                                                    aria-autocomplete="list"
+                                                                                                    aria-controls="rc-tree-select-list_10"
+                                                                                                    aria-multiline="false"
+                                                                                                    className="ant-select-search__field"
+                                                                                                />
+                                                                                                <span className="ant-select-search__field__mirror">
+                                                                                                    &nbsp;
+                                                                                                </span>
+                                                                                            </span>
+                                                                                        </span>
+                                                                                        <ul
+                                                                                            role="tree"
+                                                                                            unselectable="on"
+                                                                                            className="ant-select-tree"
+                                                                                        >
+                                                                                            <li
+                                                                                                role="treeitem"
+                                                                                                className="ant-select-tree-treenode-switcher-open"
+                                                                                            >
+                                                                                                <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+                                                                                                <span
+                                                                                                    title="product name"
+                                                                                                    className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
+                                                                                                >
+                                                                                                    <span className="ant-select-tree-title">
+                                                                                                        <font
+                                                                                                            style={{
+                                                                                                                verticalAlign:
+                                                                                                                    "inherit",
+                                                                                                            }}
+                                                                                                        >
+                                                                                                            <font
+                                                                                                                style={{
+                                                                                                                    verticalAlign:
+                                                                                                                        "inherit",
+                                                                                                                }}
+                                                                                                                onClick={(e) =>
+                                                                                                                    setselectQueryFieldValue(
+                                                                                                                        e.target.textContent
+                                                                                                                    )
+                                                                                                                }
+                                                                                                            >
+                                                                                                                product name
+                                                                                                            </font>
+                                                                                                        </font>
+                                                                                                    </span>
+                                                                                                </span>
+                                                                                            </li>
+                                                                                            <li
+                                                                                                role="treeitem"
+                                                                                                className="ant-select-tree-treenode-switcher-open"
+                                                                                            >
+                                                                                                <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+                                                                                                <span
+                                                                                                    title="Delivery time (seconds)"
+                                                                                                    className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
+                                                                                                >
+                                                                                                    <span className="ant-select-tree-title">
+                                                                                                        <font
+                                                                                                            style={{
+                                                                                                                verticalAlign:
+                                                                                                                    "inherit",
+                                                                                                            }}
+                                                                                                        >
+                                                                                                            <font
+                                                                                                                style={{
+                                                                                                                    verticalAlign:
+                                                                                                                        "inherit",
+                                                                                                                }}
+                                                                                                                onClick={(e) =>
+                                                                                                                    setselectQueryFieldValue(
+                                                                                                                        e.target.textContent
+                                                                                                                    )
+                                                                                                                }
+                                                                                                            >
+                                                                                                                Delivery time (seconds)
+                                                                                                            </font>
+                                                                                                        </font>
+                                                                                                    </span>
+                                                                                                </span>
+                                                                                            </li>
+                                                                                            <li
+                                                                                                role="treeitem"
+                                                                                                className="ant-select-tree-treenode-switcher-open"
+                                                                                            >
+                                                                                                <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+                                                                                                <span
+                                                                                                    title="odds"
+                                                                                                    className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
+                                                                                                >
+                                                                                                    <span className="ant-select-tree-title">
+                                                                                                        <font
+                                                                                                            style={{
+                                                                                                                verticalAlign:
+                                                                                                                    "inherit",
+                                                                                                            }}
+                                                                                                        >
+                                                                                                            <font
+                                                                                                                style={{
+                                                                                                                    verticalAlign:
+                                                                                                                        "inherit",
+                                                                                                                }}
+                                                                                                                onClick={(e) =>
+                                                                                                                    setselectQueryFieldValue(
+                                                                                                                        e.target.textContent
+                                                                                                                    )
+                                                                                                                }
+                                                                                                            >
+                                                                                                                odds
+                                                                                                            </font>
+                                                                                                        </font>
+                                                                                                    </span>
+                                                                                                </span>
+                                                                                            </li>
+                                                                                            <li
+                                                                                                role="treeitem"
+                                                                                                className="ant-select-tree-treenode-switcher-open"
+                                                                                            >
+                                                                                                <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+                                                                                                <span
+                                                                                                    title="maximum amount"
+                                                                                                    className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
+                                                                                                >
+                                                                                                    <span className="ant-select-tree-title">
+                                                                                                        <font
+                                                                                                            style={{
+                                                                                                                verticalAlign:
+                                                                                                                    "inherit",
+                                                                                                            }}
+                                                                                                        >
+                                                                                                            <font
+                                                                                                                style={{
+                                                                                                                    verticalAlign:
+                                                                                                                        "inherit",
+                                                                                                                }}
+                                                                                                                onClick={(e) =>
+                                                                                                                    setselectQueryFieldValue(
+                                                                                                                        e.target.textContent
+                                                                                                                    )
+                                                                                                                }
+                                                                                                            >
+                                                                                                                maximum amount
+                                                                                                            </font>
+                                                                                                        </font>
+                                                                                                    </span>
+                                                                                                </span>
+                                                                                            </li>
+                                                                                            <li
+                                                                                                role="treeitem"
+                                                                                                className="ant-select-tree-treenode-switcher-open"
+                                                                                            >
+                                                                                                <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+                                                                                                <span
+                                                                                                    title="minimum amount"
+                                                                                                    className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
+                                                                                                >
+                                                                                                    <span className="ant-select-tree-title">
+                                                                                                        <font
+                                                                                                            style={{
+                                                                                                                verticalAlign:
+                                                                                                                    "inherit",
+                                                                                                            }}
+                                                                                                        >
+                                                                                                            <font
+                                                                                                                style={{
+                                                                                                                    verticalAlign:
+                                                                                                                        "inherit",
+                                                                                                                }}
+                                                                                                                onClick={(e) =>
+                                                                                                                    setselectQueryFieldValue(
+                                                                                                                        e.target.textContent
+                                                                                                                    )
+                                                                                                                }
+                                                                                                            >
+                                                                                                                minimum amount
+                                                                                                            </font>
+                                                                                                        </font>
+                                                                                                    </span>
+                                                                                                </span>
+                                                                                            </li>
+                                                                                            <li
+                                                                                                role="treeitem"
+                                                                                                className="ant-select-tree-treenode-switcher-open"
+                                                                                            >
+                                                                                                <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+                                                                                                <span
+                                                                                                    title="Remark"
+                                                                                                    className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
+                                                                                                >
+                                                                                                    <span className="ant-select-tree-title">
+                                                                                                        <font
+                                                                                                            style={{
+                                                                                                                verticalAlign:
+                                                                                                                    "inherit",
+                                                                                                            }}
+                                                                                                        >
+                                                                                                            <font
+                                                                                                                style={{
+                                                                                                                    verticalAlign:
+                                                                                                                        "inherit",
+                                                                                                                }}
+                                                                                                                onClick={(e) =>
+                                                                                                                    setselectQueryFieldValue(
+                                                                                                                        e.target.textContent
+                                                                                                                    )
+                                                                                                                }
+                                                                                                            >
+                                                                                                                Remark
+                                                                                                            </font>
+                                                                                                        </font>
+                                                                                                    </span>
+                                                                                                </span>
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                            )}
                                                                         </span>
                                                                     </span>
                                                                 </div>
-                                                                <div className="ant-select-dropdown ant-select-tree-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ display: `${queryFieldPopUp ? "flex" : "none"}`, maxHeight: '400px', overflow: 'auto', left: '0px', top: '85px', minWidth: '240px' }}><div role="listbox" id="rc-tree-select-list_25" tabIndex={-1} className="ant-select-dropdown-content"><span className="ant-select-dropdown-search"><span className="ant-select-search__field__wrap"><input type="text" aria-label="filter select" aria-autocomplete="list" aria-controls="rc-tree-select-list_25" aria-multiline="false" className="ant-select-search__field" /><span className="ant-select-search__field__mirror">&nbsp;</span></span></span><ul role="tree" unselectable="on" className="ant-select-tree"><li role="treeitem" className="ant-select-tree-treenode-switcher-open"><span className="ant-select-tree-switcher ant-select-tree-switcher-noop" /><span title="product name" className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"><span className="ant-select-tree-title"><font style={{ verticalAlign: 'inherit' }}><font style={{ verticalAlign: 'inherit' }}>product name</font></font></span></span></li><li role="treeitem" className="ant-select-tree-treenode-switcher-open"><span className="ant-select-tree-switcher ant-select-tree-switcher-noop" /><span title="Delivery time (seconds)" className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"><span className="ant-select-tree-title"><font style={{ verticalAlign: 'inherit' }}><font style={{ verticalAlign: 'inherit' }}>Delivery time (seconds)</font></font></span></span></li><li role="treeitem" className="ant-select-tree-treenode-switcher-open"><span className="ant-select-tree-switcher ant-select-tree-switcher-noop" /><span title="odds" className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"><span className="ant-select-tree-title"><font style={{ verticalAlign: 'inherit' }}><font style={{ verticalAlign: 'inherit' }}>odds</font></font></span></span></li><li role="treeitem" className="ant-select-tree-treenode-switcher-open"><span className="ant-select-tree-switcher ant-select-tree-switcher-noop" /><span title="maximum amount" className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"><span className="ant-select-tree-title"><font style={{ verticalAlign: 'inherit' }}><font style={{ verticalAlign: 'inherit' }}>maximum amount</font></font></span></span></li><li role="treeitem" className="ant-select-tree-treenode-switcher-open"><span className="ant-select-tree-switcher ant-select-tree-switcher-noop" /><span title="minimum amount" className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"><span className="ant-select-tree-title"><font style={{ verticalAlign: 'inherit' }}><font style={{ verticalAlign: 'inherit' }}>minimum amount</font></font></span></span></li><li role="treeitem" className="ant-select-tree-treenode-switcher-open"><span className="ant-select-tree-switcher ant-select-tree-switcher-noop" /><span title="Remark" className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"><span className="ant-select-tree-title"><font style={{ verticalAlign: 'inherit' }}><font style={{ verticalAlign: 'inherit' }}>Remark</font></font></span></span></li></ul></div></div>
+                                                                <div
+                                                                    className="ant-select-dropdown ant-select-tree-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft"
+                                                                    style={{
+                                                                        display: `${queryFieldPopUp ? "flex" : "none"
+                                                                            }`,
+                                                                        maxHeight: "400px",
+                                                                        overflow: "auto",
+                                                                        left: "0px",
+                                                                        top: "85px",
+                                                                        minWidth: "240px",
+                                                                    }}
+                                                                >
+                                                                    <div
+                                                                        role="listbox"
+                                                                        id="rc-tree-select-list_25"
+                                                                        tabIndex={-1}
+                                                                        className="ant-select-dropdown-content"
+                                                                    >
+                                                                        <span className="ant-select-dropdown-search">
+                                                                            <span className="ant-select-search__field__wrap">
+                                                                                <input
+                                                                                    type="text"
+                                                                                    aria-label="filter select"
+                                                                                    aria-autocomplete="list"
+                                                                                    aria-controls="rc-tree-select-list_25"
+                                                                                    aria-multiline="false"
+                                                                                    className="ant-select-search__field"
+                                                                                />
+                                                                                <span className="ant-select-search__field__mirror">
+                                                                                    &nbsp;
+                                                                                </span>
+                                                                            </span>
+                                                                        </span>
+                                                                        <ul
+                                                                            role="tree"
+                                                                            unselectable="on"
+                                                                            className="ant-select-tree"
+                                                                        >
+                                                                            <li
+                                                                                role="treeitem"
+                                                                                className="ant-select-tree-treenode-switcher-open"
+                                                                            >
+                                                                                <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+                                                                                <span
+                                                                                    title="product name"
+                                                                                    className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
+                                                                                >
+                                                                                    <span className="ant-select-tree-title">
+                                                                                        <font
+                                                                                            style={{
+                                                                                                verticalAlign: "inherit",
+                                                                                            }}
+                                                                                        >
+                                                                                            <font
+                                                                                                style={{
+                                                                                                    verticalAlign: "inherit",
+                                                                                                }}
+                                                                                            >
+                                                                                                product name
+                                                                                            </font>
+                                                                                        </font>
+                                                                                    </span>
+                                                                                </span>
+                                                                            </li>
+                                                                            <li
+                                                                                role="treeitem"
+                                                                                className="ant-select-tree-treenode-switcher-open"
+                                                                            >
+                                                                                <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+                                                                                <span
+                                                                                    title="Delivery time (seconds)"
+                                                                                    className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
+                                                                                >
+                                                                                    <span className="ant-select-tree-title">
+                                                                                        <font
+                                                                                            style={{
+                                                                                                verticalAlign: "inherit",
+                                                                                            }}
+                                                                                        >
+                                                                                            <font
+                                                                                                style={{
+                                                                                                    verticalAlign: "inherit",
+                                                                                                }}
+                                                                                            >
+                                                                                                Delivery time (seconds)
+                                                                                            </font>
+                                                                                        </font>
+                                                                                    </span>
+                                                                                </span>
+                                                                            </li>
+                                                                            <li
+                                                                                role="treeitem"
+                                                                                className="ant-select-tree-treenode-switcher-open"
+                                                                            >
+                                                                                <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+                                                                                <span
+                                                                                    title="odds"
+                                                                                    className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
+                                                                                >
+                                                                                    <span className="ant-select-tree-title">
+                                                                                        <font
+                                                                                            style={{
+                                                                                                verticalAlign: "inherit",
+                                                                                            }}
+                                                                                        >
+                                                                                            <font
+                                                                                                style={{
+                                                                                                    verticalAlign: "inherit",
+                                                                                                }}
+                                                                                            >
+                                                                                                odds
+                                                                                            </font>
+                                                                                        </font>
+                                                                                    </span>
+                                                                                </span>
+                                                                            </li>
+                                                                            <li
+                                                                                role="treeitem"
+                                                                                className="ant-select-tree-treenode-switcher-open"
+                                                                            >
+                                                                                <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+                                                                                <span
+                                                                                    title="maximum amount"
+                                                                                    className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
+                                                                                >
+                                                                                    <span className="ant-select-tree-title">
+                                                                                        <font
+                                                                                            style={{
+                                                                                                verticalAlign: "inherit",
+                                                                                            }}
+                                                                                        >
+                                                                                            <font
+                                                                                                style={{
+                                                                                                    verticalAlign: "inherit",
+                                                                                                }}
+                                                                                            >
+                                                                                                maximum amount
+                                                                                            </font>
+                                                                                        </font>
+                                                                                    </span>
+                                                                                </span>
+                                                                            </li>
+                                                                            <li
+                                                                                role="treeitem"
+                                                                                className="ant-select-tree-treenode-switcher-open"
+                                                                            >
+                                                                                <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+                                                                                <span
+                                                                                    title="minimum amount"
+                                                                                    className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
+                                                                                >
+                                                                                    <span className="ant-select-tree-title">
+                                                                                        <font
+                                                                                            style={{
+                                                                                                verticalAlign: "inherit",
+                                                                                            }}
+                                                                                        >
+                                                                                            <font
+                                                                                                style={{
+                                                                                                    verticalAlign: "inherit",
+                                                                                                }}
+                                                                                            >
+                                                                                                minimum amount
+                                                                                            </font>
+                                                                                        </font>
+                                                                                    </span>
+                                                                                </span>
+                                                                            </li>
+                                                                            <li
+                                                                                role="treeitem"
+                                                                                className="ant-select-tree-treenode-switcher-open"
+                                                                            >
+                                                                                <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+                                                                                <span
+                                                                                    title="Remark"
+                                                                                    className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
+                                                                                >
+                                                                                    <span className="ant-select-tree-title">
+                                                                                        <font
+                                                                                            style={{
+                                                                                                verticalAlign: "inherit",
+                                                                                            }}
+                                                                                        >
+                                                                                            <font
+                                                                                                style={{
+                                                                                                    verticalAlign: "inherit",
+                                                                                                }}
+                                                                                            >
+                                                                                                Remark
+                                                                                            </font>
+                                                                                        </font>
+                                                                                    </span>
+                                                                                </span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
 
                                                                 <div
                                                                     data-v-3d25e7a4
@@ -3791,17 +4235,21 @@ function SecondContractProduct() {
                                                                                                 verticalAlign: "inherit",
                                                                                             }}
                                                                                         >
-                                                                                            equal
+                                                                                            {QueryEqualto}
                                                                                         </font>
                                                                                     </font>
                                                                                 </div>
                                                                             </div>
+                                                                            {showQueryEqualto &&
+                                                                                <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '110px', left: '0px', top: '35px', display: 'flex' }}><div id="19513122-2649-4ce2-c6e5-003c222ab6a0" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)' }}><ul role="listbox" tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root"><li role="option" aria-selected="true" className="ant-select-dropdown-menu-item ant-select-dropdown-menu-item-selected" unselectable="on" style={{ userSelect: 'none' }}><font style={{ verticalAlign: 'inherit' }}><font onClick={(e)=>setQueryEqualto(e.target.textContent)} style={{ verticalAlign: 'inherit' }}>equal</font></font></li><li role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}><font style={{ verticalAlign: 'inherit' }}><font onClick={(e)=>setQueryEqualto(e.target.textContent)} style={{ verticalAlign: 'inherit' }}>Include</font></font></li><li role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}><font style={{ verticalAlign: 'inherit' }}><font style={{ verticalAlign: 'inherit' }} onClick={(e)=>setQueryEqualto(e.target.textContent)}>start with</font></font></li><li role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}><font style={{ verticalAlign: 'inherit' }}><font style={{ verticalAlign: 'inherit' }} onClick={(e)=>setQueryEqualto(e.target.textContent)}>ends with</font></font></li><li role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}><font style={{ verticalAlign: 'inherit' }}><font style={{ verticalAlign: 'inherit' }} onClick={(e)=>setQueryEqualto(e.target.textContent)}>in</font></font></li><li role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}><font style={{ verticalAlign: 'inherit' }}><font style={{ verticalAlign: 'inherit' }} onClick={(e)=>setQueryEqualto(e.target.textContent)}>not equal to</font></font></li><li role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}><font style={{ verticalAlign: 'inherit' }}><font style={{ verticalAlign: 'inherit' }} onClick={(e)=>setQueryEqualto(e.target.textContent)}>more than the</font></font></li><li role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}><font style={{ verticalAlign: 'inherit' }}><font style={{ verticalAlign: 'inherit' }} onClick={(e)=>setQueryEqualto(e.target.textContent)}>greater or equal to</font></font></li><li role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}><font style={{ verticalAlign: 'inherit' }}><font style={{ verticalAlign: 'inherit' }} onClick={(e)=>setQueryEqualto(e.target.textContent)}>less than</font></font></li><li role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}><font style={{ verticalAlign: 'inherit' }}><font style={{ verticalAlign: 'inherit' }} onClick={(e)=>setQueryEqualto(e.target.textContent)}>less than or equal to</font></font></li></ul></div></div>
+                                                                            }
+
                                                                             <span
                                                                                 unselectable="on"
                                                                                 className="ant-select-arrow"
                                                                                 style={{ userSelect: "none" }}
                                                                             >
-                                                                                <i
+                                                                                <i onClick={() => setshowQueryEqualto(!showQueryEqualto)}
                                                                                     aria-label="icon: down"
                                                                                     className="anticon anticon-down ant-select-arrow-icon"
                                                                                 >
@@ -3822,6 +4270,7 @@ function SecondContractProduct() {
                                                                         </div>
                                                                     </div>
                                                                 </div>
+
                                                                 <div
                                                                     data-v-3d25e7a4
                                                                     className="ant-col ant-col-xs-24 ant-col-md-8"
@@ -3896,6 +4345,7 @@ function SecondContractProduct() {
                                                                         </i>
                                                                     </button>
                                                                 </div>
+
                                                                 <div
                                                                     data-v-3d25e7a4
                                                                     className="ant-col ant-col-xs-24 ant-col-md-0"
@@ -4121,9 +4571,8 @@ function SecondContractProduct() {
                         </div>
                     </div>
                 </>
-            )
-            }
-        </div >
+            )}
+        </div>
     );
 }
 
