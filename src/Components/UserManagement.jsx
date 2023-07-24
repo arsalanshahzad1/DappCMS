@@ -1,6 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../assets/styles/table.css";
+import apis from "../Services";
+
 function UserManagement() {
+    const [user, setUser] = useState([])
+
+    const getUsers = async () => {
+        const response = await apis.getAllUser();
+        if(response?.data?.status){
+            setUser(response?.data?.user)
+        }
+    }
+
+    useEffect(() => {
+        getUsers();
+    }, [])
+
+    // console.log(user);
     return (
         <div>
             <div data-v-1ef8ad3a className="ant-card">
@@ -880,212 +896,226 @@ function UserManagement() {
                                                                 </th>
                                                             </tr>
                                                         </thead>
+
                                                         <tbody className="ant-table-tbody">
-                                                            <tr
-                                                                className="ant-table-row ant-table-row-level-0"
-                                                                data-row-key={1670628136743133185}
-                                                            >
-                                                                <td className="ant-table-selection-column">
-                                                                    <span>
-                                                                        <label className="ant-checkbox-wrapper">
-                                                                            <span className="ant-checkbox">
-                                                                                <input
-                                                                                    type="checkbox"
-                                                                                    className="ant-checkbox-input"
-                                                                                    defaultValue
-                                                                                />
-                                                                                <span className="ant-checkbox-inner" />
-                                                                            </span>
-                                                                        </label>
-                                                                    </span>
-                                                                </td>
-                                                                <td
-                                                                    className="ant-table-row-cell-break-word"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            1
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td
-                                                                    title="0x58f70130c4657c893e381b96f5ec9add7dd617e0"
-                                                                    className="ant-table-row-cell-ellipsis"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            0x58f70130c4657c893e381b96f5ec9add7dd617e0
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td
-                                                                    className=""
-                                                                    style={{ textAlign: "center" }}
-                                                                />
-                                                                <td
-                                                                    className="ant-table-column-has-actions ant-table-column-has-sorters"
-                                                                    style={{ textAlign: "center" }}
-                                                                />
-                                                                <td
-                                                                    className="ant-table-column-has-actions ant-table-column-has-sorters"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            0
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td
-                                                                    className="ant-table-column-has-actions ant-table-column-has-sorters"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            0
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td
-                                                                    className=""
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <span
-                                                                        data-v-1ef8ad3a
-                                                                        className="ant-tag ant-tag-red"
-                                                                        text="未授权"
+                                                            {/* change here   */}
+
+                                                            {user?.map((data, index) => {
+                                                                return (
+                                                                    // <>
+                                                                    // {console.log(data)}
+                                                                    // </>
+                                                                    <tr
+                                                                        className="ant-table-row ant-table-row-level-0"
+                                                                        data-row-key={1670628136743133185}
                                                                     >
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            <font
-                                                                                style={{ verticalAlign: "inherit" }}
-                                                                            >
-                                                                                unauthorized
-                                                                            </font>
-                                                                        </font>
-                                                                    </span>
-                                                                </td>
-                                                                <td
-                                                                    className=""
-                                                                    style={{ textAlign: "center" }}
-                                                                />
-                                                                <td
-                                                                    className=""
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            92.38.172.31
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td
-                                                                    className="ant-table-column-has-actions ant-table-column-has-sorters"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            Luxembourg LU Luxembourg
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td
-                                                                    className="ant-table-column-has-actions ant-table-column-has-sorters"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            2023-06-18 20:11:37
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td
-                                                                    className="ant-table-column-has-actions ant-table-column-has-sorters"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            2023-06-18 21:02:41
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td
-                                                                    className="ant-table-column-has-actions ant-table-column-has-sorters"
-                                                                    style={{ textAlign: "center" }}
-                                                                />
-                                                                <td
-                                                                    className="ant-table-fixed-columns-in-body ant-table-row-cell-break-word"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <span data-v-1ef8ad3a>
-                                                                        <a data-v-1ef8ad3a>
-                                                                            <font
-                                                                                style={{ verticalAlign: "inherit" }}
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    Revise
-                                                                                </font>
-                                                                            </font>
-                                                                        </a>
-                                                                        <div
-                                                                            data-v-1ef8ad3a
-                                                                            role="separator"
-                                                                            className="ant-divider ant-divider-vertical"
-                                                                        />
-                                                                        <a data-v-1ef8ad3a>
-                                                                            <font
-                                                                                style={{ verticalAlign: "inherit" }}
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    withdraw
-                                                                                </font>
-                                                                            </font>
-                                                                        </a>
-                                                                        <div
-                                                                            data-v-1ef8ad3a
-                                                                            role="separator"
-                                                                            className="ant-divider ant-divider-vertical"
-                                                                        />
-                                                                        <a
-                                                                            data-v-1ef8ad3a
-                                                                            className="ant-dropdown-link ant-dropdown-trigger"
+                                                                        <td className="ant-table-selection-column">
+                                                                            <span>
+                                                                                <label className="ant-checkbox-wrapper">
+                                                                                    <span className="ant-checkbox">
+                                                                                        <input
+                                                                                            type="checkbox"
+                                                                                            className="ant-checkbox-input"
+                                                                                            defaultValue
+                                                                                        />
+                                                                                        <span className="ant-checkbox-inner" />
+                                                                                    </span>
+                                                                                </label>
+                                                                            </span>
+                                                                        </td>
+                                                                        <td
+                                                                            className="ant-table-row-cell-break-word"
+                                                                            style={{ textAlign: "center" }}
                                                                         >
-                                                                            <font
-                                                                                style={{ verticalAlign: "inherit" }}
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    More
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    {index + 1}
                                                                                 </font>
                                                                             </font>
-                                                                            <i
+                                                                        </td>
+                                                                        <td
+                                                                            title="0x58f70130c4657c893e381b96f5ec9add7dd617e0"
+                                                                            className="ant-table-row-cell-ellipsis"
+                                                                            style={{ textAlign: "center" }}
+                                                                        >
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    {data?.user_address}
+                                                                                </font>
+                                                                            </font>
+                                                                        </td>
+                                                                        <td
+                                                                            className=""
+                                                                            style={{ textAlign: "center" }}
+                                                                        />
+                                                                        <td
+                                                                            className="ant-table-column-has-actions ant-table-column-has-sorters"
+                                                                            style={{ textAlign: "center" }}
+                                                                        />
+                                                                        <td
+                                                                            className="ant-table-column-has-actions ant-table-column-has-sorters"
+                                                                            style={{ textAlign: "center" }}
+                                                                        >
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    0
+                                                                                </font>
+                                                                            </font>
+                                                                        </td>
+                                                                        <td
+                                                                            className="ant-table-column-has-actions ant-table-column-has-sorters"
+                                                                            style={{ textAlign: "center" }}
+                                                                        >
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    0
+                                                                                </font>
+                                                                            </font>
+                                                                        </td>
+                                                                        <td
+                                                                            className=""
+                                                                            style={{ textAlign: "center" }}
+                                                                        >
+                                                                            <span
                                                                                 data-v-1ef8ad3a
-                                                                                aria-label="icon: down"
-                                                                                className="anticon anticon-down"
+                                                                                className="ant-tag ant-tag-red"
+                                                                                text="未授权"
                                                                             >
-                                                                                <svg
-                                                                                    viewBox="64 64 896 896"
-                                                                                    data-icon="down"
-                                                                                    width="1em"
-                                                                                    height="1em"
-                                                                                    fill="currentColor"
-                                                                                    aria-hidden="true"
-                                                                                    focusable="false"
-                                                                                    className=""
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    <font
+                                                                                        style={{ verticalAlign: "inherit" }}
+                                                                                    >
+                                                                                        unauthorized
+                                                                                    </font>
+                                                                                </font>
+                                                                            </span>
+                                                                        </td>
+                                                                        <td
+                                                                            className=""
+                                                                            style={{ textAlign: "center" }}
+                                                                        />
+                                                                        <td
+                                                                            className=""
+                                                                            style={{ textAlign: "center" }}
+                                                                        >
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    {data?.ip}
+                                                                                </font>
+                                                                            </font>
+                                                                        </td>
+                                                                        <td
+                                                                            className="ant-table-column-has-actions ant-table-column-has-sorters"
+                                                                            style={{ textAlign: "center" }}
+                                                                        >
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    {data?.location}
+                                                                                </font>
+                                                                            </font>
+                                                                        </td>
+                                                                        <td
+                                                                            className="ant-table-column-has-actions ant-table-column-has-sorters"
+                                                                            style={{ textAlign: "center" }}
+                                                                        >
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    {data?.last_login}
+                                                                                </font>
+                                                                            </font>
+                                                                        </td>
+                                                                        <td
+                                                                            className="ant-table-column-has-actions ant-table-column-has-sorters"
+                                                                            style={{ textAlign: "center" }}
+                                                                        >
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    {data?.createdAt}
+                                                                                </font>
+                                                                            </font>
+                                                                        </td>
+                                                                        <td
+                                                                            className="ant-table-column-has-actions ant-table-column-has-sorters"
+                                                                            style={{ textAlign: "center" }}
+                                                                        />
+                                                                        <td
+                                                                            className="ant-table-fixed-columns-in-body ant-table-row-cell-break-word"
+                                                                            style={{ textAlign: "center" }}
+                                                                        >
+                                                                            <span data-v-1ef8ad3a>
+                                                                                <a data-v-1ef8ad3a>
+                                                                                    <font
+                                                                                        style={{ verticalAlign: "inherit" }}
+                                                                                    >
+                                                                                        <font
+                                                                                            style={{ verticalAlign: "inherit" }}
+                                                                                        >
+                                                                                            Revise
+                                                                                        </font>
+                                                                                    </font>
+                                                                                </a>
+                                                                                <div
+                                                                                    data-v-1ef8ad3a
+                                                                                    role="separator"
+                                                                                    className="ant-divider ant-divider-vertical"
+                                                                                />
+                                                                                <a data-v-1ef8ad3a>
+                                                                                    <font
+                                                                                        style={{ verticalAlign: "inherit" }}
+                                                                                    >
+                                                                                        <font
+                                                                                            style={{ verticalAlign: "inherit" }}
+                                                                                        >
+                                                                                            withdraw
+                                                                                        </font>
+                                                                                    </font>
+                                                                                </a>
+                                                                                <div
+                                                                                    data-v-1ef8ad3a
+                                                                                    role="separator"
+                                                                                    className="ant-divider ant-divider-vertical"
+                                                                                />
+                                                                                <a
+                                                                                    data-v-1ef8ad3a
+                                                                                    className="ant-dropdown-link ant-dropdown-trigger"
                                                                                 >
-                                                                                    <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                </svg>
-                                                                            </i>
-                                                                        </a>
-                                                                    </span>
-                                                                </td>
-                                                            </tr>
+                                                                                    <font
+                                                                                        style={{ verticalAlign: "inherit" }}
+                                                                                    >
+                                                                                        <font
+                                                                                            style={{ verticalAlign: "inherit" }}
+                                                                                        >
+                                                                                            More
+                                                                                        </font>
+                                                                                    </font>
+                                                                                    <i
+                                                                                        data-v-1ef8ad3a
+                                                                                        aria-label="icon: down"
+                                                                                        className="anticon anticon-down"
+                                                                                    >
+                                                                                        <svg
+                                                                                            viewBox="64 64 896 896"
+                                                                                            data-icon="down"
+                                                                                            width="1em"
+                                                                                            height="1em"
+                                                                                            fill="currentColor"
+                                                                                            aria-hidden="true"
+                                                                                            focusable="false"
+                                                                                            className=""
+                                                                                        >
+                                                                                            <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
+                                                                                        </svg>
+                                                                                    </i>
+                                                                                </a>
+                                                                            </span>
+                                                                        </td>
+                                                                    </tr>
+                                                                )
+                                                            })
+                                                            }
+
+
+                                                            {/*                                                             
                                                             <tr
                                                                 className="ant-table-row ant-table-row-level-0"
                                                                 data-row-key={1670434489582018561}
@@ -2948,7 +2978,7 @@ function UserManagement() {
                                                                         </a>
                                                                     </span>
                                                                 </td>
-                                                            </tr>
+                                                            </tr> */}
                                                         </tbody>
                                                     </table>
                                                 </div>

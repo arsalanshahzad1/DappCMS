@@ -1,6 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import apis from "../Services";
 
 function AIQuantitativeProduct() {
+    const [quantitativeProduct, setQuantitativeProduct] = useState()
+
+    const getQuantitativeProduct = async () => {
+
+        const response = await apis.getAllQuantitativeProduct();
+        console.log("response", response);
+        if (response?.data?.status) {
+            setQuantitativeProduct(response?.data?.product);
+        }
+
+
+    }
+
+    useEffect(() => {
+        getQuantitativeProduct()
+    }, [])
+
+
+
+
+    console.log(quantitativeProduct);
+
     return (
         <div>
             <div data-v-140419ff className="ant-card">
@@ -663,676 +686,159 @@ function AIQuantitativeProduct() {
                                                             </tr>
                                                         </thead>
                                                         <tbody className="ant-table-tbody">
-                                                            <tr
-                                                                className="ant-table-row ant-table-row-level-0"
-                                                                data-row-key={1596486446243954689}
-                                                            >
-                                                                <td className="ant-table-selection-column">
-                                                                    <span>
-                                                                        <label className="ant-checkbox-wrapper">
-                                                                            <span className="ant-checkbox">
-                                                                                <input
-                                                                                    type="checkbox"
-                                                                                    className="ant-checkbox-input"
-                                                                                    defaultValue
-                                                                                />
-                                                                                <span className="ant-checkbox-inner" />
+
+                                                            {/* start Here */}
+
+                                                            {quantitativeProduct?.map((data, index) => {
+                                                                return (
+                                                                    <tr
+                                                                        className="ant-table-row ant-table-row-level-0"
+                                                                        data-row-key={1596486446243954689}
+                                                                    >
+                                                                        <td className="ant-table-selection-column">
+                                                                            <span>
+                                                                                <label className="ant-checkbox-wrapper">
+                                                                                    <span className="ant-checkbox">
+                                                                                        <input
+                                                                                            type="checkbox"
+                                                                                            className="ant-checkbox-input"
+                                                                                            defaultValue
+                                                                                        />
+                                                                                        <span className="ant-checkbox-inner" />
+                                                                                    </span>
+                                                                                </label>
                                                                             </span>
-                                                                        </label>
-                                                                    </span>
-                                                                </td>
-                                                                <td
-                                                                    className="ant-table-row-cell-break-word"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            1
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            AI Arbitrage
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            AI Quantification
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            7
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            3000
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            10000
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            0.008-0.01
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            It has been added to
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }} />
-                                                                <td
-                                                                    className="ant-table-fixed-columns-in-body ant-table-row-cell-break-word"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <span data-v-140419ff>
-                                                                        <a data-v-140419ff>
-                                                                            <font
-                                                                                style={{ verticalAlign: "inherit" }}
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    edit
-                                                                                </font>
-                                                                            </font>
-                                                                        </a>
-                                                                        <div
-                                                                            data-v-140419ff
-                                                                            role="separator"
-                                                                            className="ant-divider ant-divider-vertical"
-                                                                        />
-                                                                        <a
-                                                                            data-v-140419ff
-                                                                            className="ant-dropdown-link ant-dropdown-trigger"
+                                                                        </td>
+                                                                        <td
+                                                                            className="ant-table-row-cell-break-word"
+                                                                            style={{ textAlign: "center" }}
                                                                         >
-                                                                            <font
-                                                                                style={{ verticalAlign: "inherit" }}
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    More
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    {index + 1}
                                                                                 </font>
                                                                             </font>
-                                                                            <i
-                                                                                data-v-140419ff
-                                                                                aria-label="icon: down"
-                                                                                className="anticon anticon-down"
-                                                                            >
-                                                                                <svg
-                                                                                    viewBox="64 64 896 896"
-                                                                                    data-icon="down"
-                                                                                    width="1em"
-                                                                                    height="1em"
-                                                                                    fill="currentColor"
-                                                                                    aria-hidden="true"
-                                                                                    focusable="false"
-                                                                                    className
-                                                                                >
-                                                                                    <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                </svg>
-                                                                            </i>
-                                                                        </a>
-                                                                    </span>
-                                                                </td>
-                                                            </tr>
-                                                            <tr
-                                                                className="ant-table-row ant-table-row-level-0"
-                                                                data-row-key={1596487039117213698}
-                                                            >
-                                                                <td className="ant-table-selection-column">
-                                                                    <span>
-                                                                        <label className="ant-checkbox-wrapper">
-                                                                            <span className="ant-checkbox">
-                                                                                <input
-                                                                                    type="checkbox"
-                                                                                    className="ant-checkbox-input"
-                                                                                    defaultValue
+                                                                        </td>
+                                                                        <td className style={{ textAlign: "center" }}>
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    {data?.product_name}
+                                                                                </font>
+                                                                            </font>
+                                                                        </td>
+                                                                        <td className style={{ textAlign: "center" }}>
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    AI Quantification??
+                                                                                </font>
+                                                                            </font>
+                                                                        </td>
+                                                                        <td className style={{ textAlign: "center" }}>
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    7??
+                                                                                </font>
+                                                                            </font>
+                                                                        </td>
+                                                                        <td className style={{ textAlign: "center" }}>
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    {data?.minimum_amount}
+                                                                                </font>
+                                                                            </font>
+                                                                        </td>
+                                                                        <td className style={{ textAlign: "center" }}>
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    {data?.maximum_amount}
+                                                                                </font>
+                                                                            </font>
+                                                                        </td>
+                                                                        <td className style={{ textAlign: "center" }}>
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    0.008-0.01??
+                                                                                </font>
+                                                                            </font>
+                                                                        </td>
+                                                                        <td className style={{ textAlign: "center" }}>
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    {data?.product_status}
+                                                                                </font>
+                                                                            </font>
+                                                                        </td>
+                                                                        <td className style={{ textAlign: "center" }} >
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    {data?.product_to_sort}
+                                                                                </font>
+                                                                            </font>
+                                                                        </td>
+                                                                        <td
+                                                                            className="ant-table-fixed-columns-in-body ant-table-row-cell-break-word"
+                                                                            style={{ textAlign: "center" }}
+                                                                        >
+                                                                            <span data-v-140419ff>
+                                                                                <a data-v-140419ff>
+                                                                                    <font
+                                                                                        style={{ verticalAlign: "inherit" }}
+                                                                                    >
+                                                                                        <font
+                                                                                            style={{ verticalAlign: "inherit" }}
+                                                                                        >
+                                                                                            edit
+                                                                                        </font>
+                                                                                    </font>
+                                                                                </a>
+                                                                                <div
+                                                                                    data-v-140419ff
+                                                                                    role="separator"
+                                                                                    className="ant-divider ant-divider-vertical"
                                                                                 />
-                                                                                <span className="ant-checkbox-inner" />
+                                                                                <a
+                                                                                    data-v-140419ff
+                                                                                    className="ant-dropdown-link ant-dropdown-trigger"
+                                                                                >
+                                                                                    <font
+                                                                                        style={{ verticalAlign: "inherit" }}
+                                                                                    >
+                                                                                        <font
+                                                                                            style={{ verticalAlign: "inherit" }}
+                                                                                        >
+                                                                                            More
+                                                                                        </font>
+                                                                                    </font>
+                                                                                    <i
+                                                                                        data-v-140419ff
+                                                                                        aria-label="icon: down"
+                                                                                        className="anticon anticon-down"
+                                                                                    >
+                                                                                        <svg
+                                                                                            viewBox="64 64 896 896"
+                                                                                            data-icon="down"
+                                                                                            width="1em"
+                                                                                            height="1em"
+                                                                                            fill="currentColor"
+                                                                                            aria-hidden="true"
+                                                                                            focusable="false"
+                                                                                            className
+                                                                                        >
+                                                                                            <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
+                                                                                        </svg>
+                                                                                    </i>
+                                                                                </a>
                                                                             </span>
-                                                                        </label>
-                                                                    </span>
-                                                                </td>
-                                                                <td
-                                                                    className="ant-table-row-cell-break-word"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            2
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            AI Arbitrage
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            AI Quantification
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            15
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            10000
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            50000
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            0.0095-0.0105
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            It has been added to
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }} />
-                                                                <td
-                                                                    className="ant-table-fixed-columns-in-body ant-table-row-cell-break-word"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <span data-v-140419ff>
-                                                                        <a data-v-140419ff>
-                                                                            <font
-                                                                                style={{ verticalAlign: "inherit" }}
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    edit
-                                                                                </font>
-                                                                            </font>
-                                                                        </a>
-                                                                        <div
-                                                                            data-v-140419ff
-                                                                            role="separator"
-                                                                            className="ant-divider ant-divider-vertical"
-                                                                        />
-                                                                        <a
-                                                                            data-v-140419ff
-                                                                            className="ant-dropdown-link ant-dropdown-trigger"
-                                                                        >
-                                                                            <font
-                                                                                style={{ verticalAlign: "inherit" }}
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    More
-                                                                                </font>
-                                                                            </font>
-                                                                            <i
-                                                                                data-v-140419ff
-                                                                                aria-label="icon: down"
-                                                                                className="anticon anticon-down"
-                                                                            >
-                                                                                <svg
-                                                                                    viewBox="64 64 896 896"
-                                                                                    data-icon="down"
-                                                                                    width="1em"
-                                                                                    height="1em"
-                                                                                    fill="currentColor"
-                                                                                    aria-hidden="true"
-                                                                                    focusable="false"
-                                                                                    className
-                                                                                >
-                                                                                    <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                </svg>
-                                                                            </i>
-                                                                        </a>
-                                                                    </span>
-                                                                </td>
-                                                            </tr>
-                                                            <tr
-                                                                className="ant-table-row ant-table-row-level-0"
-                                                                data-row-key={1596487919765864449}
-                                                            >
-                                                                <td className="ant-table-selection-column">
-                                                                    <span>
-                                                                        <label className="ant-checkbox-wrapper">
-                                                                            <span className="ant-checkbox">
-                                                                                <input
-                                                                                    type="checkbox"
-                                                                                    className="ant-checkbox-input"
-                                                                                    defaultValue
-                                                                                />
-                                                                                <span className="ant-checkbox-inner" />
-                                                                            </span>
-                                                                        </label>
-                                                                    </span>
-                                                                </td>
-                                                                <td
-                                                                    className="ant-table-row-cell-break-word"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            3
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            AI Arbitrage
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            AI Quantification
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            30
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            30000
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            100000
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            0.012-0.015
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            It has been added to
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }} />
-                                                                <td
-                                                                    className="ant-table-fixed-columns-in-body ant-table-row-cell-break-word"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <span data-v-140419ff>
-                                                                        <a data-v-140419ff>
-                                                                            <font
-                                                                                style={{ verticalAlign: "inherit" }}
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    edit
-                                                                                </font>
-                                                                            </font>
-                                                                        </a>
-                                                                        <div
-                                                                            data-v-140419ff
-                                                                            role="separator"
-                                                                            className="ant-divider ant-divider-vertical"
-                                                                        />
-                                                                        <a
-                                                                            data-v-140419ff
-                                                                            className="ant-dropdown-link ant-dropdown-trigger"
-                                                                        >
-                                                                            <font
-                                                                                style={{ verticalAlign: "inherit" }}
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    More
-                                                                                </font>
-                                                                            </font>
-                                                                            <i
-                                                                                data-v-140419ff
-                                                                                aria-label="icon: down"
-                                                                                className="anticon anticon-down"
-                                                                            >
-                                                                                <svg
-                                                                                    viewBox="64 64 896 896"
-                                                                                    data-icon="down"
-                                                                                    width="1em"
-                                                                                    height="1em"
-                                                                                    fill="currentColor"
-                                                                                    aria-hidden="true"
-                                                                                    focusable="false"
-                                                                                    className
-                                                                                >
-                                                                                    <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                </svg>
-                                                                            </i>
-                                                                        </a>
-                                                                    </span>
-                                                                </td>
-                                                            </tr>
-                                                            <tr
-                                                                className="ant-table-row ant-table-row-level-0"
-                                                                data-row-key={1596488563444727810}
-                                                            >
-                                                                <td className="ant-table-selection-column">
-                                                                    <span>
-                                                                        <label className="ant-checkbox-wrapper">
-                                                                            <span className="ant-checkbox">
-                                                                                <input
-                                                                                    type="checkbox"
-                                                                                    className="ant-checkbox-input"
-                                                                                    defaultValue
-                                                                                />
-                                                                                <span className="ant-checkbox-inner" />
-                                                                            </span>
-                                                                        </label>
-                                                                    </span>
-                                                                </td>
-                                                                <td
-                                                                    className="ant-table-row-cell-break-word"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            4
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            AI Arbitrage
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            AI Quantification
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            60
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            100000
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            500000
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            0.0135-0.0158
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            It has been added to
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }} />
-                                                                <td
-                                                                    className="ant-table-fixed-columns-in-body ant-table-row-cell-break-word"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <span data-v-140419ff>
-                                                                        <a data-v-140419ff>
-                                                                            <font
-                                                                                style={{ verticalAlign: "inherit" }}
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    edit
-                                                                                </font>
-                                                                            </font>
-                                                                        </a>
-                                                                        <div
-                                                                            data-v-140419ff
-                                                                            role="separator"
-                                                                            className="ant-divider ant-divider-vertical"
-                                                                        />
-                                                                        <a
-                                                                            data-v-140419ff
-                                                                            className="ant-dropdown-link ant-dropdown-trigger"
-                                                                        >
-                                                                            <font
-                                                                                style={{ verticalAlign: "inherit" }}
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    More
-                                                                                </font>
-                                                                            </font>
-                                                                            <i
-                                                                                data-v-140419ff
-                                                                                aria-label="icon: down"
-                                                                                className="anticon anticon-down"
-                                                                            >
-                                                                                <svg
-                                                                                    viewBox="64 64 896 896"
-                                                                                    data-icon="down"
-                                                                                    width="1em"
-                                                                                    height="1em"
-                                                                                    fill="currentColor"
-                                                                                    aria-hidden="true"
-                                                                                    focusable="false"
-                                                                                    className
-                                                                                >
-                                                                                    <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                </svg>
-                                                                            </i>
-                                                                        </a>
-                                                                    </span>
-                                                                </td>
-                                                            </tr>
-                                                            <tr
-                                                                className="ant-table-row ant-table-row-level-0"
-                                                                data-row-key={1596489144095784961}
-                                                            >
-                                                                <td className="ant-table-selection-column">
-                                                                    <span>
-                                                                        <label className="ant-checkbox-wrapper">
-                                                                            <span className="ant-checkbox">
-                                                                                <input
-                                                                                    type="checkbox"
-                                                                                    className="ant-checkbox-input"
-                                                                                    defaultValue
-                                                                                />
-                                                                                <span className="ant-checkbox-inner" />
-                                                                            </span>
-                                                                        </label>
-                                                                    </span>
-                                                                </td>
-                                                                <td
-                                                                    className="ant-table-row-cell-break-word"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            5
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            AI Arbitrage
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            AI Quantification
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            90
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            500000
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            1000000
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            0.0148-0.0165
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            It has been added to
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }} />
-                                                                <td
-                                                                    className="ant-table-fixed-columns-in-body ant-table-row-cell-break-word"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <span data-v-140419ff>
-                                                                        <a data-v-140419ff>
-                                                                            <font
-                                                                                style={{ verticalAlign: "inherit" }}
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    edit
-                                                                                </font>
-                                                                            </font>
-                                                                        </a>
-                                                                        <div
-                                                                            data-v-140419ff
-                                                                            role="separator"
-                                                                            className="ant-divider ant-divider-vertical"
-                                                                        />
-                                                                        <a
-                                                                            data-v-140419ff
-                                                                            className="ant-dropdown-link ant-dropdown-trigger"
-                                                                        >
-                                                                            <font
-                                                                                style={{ verticalAlign: "inherit" }}
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    More
-                                                                                </font>
-                                                                            </font>
-                                                                            <i
-                                                                                data-v-140419ff
-                                                                                aria-label="icon: down"
-                                                                                className="anticon anticon-down"
-                                                                            >
-                                                                                <svg
-                                                                                    viewBox="64 64 896 896"
-                                                                                    data-icon="down"
-                                                                                    width="1em"
-                                                                                    height="1em"
-                                                                                    fill="currentColor"
-                                                                                    aria-hidden="true"
-                                                                                    focusable="false"
-                                                                                    className
-                                                                                >
-                                                                                    <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                </svg>
-                                                                            </i>
-                                                                        </a>
-                                                                    </span>
-                                                                </td>
-                                                            </tr>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                )
+                                                            })
+
+                                                            }
+
+
+
                                                         </tbody>
                                                     </table>
                                                 </div>
