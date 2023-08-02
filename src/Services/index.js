@@ -34,6 +34,12 @@ const createBackendServer = (baseURL) => {
     const createQuantitativeProduct = async (body) => await api.post(`admin/quantitative-product`, body)
     const UpdateQuantitativeProduct = async (prams, body) => await api.put(`admin/quantitative-product/${prams}`, body)
 
+    //QuantitativeOrder
+    const getAllQuantitativeOrder = async () => await api.get(`admin/quantitative-order`);
+    const getOneQuantitativeOrder = async (body) => await api.get(`admin/quantitative-order/${body}`)
+    const createQuantitativeOrder = async (body) => await api.post(`admin/quantitative-order`, body)
+    const UpdateQuantitativeOrder = async (prams, body) => await api.put(`admin/quantitative-order/${prams}`, body)
+
 
     //MiningProduct 
     const getAllMiningProduct = async () => await api.get(`admin/mining-product`);
@@ -42,10 +48,10 @@ const createBackendServer = (baseURL) => {
     const UpdateMiningProduct = async (prams, body) => await api.put(`admin/mining-product/${prams}`, body)
 
     //MiningOrder
-    const getAllMininOders = async () => await api.get(`admin/mining-order`);
-    const getOneMininOrder = async (body) => await api.get(`admin/mining-order/${body}`)
-    const createMininOrder = async (body) => await api.post(`admin/mining-order`, body)
-    const UpdateMininOrder = async (prams, body) => await api.put(`admin/mining-order/${prams}`, body)
+    const getAllMiningOders = async () => await api.get(`admin/mining-order`);
+    const getOneMiningOrder = async (body) => await api.get(`admin/mining-order/${body}`)
+    const createMiningOrder = async (body) => await api.post(`admin/mining-order`, body)
+    const UpdateMiningOrder = async (prams, body) => await api.put(`admin/mining-order/${prams}`, body)
 
     //SecondContractProduct
     const getAllSecondContracProduct = async () => await api.get(`admin/contract-product`);
@@ -82,16 +88,21 @@ const createBackendServer = (baseURL) => {
         createQuantitativeProduct,
         UpdateQuantitativeProduct,
 
+        getAllQuantitativeOrder,
+        getOneQuantitativeOrder,
+        createQuantitativeOrder,
+        UpdateQuantitativeOrder,
+
 
         getAllMiningProduct,
         getOneMiningProduct,
         createMiningProduct,
         UpdateMiningProduct,
 
-        getAllMininOders,
-        getOneMininOrder,
-        createMininOrder,
-        UpdateMininOrder,
+        getAllMiningOders,
+        getOneMiningOrder,
+        createMiningOrder,
+        UpdateMiningOrder,
 
 
         getAllSecondContracProduct,

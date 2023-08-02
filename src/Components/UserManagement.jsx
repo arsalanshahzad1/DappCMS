@@ -1,20 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../assets/styles/table.css";
 import apis from "../Services";
+import { MyContext } from "../Context/MyContext";
 
 function UserManagement() {
-    const [user, setUser] = useState([])
 
-    const getUsers = async () => {
-        const response = await apis.getAllUser();
-        if(response?.data?.status){
-            setUser(response?.data?.user)
-        }
-    }
+    const {user} = useContext(MyContext)
+    // const [user, setUser] = useState([])
 
-    useEffect(() => {
-        getUsers();
-    }, [])
+    // const getUsers = async () => {
+    //     const response = await apis.getAllUser();
+    //     if(response?.data?.status){
+    //         setUser(response?.data?.user)
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     getUsers();
+    // }, [])
 
     // console.log(user);
     return (

@@ -1,7 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "../assets/styles/table.css";
-import ControlsForTable from "./ControlsForTable";
 import apis from "../Services";
+import toast from 'react-hot-toast';
+import EditContractProduct from "../Forms/EditContractProduct";
+import { MyContext } from "../Context/MyContext";
+
 
 
 
@@ -12,736 +15,97 @@ function SecondContractProduct() {
     const [queryFieldPopUp, setQueryFieldPopUp] = useState(false);
     const [queryPopUpValue, setqueryPopUpValue] = useState("AND (all conditions are required to match)");
     const [selectQueryField, setSelectQueryField] = useState(false);
-    const [selectQueryFieldValue, setselectQueryFieldValue]=useState("select query field");
+    const [selectQueryFieldValue, setselectQueryFieldValue] = useState("select query field");
     const [QueryEqualto, setQueryEqualto] = useState("equal");
     const [showQueryEqualto, setshowQueryEqualto] = useState(false);
-    const [showEditPopUp, setshowEditPopUp] = useState(false);
-    const[contractProduct,setContractProduct]=useState([]);
-    
+    // const [contractProduct, setContractProduct] = useState([]);
+    const [showCurrency, setshowCurrency] = useState(false)
+    const [addSecondProduct, setSecondProduct] = useState({
+        product_name: "",
+        Currency: "",
+        Delivery_time: "",
+        odds: "",
+        maximum_amount: "",
+        minimum_amount: "",
+        Remark: "",
+    })
+
+    const { contractProduct, getproducts } = useContext(MyContext);
+
+
+    //    console.log("mainData",contractProduct);
+
+
+
+
+    // Event handler to update the state on input change
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setSecondProduct((prevState) => ({
+            ...prevState,
+            [name]: value, // Update the corresponding property based on the input name
+        }));
+    };
+
+    const handleInputChange2 = (name, value) => {
+        // const { name, value } = event.target;
+        setSecondProduct((prevState) => ({
+            ...prevState,
+            [name]: value, // Update the corresponding property based on the input name
+        }));
+    };
+
+
+
     const handleShowPopUp = (e) => {
         setshowEditPopUp(e)
     }
 
-const getproducts = async ()=>{
-    const response = await apis.getAllSecondContracProduct();
-    if(response?.data?.status){
-        setContractProduct(response?.data?.product);
+    // const getproducts = async () => {
+    //     const response = await apis.getAllSecondContracProduct();
+    //     if (response?.data?.status) {
+    //         setContractProduct(response?.data?.product);
+    //     }
+    // }
+
+    const CreateSecondContractProduct = async () => {
+
+        if (!addSecondProduct.Currency == "" &&
+            !addSecondProduct.Delivery_time == "" &&
+            !addSecondProduct.Remark == "" &&
+            !addSecondProduct.maximum_amount == "" &&
+            !addSecondProduct.minimum_amount == "" &&
+            !addSecondProduct.odds == "" &&
+            !addSecondProduct.product_name == ""
+        ) {
+
+            const resut = await apis.createSecondContracProduct({
+                "product_name": addSecondProduct.product_name,
+                "currency": addSecondProduct.Currency,
+                "deliveryTime": addSecondProduct.Delivery_time,
+                "odds": addSecondProduct.odds,
+                "maximum_amount": addSecondProduct.maximum_amount,
+                "minimum_amount": addSecondProduct.minimum_amount,
+                "remark": addSecondProduct.Remark,
+            })
+
+            toast.success(resut.data.message, { id: 1 });
+
+            setshowPopUp(0);
+            setSecondProduct("")
+        } else {
+            toast.error("Please input data all required fields", { id: 1 });
+        }
     }
-}
-
-useEffect(()=>{
-    getproducts();
-},[])
 
 
-// console.log(contractProduct);
-return (
+    useEffect(() => {
+        getproducts();
+    }, [addSecondProduct])
+
+    return (
         <div>
-            {showEditPopUp && (
-                <>
-                    <div>
-                        <div
-                            tabIndex={-1}
-                            role="dialog"
-                            aria-labelledby="rcDialogTitle2"
-                            className="ant-modal-wrap "
-                        >
-                            <div
-                                role="document"
-                                className="ant-modal"
-                                style={{ width: "800px", transformOrigin: "929px 222px" }}
-                            >
-                                <div
-                                    tabIndex={0}
-                                    aria-hidden="true"
-                                    style={{ width: "0px", height: "0px", overflow: "hidden" }}
-                                />
-                                <div className="ant-modal-content">
-                                    <button
-                                        type="button"
-                                        aria-label="Close"
-                                        className="ant-modal-close"
-                                    >
-                                        <span
-                                            onClick={() => setshowEditPopUp(false)}
-                                            className="ant-modal-close-x"
-                                        >
-                                            <i
-                                                aria-label="icon: close"
-                                                className="anticon anticon-close ant-modal-close-icon"
-                                            >
-                                                <svg
-                                                    viewBox="64 64 896 896"
-                                                    data-icon="close"
-                                                    width="1em"
-                                                    height="1em"
-                                                    fill="currentColor"
-                                                    aria-hidden="true"
-                                                    focusable="false"
-                                                    className
-                                                >
-                                                    <path d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 0 0 203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z" />
-                                                </svg>
-                                            </i>
-                                        </span>
-                                    </button>
-                                    <div className="ant-modal-header">
-                                        <div id="rcDialogTitle2" className="ant-modal-title">
-                                            <div className="j-modal-title-row ant-row-flex">
-                                                <div className="left ant-col">
-                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                            edit
-                                                        </font>
-                                                    </font>
-                                                </div>
-                                                <div className="right ant-col">
-                                                    <button
-                                                        type="button"
-                                                        className="ant-modal-close ant-modal-close-x ant-btn ant-btn-link ant-btn-icon-only ant-btn-background-ghost"
-                                                    >
-                                                        <i
-                                                            aria-label="icon: fullscreen"
-                                                            className="anticon anticon-fullscreen"
-                                                        >
-                                                            <svg
-                                                                viewBox="64 64 896 896"
-                                                                data-icon="fullscreen"
-                                                                width="1em"
-                                                                height="1em"
-                                                                fill="currentColor"
-                                                                aria-hidden="true"
-                                                                focusable="false"
-                                                                className
-                                                            >
-                                                                <path d="M290 236.4l43.9-43.9a8.01 8.01 0 0 0-4.7-13.6L169 160c-5.1-.6-9.5 3.7-8.9 8.9L179 329.1c.8 6.6 8.9 9.4 13.6 4.7l43.7-43.7L370 423.7c3.1 3.1 8.2 3.1 11.3 0l42.4-42.3c3.1-3.1 3.1-8.2 0-11.3L290 236.4zm352.7 187.3c3.1 3.1 8.2 3.1 11.3 0l133.7-133.6 43.7 43.7a8.01 8.01 0 0 0 13.6-4.7L863.9 169c.6-5.1-3.7-9.5-8.9-8.9L694.8 179c-6.6.8-9.4 8.9-4.7 13.6l43.9 43.9L600.3 370a8.03 8.03 0 0 0 0 11.3l42.4 42.4zM845 694.9c-.8-6.6-8.9-9.4-13.6-4.7l-43.7 43.7L654 600.3a8.03 8.03 0 0 0-11.3 0l-42.4 42.3a8.03 8.03 0 0 0 0 11.3L734 787.6l-43.9 43.9a8.01 8.01 0 0 0 4.7 13.6L855 864c5.1.6 9.5-3.7 8.9-8.9L845 694.9zm-463.7-94.6a8.03 8.03 0 0 0-11.3 0L236.3 733.9l-43.7-43.7a8.01 8.01 0 0 0-13.6 4.7L160.1 855c-.6 5.1 3.7 9.5 8.9 8.9L329.2 845c6.6-.8 9.4-8.9 4.7-13.6L290 787.6 423.7 654c3.1-3.1 3.1-8.2 0-11.3l-42.4-42.4z" />
-                                                            </svg>
-                                                        </i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="ant-modal-body">
-                                        <div className="ant-spin-nested-loading">
-                                            <div className="ant-spin-container">
-                                                <div className>
-                                                    <fieldset>
-                                                        <form className="ant-form ant-form-horizontal">
-                                                            <div className="ant-row">
-                                                                <div className="ant-col ant-col-24">
-                                                                    <div className="ant-row ant-form-item">
-                                                                        <div className="ant-col ant-col-xs-24 ant-col-sm-5 ant-form-item-label">
-                                                                            <label
-                                                                                title="product name"
-                                                                                className="ant-form-item-required"
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        product name
-                                                                                    </font>
-                                                                                </font>
-                                                                            </label>
-                                                                        </div>
-                                                                        <div className="ant-col ant-col-xs-24 ant-col-sm-16 ant-form-item-control-wrapper">
-                                                                            <div className="ant-form-item-control">
-                                                                                <span className="ant-form-item-children">
-                                                                                    <input
-                                                                                        placeholder="please input the product name"
-                                                                                        type="text"
-                                                                                        className="ant-input"
-                                                                                    />
-                                                                                </span>
-                                                                                {/**/}
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="ant-col ant-col-24">
-                                                                    <div className="ant-row ant-form-item">
-                                                                        <div className="ant-col ant-col-xs-24 ant-col-sm-5 ant-form-item-label">
-                                                                            <label
-                                                                                title="Currency"
-                                                                                className="ant-form-item-required"
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        Currency
-                                                                                    </font>
-                                                                                </font>
-                                                                            </label>
-                                                                        </div>
-                                                                        <div className="ant-col ant-col-xs-24 ant-col-sm-16 ant-form-item-control-wrapper">
-                                                                            <div className="ant-form-item-control">
-                                                                                <span className="ant-form-item-children">
-                                                                                    <div
-                                                                                        data-v-17b4e467
-                                                                                        tabIndex={0}
-                                                                                        className="ant-select ant-select-enabled"
-                                                                                    >
-                                                                                        <div
-                                                                                            role="combobox"
-                                                                                            aria-autocomplete="list"
-                                                                                            aria-haspopup="true"
-                                                                                            aria-controls="2c26cee2-1dc7-426d-ee9e-393b6fe33ff8"
-                                                                                            className="ant-select-selection ant-select-selection--single"
-                                                                                        >
-                                                                                            <div className="ant-select-selection__rendered">
-                                                                                                <div
-                                                                                                    unselectable="on"
-                                                                                                    className="ant-select-selection__placeholder"
-                                                                                                    style={{
-                                                                                                        display: "none",
-                                                                                                        userSelect: "none",
-                                                                                                    }}
-                                                                                                >
-                                                                                                    <font
-                                                                                                        style={{
-                                                                                                            verticalAlign: "inherit",
-                                                                                                        }}
-                                                                                                    >
-                                                                                                        <font
-                                                                                                            style={{
-                                                                                                                verticalAlign:
-                                                                                                                    "inherit",
-                                                                                                            }}
-                                                                                                        >
-                                                                                                            Please select currency
-                                                                                                        </font>
-                                                                                                    </font>
-                                                                                                </div>
-                                                                                                <div
-                                                                                                    title
-                                                                                                    className="ant-select-selection-selected-value"
-                                                                                                    style={{
-                                                                                                        display: "block",
-                                                                                                        opacity: 1,
-                                                                                                    }}
-                                                                                                >
-                                                                                                    <span
-                                                                                                        data-v-17b4e467
-                                                                                                        title="DOT"
-                                                                                                        style={{
-                                                                                                            display: "inline-block",
-                                                                                                            width: "100%",
-                                                                                                        }}
-                                                                                                    >
-                                                                                                        <font
-                                                                                                            style={{
-                                                                                                                verticalAlign:
-                                                                                                                    "inherit",
-                                                                                                            }}
-                                                                                                        >
-                                                                                                            <font
-                                                                                                                style={{
-                                                                                                                    verticalAlign:
-                                                                                                                        "inherit",
-                                                                                                                }}
-                                                                                                            >
-                                                                                                                DOT
-                                                                                                            </font>
-                                                                                                        </font>
-                                                                                                    </span>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <span
-                                                                                                unselectable="on"
-                                                                                                className="ant-select-arrow"
-                                                                                                style={{ userSelect: "none" }}
-                                                                                            >
-                                                                                                <i
-                                                                                                    aria-label="icon: down"
-                                                                                                    className="anticon anticon-down ant-select-arrow-icon"
-                                                                                                >
-                                                                                                    <svg
-                                                                                                        viewBox="64 64 896 896"
-                                                                                                        data-icon="down"
-                                                                                                        width="1em"
-                                                                                                        height="1em"
-                                                                                                        fill="currentColor"
-                                                                                                        aria-hidden="true"
-                                                                                                        focusable="false"
-                                                                                                        className
-                                                                                                    >
-                                                                                                        <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                                    </svg>
-                                                                                                </i>
-                                                                                            </span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </span>
-                                                                                {/**/}
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="ant-col ant-col-24">
-                                                                    <div className="ant-row ant-form-item">
-                                                                        <div className="ant-col ant-col-xs-24 ant-col-sm-5 ant-form-item-label">
-                                                                            <label
-                                                                                title="Delivery time (seconds)"
-                                                                                className="ant-form-item-required"
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        Delivery time (seconds)
-                                                                                    </font>
-                                                                                </font>
-                                                                            </label>
-                                                                        </div>
-                                                                        <div className="ant-col ant-col-xs-24 ant-col-sm-16 ant-form-item-control-wrapper">
-                                                                            <div className="ant-form-item-control">
-                                                                                <span className="ant-form-item-children">
-                                                                                    <div
-                                                                                        className="ant-input-number"
-                                                                                        style={{ width: "100%" }}
-                                                                                    >
-                                                                                        <div className="ant-input-number-handler-wrap">
-                                                                                            <span
-                                                                                                className="ant-input-number-handler ant-input-number-handler-up "
-                                                                                                unselectable="unselectable"
-                                                                                                role="button"
-                                                                                                aria-label="Increase Value"
-                                                                                            >
-                                                                                                <i
-                                                                                                    aria-label="icon: up"
-                                                                                                    className="anticon anticon-up ant-input-number-handler-up-inner"
-                                                                                                >
-                                                                                                    <svg
-                                                                                                        viewBox="64 64 896 896"
-                                                                                                        data-icon="up"
-                                                                                                        width="1em"
-                                                                                                        height="1em"
-                                                                                                        fill="currentColor"
-                                                                                                        aria-hidden="true"
-                                                                                                        focusable="false"
-                                                                                                        className
-                                                                                                    >
-                                                                                                        <path d="M890.5 755.3L537.9 269.2c-12.8-17.6-39-17.6-51.7 0L133.5 755.3A8 8 0 0 0 140 768h75c5.1 0 9.9-2.5 12.9-6.6L512 369.8l284.1 391.6c3 4.1 7.8 6.6 12.9 6.6h75c6.5 0 10.3-7.4 6.5-12.7z" />
-                                                                                                    </svg>
-                                                                                                </i>
-                                                                                            </span>
-                                                                                            <span
-                                                                                                className="ant-input-number-handler ant-input-number-handler-down "
-                                                                                                unselectable="unselectable"
-                                                                                                role="button"
-                                                                                                aria-label="Decrease Value"
-                                                                                            >
-                                                                                                <i
-                                                                                                    aria-label="icon: down"
-                                                                                                    className="anticon anticon-down ant-input-number-handler-down-inner"
-                                                                                                >
-                                                                                                    <svg
-                                                                                                        viewBox="64 64 896 896"
-                                                                                                        data-icon="down"
-                                                                                                        width="1em"
-                                                                                                        height="1em"
-                                                                                                        fill="currentColor"
-                                                                                                        aria-hidden="true"
-                                                                                                        focusable="false"
-                                                                                                        className
-                                                                                                    >
-                                                                                                        <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                                    </svg>
-                                                                                                </i>
-                                                                                            </span>
-                                                                                        </div>
-                                                                                        <div className="ant-input-number-input-wrap">
-                                                                                            <input
-                                                                                                role="spinbutton"
-                                                                                                aria-valuemin={
-                                                                                                    -9007199254740991
-                                                                                                }
-                                                                                                placeholder="Please enter the delivery time (seconds)"
-                                                                                                autoComplete="off"
-                                                                                                min={-9007199254740991}
-                                                                                                step={1}
-                                                                                                className="ant-input-number-input"
-                                                                                                aria-valuenow={60}
-                                                                                            />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </span>
-                                                                                {/**/}
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="ant-col ant-col-24">
-                                                                    <div className="ant-row ant-form-item">
-                                                                        <div className="ant-col ant-col-xs-24 ant-col-sm-5 ant-form-item-label">
-                                                                            <label
-                                                                                title="odds"
-                                                                                className="ant-form-item-required"
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        odds
-                                                                                    </font>
-                                                                                </font>
-                                                                            </label>
-                                                                        </div>
-                                                                        <div className="ant-col ant-col-xs-24 ant-col-sm-16 ant-form-item-control-wrapper">
-                                                                            <div className="ant-form-item-control">
-                                                                                <span className="ant-form-item-children">
-                                                                                    <div
-                                                                                        className="ant-input-number"
-                                                                                        style={{ width: "100%" }}
-                                                                                    >
-                                                                                        <div className="ant-input-number-handler-wrap">
-                                                                                            <span
-                                                                                                className="ant-input-number-handler ant-input-number-handler-up "
-                                                                                                unselectable="unselectable"
-                                                                                                role="button"
-                                                                                                aria-label="Increase Value"
-                                                                                            >
-                                                                                                <i
-                                                                                                    aria-label="icon: up"
-                                                                                                    className="anticon anticon-up ant-input-number-handler-up-inner"
-                                                                                                >
-                                                                                                    <svg
-                                                                                                        viewBox="64 64 896 896"
-                                                                                                        data-icon="up"
-                                                                                                        width="1em"
-                                                                                                        height="1em"
-                                                                                                        fill="currentColor"
-                                                                                                        aria-hidden="true"
-                                                                                                        focusable="false"
-                                                                                                        className
-                                                                                                    >
-                                                                                                        <path d="M890.5 755.3L537.9 269.2c-12.8-17.6-39-17.6-51.7 0L133.5 755.3A8 8 0 0 0 140 768h75c5.1 0 9.9-2.5 12.9-6.6L512 369.8l284.1 391.6c3 4.1 7.8 6.6 12.9 6.6h75c6.5 0 10.3-7.4 6.5-12.7z" />
-                                                                                                    </svg>
-                                                                                                </i>
-                                                                                            </span>
-                                                                                            <span
-                                                                                                className="ant-input-number-handler ant-input-number-handler-down "
-                                                                                                unselectable="unselectable"
-                                                                                                role="button"
-                                                                                                aria-label="Decrease Value"
-                                                                                            >
-                                                                                                <i
-                                                                                                    aria-label="icon: down"
-                                                                                                    className="anticon anticon-down ant-input-number-handler-down-inner"
-                                                                                                >
-                                                                                                    <svg
-                                                                                                        viewBox="64 64 896 896"
-                                                                                                        data-icon="down"
-                                                                                                        width="1em"
-                                                                                                        height="1em"
-                                                                                                        fill="currentColor"
-                                                                                                        aria-hidden="true"
-                                                                                                        focusable="false"
-                                                                                                        className
-                                                                                                    >
-                                                                                                        <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                                    </svg>
-                                                                                                </i>
-                                                                                            </span>
-                                                                                        </div>
-                                                                                        <div className="ant-input-number-input-wrap">
-                                                                                            <input
-                                                                                                role="spinbutton"
-                                                                                                aria-valuemin={
-                                                                                                    -9007199254740991
-                                                                                                }
-                                                                                                placeholder="Please enter odds"
-                                                                                                autoComplete="off"
-                                                                                                min={-9007199254740991}
-                                                                                                step={1}
-                                                                                                className="ant-input-number-input"
-                                                                                                aria-valuenow="0.25"
-                                                                                            />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </span>
-                                                                                {/**/}
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="ant-col ant-col-24">
-                                                                    <div className="ant-row ant-form-item">
-                                                                        <div className="ant-col ant-col-xs-24 ant-col-sm-5 ant-form-item-label">
-                                                                            <label
-                                                                                title="maximum amount"
-                                                                                className="ant-form-item-required"
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        maximum amount
-                                                                                    </font>
-                                                                                </font>
-                                                                            </label>
-                                                                        </div>
-                                                                        <div className="ant-col ant-col-xs-24 ant-col-sm-16 ant-form-item-control-wrapper">
-                                                                            <div className="ant-form-item-control">
-                                                                                <span className="ant-form-item-children">
-                                                                                    <div
-                                                                                        className="ant-input-number"
-                                                                                        style={{ width: "100%" }}
-                                                                                    >
-                                                                                        <div className="ant-input-number-handler-wrap">
-                                                                                            <span
-                                                                                                className="ant-input-number-handler ant-input-number-handler-up "
-                                                                                                unselectable="unselectable"
-                                                                                                role="button"
-                                                                                                aria-label="Increase Value"
-                                                                                            >
-                                                                                                <i
-                                                                                                    aria-label="icon: up"
-                                                                                                    className="anticon anticon-up ant-input-number-handler-up-inner"
-                                                                                                >
-                                                                                                    <svg
-                                                                                                        viewBox="64 64 896 896"
-                                                                                                        data-icon="up"
-                                                                                                        width="1em"
-                                                                                                        height="1em"
-                                                                                                        fill="currentColor"
-                                                                                                        aria-hidden="true"
-                                                                                                        focusable="false"
-                                                                                                        className
-                                                                                                    >
-                                                                                                        <path d="M890.5 755.3L537.9 269.2c-12.8-17.6-39-17.6-51.7 0L133.5 755.3A8 8 0 0 0 140 768h75c5.1 0 9.9-2.5 12.9-6.6L512 369.8l284.1 391.6c3 4.1 7.8 6.6 12.9 6.6h75c6.5 0 10.3-7.4 6.5-12.7z" />
-                                                                                                    </svg>
-                                                                                                </i>
-                                                                                            </span>
-                                                                                            <span
-                                                                                                className="ant-input-number-handler ant-input-number-handler-down "
-                                                                                                unselectable="unselectable"
-                                                                                                role="button"
-                                                                                                aria-label="Decrease Value"
-                                                                                            >
-                                                                                                <i
-                                                                                                    aria-label="icon: down"
-                                                                                                    className="anticon anticon-down ant-input-number-handler-down-inner"
-                                                                                                >
-                                                                                                    <svg
-                                                                                                        viewBox="64 64 896 896"
-                                                                                                        data-icon="down"
-                                                                                                        width="1em"
-                                                                                                        height="1em"
-                                                                                                        fill="currentColor"
-                                                                                                        aria-hidden="true"
-                                                                                                        focusable="false"
-                                                                                                        className
-                                                                                                    >
-                                                                                                        <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                                    </svg>
-                                                                                                </i>
-                                                                                            </span>
-                                                                                        </div>
-                                                                                        <div className="ant-input-number-input-wrap">
-                                                                                            <input
-                                                                                                role="spinbutton"
-                                                                                                aria-valuemin={
-                                                                                                    -9007199254740991
-                                                                                                }
-                                                                                                placeholder="Please enter the maximum amount"
-                                                                                                autoComplete="off"
-                                                                                                min={-9007199254740991}
-                                                                                                step={1}
-                                                                                                className="ant-input-number-input"
-                                                                                                aria-valuenow={100000}
-                                                                                            />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </span>
-                                                                                {/**/}
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="ant-col ant-col-24">
-                                                                    <div className="ant-row ant-form-item">
-                                                                        <div className="ant-col ant-col-xs-24 ant-col-sm-5 ant-form-item-label">
-                                                                            <label
-                                                                                title="minimum amount"
-                                                                                className="ant-form-item-required"
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        minimum amount
-                                                                                    </font>
-                                                                                </font>
-                                                                            </label>
-                                                                        </div>
-                                                                        <div className="ant-col ant-col-xs-24 ant-col-sm-16 ant-form-item-control-wrapper">
-                                                                            <div className="ant-form-item-control">
-                                                                                <span className="ant-form-item-children">
-                                                                                    <div
-                                                                                        className="ant-input-number"
-                                                                                        style={{ width: "100%" }}
-                                                                                    >
-                                                                                        <div className="ant-input-number-handler-wrap">
-                                                                                            <span
-                                                                                                className="ant-input-number-handler ant-input-number-handler-up "
-                                                                                                unselectable="unselectable"
-                                                                                                role="button"
-                                                                                                aria-label="Increase Value"
-                                                                                            >
-                                                                                                <i
-                                                                                                    aria-label="icon: up"
-                                                                                                    className="anticon anticon-up ant-input-number-handler-up-inner"
-                                                                                                >
-                                                                                                    <svg
-                                                                                                        viewBox="64 64 896 896"
-                                                                                                        data-icon="up"
-                                                                                                        width="1em"
-                                                                                                        height="1em"
-                                                                                                        fill="currentColor"
-                                                                                                        aria-hidden="true"
-                                                                                                        focusable="false"
-                                                                                                        className
-                                                                                                    >
-                                                                                                        <path d="M890.5 755.3L537.9 269.2c-12.8-17.6-39-17.6-51.7 0L133.5 755.3A8 8 0 0 0 140 768h75c5.1 0 9.9-2.5 12.9-6.6L512 369.8l284.1 391.6c3 4.1 7.8 6.6 12.9 6.6h75c6.5 0 10.3-7.4 6.5-12.7z" />
-                                                                                                    </svg>
-                                                                                                </i>
-                                                                                            </span>
-                                                                                            <span
-                                                                                                className="ant-input-number-handler ant-input-number-handler-down "
-                                                                                                unselectable="unselectable"
-                                                                                                role="button"
-                                                                                                aria-label="Decrease Value"
-                                                                                            >
-                                                                                                <i
-                                                                                                    aria-label="icon: down"
-                                                                                                    className="anticon anticon-down ant-input-number-handler-down-inner"
-                                                                                                >
-                                                                                                    <svg
-                                                                                                        viewBox="64 64 896 896"
-                                                                                                        data-icon="down"
-                                                                                                        width="1em"
-                                                                                                        height="1em"
-                                                                                                        fill="currentColor"
-                                                                                                        aria-hidden="true"
-                                                                                                        focusable="false"
-                                                                                                        className
-                                                                                                    >
-                                                                                                        <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                                    </svg>
-                                                                                                </i>
-                                                                                            </span>
-                                                                                        </div>
-                                                                                        <div className="ant-input-number-input-wrap">
-                                                                                            <input
-                                                                                                role="spinbutton"
-                                                                                                aria-valuemin={
-                                                                                                    -9007199254740991
-                                                                                                }
-                                                                                                placeholder="Please enter a minimum amount"
-                                                                                                autoComplete="off"
-                                                                                                min={-9007199254740991}
-                                                                                                step={1}
-                                                                                                className="ant-input-number-input"
-                                                                                                aria-valuenow={100}
-                                                                                            />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </span>
-                                                                                {/**/}
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="ant-col ant-col-24">
-                                                                    <div className="ant-row ant-form-item">
-                                                                        <div className="ant-col ant-col-xs-24 ant-col-sm-5 ant-form-item-label">
-                                                                            <label title="Remark" className>
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        Remark
-                                                                                    </font>
-                                                                                </font>
-                                                                            </label>
-                                                                        </div>
-                                                                        <div className="ant-col ant-col-xs-24 ant-col-sm-16 ant-form-item-control-wrapper">
-                                                                            <div className="ant-form-item-control">
-                                                                                <span className="ant-form-item-children">
-                                                                                    <textarea
-                                                                                        placeholder="Please enter a note"
-                                                                                        className="ant-input"
-                                                                                        rows={4}
-                                                                                        defaultValue={""}
-                                                                                    />
-                                                                                </span>
-                                                                                {/**/}
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </fieldset>
-                                                    <fieldset disabled="disabled" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="ant-modal-footer">
-                                        <div>
-                                            <button
-                                                onClick={() => setshowEditPopUp(false)}
-                                                type="button"
-                                                className="ant-btn"
-                                            >
-                                                <span>
-                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                            closure
-                                                        </font>
-                                                    </font>
-                                                </span>
-                                            </button>
-                                            <button type="button" className="ant-btn ant-btn-primary">
-                                                <span>
-                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                            Sure
-                                                        </font>
-                                                    </font>
-                                                </span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    tabIndex={0}
-                                    aria-hidden="true"
-                                    style={{ width: "0px", height: "0px", overflow: "hidden" }}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </>
-            )}
+
             <div data-v-19a4ac8a className="ant-card">
                 <div className="ant-card-body">
                     <div data-v-19a4ac8a className="table-page-search-wrapper">
@@ -777,10 +141,16 @@ return (
                                     <path d="M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z" />
                                 </svg>
                             </i>
+
                             <span>
+
                                 <font style={{ verticalAlign: "inherit" }}>
-                                    <font style={{ verticalAlign: "inherit" }}>Add</font>
+
+                                    <font style={{ verticalAlign: "inherit" }}>Add
+                                    </font>
+
                                 </font>
+
                             </span>
                         </button>
                         <button
@@ -805,15 +175,23 @@ return (
                                     <path d="M505.7 661a8 8 0 0 0 12.6 0l112-141.7c4.1-5.2.4-12.9-6.3-12.9h-74.1V168c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v338.3H400c-6.7 0-10.4 7.7-6.3 12.9l112 141.8zM878 626h-60c-4.4 0-8 3.6-8 8v154H214V634c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v198c0 17.7 14.3 32 32 32h684c17.7 0 32-14.3 32-32V634c0-4.4-3.6-8-8-8z" />
                                 </svg>
                             </i>
+
                             <span>
+
                                 <font style={{ verticalAlign: "inherit" }}>
-                                    <font style={{ verticalAlign: "inherit" }}>export</font>
+
+                                    <font style={{ verticalAlign: "inherit" }}>export
+                                    </font>
+
                                 </font>
+
                             </span>
                         </button>
 
+
                         <span data-v-19a4ac8a>
                             <div className="ant-upload ant-upload-select ant-upload-select-text">
+
                                 <span role="button" tabIndex={0} className="ant-upload">
                                     <input type="file" accept style={{ display: "none" }} />
                                     <button
@@ -838,14 +216,22 @@ return (
                                                 <path d="M888.3 757.4h-53.8c-4.2 0-7.7 3.5-7.7 7.7v61.8H197.1V197.1h629.8v61.8c0 4.2 3.5 7.7 7.7 7.7h53.8c4.2 0 7.7-3.4 7.7-7.7V158.7c0-17-13.7-30.7-30.7-30.7H158.7c-17 0-30.7 13.7-30.7 30.7v706.6c0 17 13.7 30.7 30.7 30.7h706.6c17 0 30.7-13.7 30.7-30.7V765.1c0-4.3-3.5-7.7-7.7-7.7zM902 476H588v-76c0-6.7-7.8-10.5-13-6.3l-141.9 112a8 8 0 0 0 0 12.6l141.9 112c5.3 4.2 13 .4 13-6.3v-76h314c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8z" />
                                             </svg>
                                         </i>
+
                                         <span>
+
                                             <font style={{ verticalAlign: "inherit" }}>
-                                                <font style={{ verticalAlign: "inherit" }}>import</font>
+
+                                                <font style={{ verticalAlign: "inherit" }}>import
+                                                </font>
+
                                             </font>
+
                                         </span>
                                     </button>
+
                                 </span>
                             </div>
+
                         </span>
                         <button
                             data-v-3d25e7a4
@@ -867,12 +253,18 @@ return (
                                     <path d="M880.1 154H143.9c-24.5 0-39.8 26.7-27.5 48L349 597.4V838c0 17.7 14.2 32 31.8 32h262.4c17.6 0 31.8-14.3 31.8-32V597.4L907.7 202c12.2-21.3-3.1-48-27.6-48zM603.4 798H420.6V642h182.9v156zm9.6-236.6l-9.5 16.6h-183l-9.5-16.6L212.7 226h598.6L613 561.4z" />
                                 </svg>
                             </i>
+
                             <span>
+
                                 <font style={{ verticalAlign: "inherit" }}>
+
                                     <font style={{ verticalAlign: "inherit" }}>
                                         Advanced Search
+
                                     </font>
+
                                 </font>
+
                             </span>
                         </button>
                     </div>
@@ -886,22 +278,37 @@ return (
                                 data-v-19a4ac8a
                                 className="anticon anticon-info-circle ant-alert-icon"
                             />
+
                             <font style={{ verticalAlign: "inherit" }} />
                             <a data-v-19a4ac8a style={{ fontWeight: 600 }}>
+
                                 <font style={{ verticalAlign: "inherit" }}>
-                                    <font style={{ verticalAlign: "inherit" }}>0 </font>
+
+                                    <font style={{ verticalAlign: "inherit" }}>0
+                                    </font>
+
                                 </font>
                             </a>
+
                             <font style={{ verticalAlign: "inherit" }}>
                                 <a data-v-19a4ac8a style={{ marginLeft: "24px" }}>
-                                    <font style={{ verticalAlign: "inherit" }}>items </font>
+
+                                    <font style={{ verticalAlign: "inherit" }}>items
+                                    </font>
                                 </a>
-                                <font style={{ verticalAlign: "inherit" }}></font>
+
+                                <font style={{ verticalAlign: "inherit" }}>
+
+                                </font>
+
                                 <font style={{ verticalAlign: "inherit" }}>
                                     have been selected Clear
+
                                 </font>
+
                             </font>
                             <a data-v-19a4ac8a style={{ marginLeft: "24px" }}>
+
                                 <font style={{ verticalAlign: "inherit" }} />
                             </a>
                         </div>
@@ -946,24 +353,32 @@ return (
                                                                     key="selection-column"
                                                                     className="ant-table-selection-column"
                                                                 >
+
                                                                     <span className="ant-table-header-column">
                                                                         <div>
+
                                                                             <span className="ant-table-column-title">
                                                                                 <div className="ant-table-selection">
                                                                                     <label className="ant-checkbox-wrapper">
+
                                                                                         <span className="ant-checkbox">
                                                                                             <input
                                                                                                 type="checkbox"
                                                                                                 className="ant-checkbox-input"
                                                                                                 defaultValue
                                                                                             />
+
                                                                                             <span className="ant-checkbox-inner" />
+
                                                                                         </span>
                                                                                     </label>
                                                                                 </div>
+
                                                                             </span>
+
                                                                             <span className="ant-table-column-sorter" />
                                                                         </div>
+
                                                                     </span>
                                                                 </th>
                                                                 <th
@@ -971,21 +386,30 @@ return (
                                                                     className="ant-table-align-center ant-table-row-cell-break-word"
                                                                     style={{ textAlign: "center" }}
                                                                 >
+
                                                                     <span className="ant-table-header-column">
                                                                         <div>
+
                                                                             <span className="ant-table-column-title">
+
                                                                                 <font
                                                                                     style={{ verticalAlign: "inherit" }}
                                                                                 >
+
                                                                                     <font
                                                                                         style={{ verticalAlign: "inherit" }}
                                                                                     >
                                                                                         #
+
                                                                                     </font>
+
                                                                                 </font>
+
                                                                             </span>
+
                                                                             <span className="ant-table-column-sorter" />
                                                                         </div>
+
                                                                     </span>
                                                                 </th>
                                                                 <th
@@ -993,21 +417,30 @@ return (
                                                                     className="ant-table-align-center"
                                                                     style={{ textAlign: "center" }}
                                                                 >
+
                                                                     <span className="ant-table-header-column">
                                                                         <div>
+
                                                                             <span className="ant-table-column-title">
+
                                                                                 <font
                                                                                     style={{ verticalAlign: "inherit" }}
                                                                                 >
+
                                                                                     <font
                                                                                         style={{ verticalAlign: "inherit" }}
                                                                                     >
                                                                                         product name
+
                                                                                     </font>
+
                                                                                 </font>
+
                                                                             </span>
+
                                                                             <span className="ant-table-column-sorter" />
                                                                         </div>
+
                                                                     </span>
                                                                 </th>
                                                                 <th
@@ -1015,21 +448,30 @@ return (
                                                                     className="ant-table-align-center"
                                                                     style={{ textAlign: "center" }}
                                                                 >
+
                                                                     <span className="ant-table-header-column">
                                                                         <div>
+
                                                                             <span className="ant-table-column-title">
+
                                                                                 <font
                                                                                     style={{ verticalAlign: "inherit" }}
                                                                                 >
+
                                                                                     <font
                                                                                         style={{ verticalAlign: "inherit" }}
                                                                                     >
                                                                                         Currency
+
                                                                                     </font>
+
                                                                                 </font>
+
                                                                             </span>
+
                                                                             <span className="ant-table-column-sorter" />
                                                                         </div>
+
                                                                     </span>
                                                                 </th>
                                                                 <th
@@ -1037,21 +479,30 @@ return (
                                                                     className="ant-table-align-center"
                                                                     style={{ textAlign: "center" }}
                                                                 >
+
                                                                     <span className="ant-table-header-column">
                                                                         <div>
+
                                                                             <span className="ant-table-column-title">
+
                                                                                 <font
                                                                                     style={{ verticalAlign: "inherit" }}
                                                                                 >
+
                                                                                     <font
                                                                                         style={{ verticalAlign: "inherit" }}
                                                                                     >
                                                                                         Delivery time (seconds)
+
                                                                                     </font>
+
                                                                                 </font>
+
                                                                             </span>
+
                                                                             <span className="ant-table-column-sorter" />
                                                                         </div>
+
                                                                     </span>
                                                                 </th>
                                                                 <th
@@ -1059,19 +510,27 @@ return (
                                                                     className="ant-table-column-has-actions ant-table-column-has-sorters ant-table-align-center"
                                                                     style={{ textAlign: "center" }}
                                                                 >
+
                                                                     <span className="ant-table-header-column">
                                                                         <div className="ant-table-column-sorters">
+
                                                                             <span className="ant-table-column-title">
+
                                                                                 <font
                                                                                     style={{ verticalAlign: "inherit" }}
                                                                                 >
+
                                                                                     <font
                                                                                         style={{ verticalAlign: "inherit" }}
                                                                                     >
                                                                                         odds
+
                                                                                     </font>
+
                                                                                 </font>
+
                                                                             </span>
+
                                                                             <span className="ant-table-column-sorter">
                                                                                 <div
                                                                                     title="to sort"
@@ -1112,8 +571,10 @@ return (
                                                                                         </svg>
                                                                                     </i>
                                                                                 </div>
+
                                                                             </span>
                                                                         </div>
+
                                                                     </span>
                                                                 </th>
                                                                 <th
@@ -1121,19 +582,27 @@ return (
                                                                     className="ant-table-column-has-actions ant-table-column-has-sorters ant-table-align-center"
                                                                     style={{ textAlign: "center" }}
                                                                 >
+
                                                                     <span className="ant-table-header-column">
                                                                         <div className="ant-table-column-sorters">
+
                                                                             <span className="ant-table-column-title">
+
                                                                                 <font
                                                                                     style={{ verticalAlign: "inherit" }}
                                                                                 >
+
                                                                                     <font
                                                                                         style={{ verticalAlign: "inherit" }}
                                                                                     >
                                                                                         maximum amount
+
                                                                                     </font>
+
                                                                                 </font>
+
                                                                             </span>
+
                                                                             <span className="ant-table-column-sorter">
                                                                                 <div
                                                                                     title="to sort"
@@ -1174,8 +643,10 @@ return (
                                                                                         </svg>
                                                                                     </i>
                                                                                 </div>
+
                                                                             </span>
                                                                         </div>
+
                                                                     </span>
                                                                 </th>
                                                                 <th
@@ -1183,19 +654,27 @@ return (
                                                                     className="ant-table-column-has-actions ant-table-column-has-sorters ant-table-align-center"
                                                                     style={{ textAlign: "center" }}
                                                                 >
+
                                                                     <span className="ant-table-header-column">
                                                                         <div className="ant-table-column-sorters">
+
                                                                             <span className="ant-table-column-title">
+
                                                                                 <font
                                                                                     style={{ verticalAlign: "inherit" }}
                                                                                 >
+
                                                                                     <font
                                                                                         style={{ verticalAlign: "inherit" }}
                                                                                     >
                                                                                         minimum amount
+
                                                                                     </font>
+
                                                                                 </font>
+
                                                                             </span>
+
                                                                             <span className="ant-table-column-sorter">
                                                                                 <div
                                                                                     title="to sort"
@@ -1236,8 +715,10 @@ return (
                                                                                         </svg>
                                                                                     </i>
                                                                                 </div>
+
                                                                             </span>
                                                                         </div>
+
                                                                     </span>
                                                                 </th>
                                                                 <th
@@ -1245,21 +726,30 @@ return (
                                                                     className="ant-table-align-center"
                                                                     style={{ textAlign: "center" }}
                                                                 >
+
                                                                     <span className="ant-table-header-column">
                                                                         <div>
+
                                                                             <span className="ant-table-column-title">
+
                                                                                 <font
                                                                                     style={{ verticalAlign: "inherit" }}
                                                                                 >
+
                                                                                     <font
                                                                                         style={{ verticalAlign: "inherit" }}
                                                                                     >
                                                                                         Remark
+
                                                                                     </font>
+
                                                                                 </font>
+
                                                                             </span>
+
                                                                             <span className="ant-table-column-sorter" />
                                                                         </div>
+
                                                                     </span>
                                                                 </th>
                                                                 <th
@@ -1267,178 +757,234 @@ return (
                                                                     className="ant-table-fixed-columns-in-body ant-table-align-center ant-table-row-cell-break-word ant-table-row-cell-last"
                                                                     style={{ textAlign: "center" }}
                                                                 >
+
                                                                     <span className="ant-table-header-column">
                                                                         <div>
+
                                                                             <span className="ant-table-column-title">
+
                                                                                 <font
                                                                                     style={{ verticalAlign: "inherit" }}
                                                                                 >
+
                                                                                     <font
                                                                                         style={{ verticalAlign: "inherit" }}
                                                                                     >
                                                                                         operate
+
                                                                                     </font>
+
                                                                                 </font>
+
                                                                             </span>
+
                                                                             <span className="ant-table-column-sorter" />
                                                                         </div>
+
                                                                     </span>
                                                                 </th>
                                                             </tr>
                                                         </thead>
                                                         <tbody className="ant-table-tbody">
                                                             {/* maping here  */}
-                                                        {contractProduct?.map((data,index)=>{
-                                                          return(
+                                                            {contractProduct?.map((data, index) => {
+                                                                return (
 
-                                                            <tr
-                                                                className="ant-table-row ant-table-row-level-0"
-                                                                data-row-key={1595292128493756418}
-                                                            >
-                                                                <td className="ant-table-selection-column">
-                                                                    <span>
-                                                                        <label className="ant-checkbox-wrapper">
-                                                                            <span className="ant-checkbox">
-                                                                                <input
-                                                                                    type="checkbox"
-                                                                                    className="ant-checkbox-input"
-                                                                                    defaultValue
-                                                                                />
-                                                                                <span className="ant-checkbox-inner" />
+                                                                    <tr
+                                                                        className="ant-table-row ant-table-row-level-0"
+                                                                        data-row-key={1595292128493756418}
+                                                                    >
+                                                                        <td className="ant-table-selection-column">
+
+                                                                            <span>
+                                                                                <label className="ant-checkbox-wrapper">
+
+                                                                                    <span className="ant-checkbox">
+                                                                                        <input
+                                                                                            type="checkbox"
+                                                                                            className="ant-checkbox-input"
+
+                                                                                        />
+
+                                                                                        <span className="ant-checkbox-inner" />
+
+                                                                                    </span>
+                                                                                </label>
+
                                                                             </span>
-                                                                        </label>
-                                                                    </span>
-                                                                </td>
-                                                                <td
-                                                                    className="ant-table-row-cell-break-word"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            {index + 1}
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                           {data?.product_name}
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                           {data?.currency}
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td className style={{ textAlign: "center" }}>
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                           {data?.deliveryTime}
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td
-                                                                    className="ant-table-column-has-actions ant-table-column-has-sorters"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                          {data?.odds}
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td
-                                                                    className="ant-table-column-has-actions ant-table-column-has-sorters"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                          {data?.maximum_amount}
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td
-                                                                    className="ant-table-column-has-actions ant-table-column-has-sorters"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                          {data?.minimum_amount}
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-                                                                <td
-                                                                    className="ant-table-column-has-actions ant-table-column-has-sorters"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                          {data?.remark}
-                                                                        </font>
-                                                                    </font>
-                                                                </td>
-
-                                                                <td
-                                                                    className="ant-table-fixed-columns-in-body ant-table-row-cell-break-word"
-                                                                    style={{ textAlign: "center" }}
-                                                                >
-                                                                    <span data-v-19a4ac8a>
-                                                                        <a data-v-19a4ac8a>
-                                                                            <font
-                                                                                style={{ verticalAlign: "inherit" }}
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    edit
-                                                                                </font>
-                                                                            </font>
-                                                                        </a>
-                                                                        <div
-                                                                            data-v-19a4ac8a
-                                                                            role="separator"
-                                                                            className="ant-divider ant-divider-vertical"
-                                                                        />
-                                                                        <a
-                                                                            data-v-19a4ac8a
-                                                                            className="ant-dropdown-link ant-dropdown-trigger"
+                                                                        </td>
+                                                                        <td
+                                                                            className="ant-table-row-cell-break-word"
+                                                                            style={{ textAlign: "center" }}
                                                                         >
-                                                                            <font
-                                                                                style={{ verticalAlign: "inherit" }}
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    More
+
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    {index + 1}
+
                                                                                 </font>
+
                                                                             </font>
-                                                                            <i
-                                                                                data-v-19a4ac8a
-                                                                                aria-label="icon: down"
-                                                                                className="anticon anticon-down"
-                                                                            >
-                                                                                <svg
-                                                                                    viewBox="64 64 896 896"
-                                                                                    data-icon="down"
-                                                                                    width="1em"
-                                                                                    height="1em"
-                                                                                    fill="currentColor"
-                                                                                    aria-hidden="true"
-                                                                                    focusable="false"
-                                                                                    className
+                                                                        </td>
+                                                                        <td className style={{ textAlign: "center" }}>
+
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    {data?.product_name}
+
+                                                                                </font>
+
+                                                                            </font>
+                                                                        </td>
+                                                                        <td className style={{ textAlign: "center" }}>
+
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    {data?.currency}
+
+                                                                                </font>
+
+                                                                            </font>
+                                                                        </td>
+                                                                        <td className style={{ textAlign: "center" }}>
+
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    {data?.deliveryTime}
+
+                                                                                </font>
+
+                                                                            </font>
+                                                                        </td>
+                                                                        <td
+                                                                            className="ant-table-column-has-actions ant-table-column-has-sorters"
+                                                                            style={{ textAlign: "center" }}
+                                                                        >
+
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    {data?.odds}
+
+                                                                                </font>
+
+                                                                            </font>
+                                                                        </td>
+                                                                        <td
+                                                                            className="ant-table-column-has-actions ant-table-column-has-sorters"
+                                                                            style={{ textAlign: "center" }}
+                                                                        >
+
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    {data?.maximum_amount}
+
+                                                                                </font>
+
+                                                                            </font>
+                                                                        </td>
+                                                                        <td
+                                                                            className="ant-table-column-has-actions ant-table-column-has-sorters"
+                                                                            style={{ textAlign: "center" }}
+                                                                        >
+
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    {data?.minimum_amount}
+
+                                                                                </font>
+
+                                                                            </font>
+                                                                        </td>
+                                                                        <td
+                                                                            className="ant-table-column-has-actions ant-table-column-has-sorters"
+                                                                            style={{ textAlign: "center" }}
+                                                                        >
+
+                                                                            <font style={{ verticalAlign: "inherit" }}>
+
+                                                                                <font style={{ verticalAlign: "inherit" }}>
+                                                                                    {data?.remark}
+
+                                                                                </font>
+
+                                                                            </font>
+                                                                        </td>
+
+                                                                        {/* <td
+                                                                            className="ant-table-fixed-columns-in-body ant-table-row-cell-break-word"
+                                                                            style={{ textAlign: "center" }}
+                                                                        >
+
+                                                                            <span data-v-19a4ac8a>
+                                                                                <a data-v-19a4ac8a>
+
+                                                                                    <font
+                                                                                        style={{ verticalAlign: "inherit" }}
+                                                                                    >
+
+                                                                                        <font
+                                                                                            style={{ verticalAlign: "inherit" }}
+                                                                                        >
+                                                                                            edit
+
+                                                                                        </font>
+
+                                                                                    </font>
+                                                                                </a>
+                                                                                <div
+                                                                                    data-v-19a4ac8a
+                                                                                    role="separator"
+                                                                                    className="ant-divider ant-divider-vertical"
+                                                                                />
+                                                                                <a
+                                                                                    data-v-19a4ac8a
+                                                                                    className="ant-dropdown-link ant-dropdown-trigger"
                                                                                 >
-                                                                                    <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                </svg>
-                                                                            </i>
-                                                                        </a>
-                                                                    </span>
-                                                                </td>
-                                                            </tr>
-                                                            )
-                                                        })}
+
+                                                                                    <font
+                                                                                        style={{ verticalAlign: "inherit" }}
+                                                                                    >
+
+                                                                                        <font
+                                                                                            style={{ verticalAlign: "inherit" }}
+                                                                                        >
+                                                                                            More
+
+                                                                                        </font>
+
+                                                                                    </font>
+                                                                                    <i
+                                                                                        data-v-19a4ac8a
+                                                                                        aria-label="icon: down"
+                                                                                        className="anticon anticon-down"
+                                                                                    >
+                                                                                        <svg
+                                                                                            viewBox="64 64 896 896"
+                                                                                            data-icon="down"
+                                                                                            width="1em"
+                                                                                            height="1em"
+                                                                                            fill="currentColor"
+                                                                                            aria-hidden="true"
+                                                                                            focusable="false"
+                                                                                            className
+                                                                                        >
+                                                                                            <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
+                                                                                        </svg>
+                                                                                    </i>
+                                                                                </a>
+
+                                                                            </span>
+                                                                        </td> */}
+                                                                    </tr>
+                                                                )
+                                                            })}
 
                                                         </tbody>
                                                     </table>
@@ -1464,720 +1010,46 @@ return (
                                                                         className="ant-table-align-center ant-table-row-cell-break-word ant-table-row-cell-last"
                                                                         style={{ textAlign: "center" }}
                                                                     >
+
                                                                         <span className="ant-table-header-column">
                                                                             <div>
+
                                                                                 <span className="ant-table-column-title">
+
                                                                                     <font
                                                                                         style={{ verticalAlign: "inherit" }}
                                                                                     >
+
                                                                                         <font
                                                                                             style={{
                                                                                                 verticalAlign: "inherit",
                                                                                             }}
                                                                                         >
                                                                                             operate
+
                                                                                         </font>
+
                                                                                     </font>
+
                                                                                 </span>
+
                                                                                 <span className="ant-table-column-sorter" />
                                                                             </div>
+
                                                                         </span>
                                                                     </th>
                                                                 </tr>
                                                             </thead>
+
                                                             <tbody className="ant-table-tbody">
-                                                                <ControlsForTable handleShowPopUp={handleShowPopUp} />
-                                                                <ControlsForTable handleShowPopUp={handleShowPopUp} />
-                                                                <ControlsForTable handleShowPopUp={handleShowPopUp} />
-                                                                <ControlsForTable handleShowPopUp={handleShowPopUp} />
-                                                                <ControlsForTable handleShowPopUp={handleShowPopUp} />
-                                                                <ControlsForTable handleShowPopUp={handleShowPopUp} />
-                                                                <ControlsForTable handleShowPopUp={handleShowPopUp} />
-                                                                <ControlsForTable handleShowPopUp={handleShowPopUp} />
-                                                                <ControlsForTable handleShowPopUp={handleShowPopUp} />
-                                                                <ControlsForTable handleShowPopUp={handleShowPopUp} />
-                                                                {/* <tr
-                                                                    className="ant-table-row ant-table-row-level-0"
-                                                                    data-row-key={1595292128493756418}
-                                                                    style={{ height: "49px" }}
-                                                                >
-                                                                    <td
-                                                                        className="ant-table-row-cell-break-word"
-                                                                        style={{ textAlign: "center" }}
-                                                                    >
-                                                                        <span data-v-19a4ac8a>
-                                                                            <a data-v-19a4ac8a>
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        onClick={() =>
-                                                                                            setshowEditPopUp(true)
-                                                                                        }
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        edit
-                                                                                    </font>
-                                                                                </font>
-                                                                            </a>
-                                                                            <div
-                                                                                data-v-19a4ac8a
-                                                                                role="separator"
-                                                                                className="ant-divider ant-divider-vertical"
-                                                                            />
-                                                                            <a
-                                                                                onMouseEnter={() => setOpenDropDown(true)}
-                                                                                onMouseLeave={() => setOpenDropDown(false)}
-                                                                                data-v-19a4ac8a
-                                                                                className="ant-dropdown-link ant-dropdown-trigger"
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        More
-                                                                                    </font>
-                                                                                </font>
-                                                                                <i
-                                                                                    data-v-19a4ac8a
-                                                                                    aria-label="icon: down"
-                                                                                    className="anticon anticon-down"
-                                                                                >
-                                                                                    <svg
-                                                                                        viewBox="64 64 896 896"
-                                                                                        data-icon="down"
-                                                                                        width="1em"
-                                                                                        height="1em"
-                                                                                        fill="currentColor"
-                                                                                        aria-hidden="true"
-                                                                                        focusable="false"
-                                                                                        className
-                                                                                    >
-                                                                                        <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                    </svg>
-                                                                                </i>
-                                                                                <div
-                                                                                    className="ant-dropdown ant-dropdown-placement-bottomLeft"
-                                                                                    style={{
-                                                                                        left: "60px",
-                                                                                        top: "85px",
-                                                                                        display: `${OpenDropDown ? 'flex' : 'none'}`,
-                                                                                    }}
-                                                                                >
-                                                                                    <ul
-                                                                                        data-v-19a4ac8a
-                                                                                        role="menu"
-                                                                                        tabIndex={0}
-                                                                                        className="ant-dropdown-menu ant-dropdown-menu-vertical ant-dropdown-menu-root ant-dropdown-menu-light ant-dropdown-content"
-                                                                                    >
-                                                                                        <li
-                                                                                            data-v-19a4ac8a
-                                                                                            role="menuitem"
-                                                                                            className="ant-dropdown-menu-item"
-                                                                                        >
-                                                                                            <a data-v-19a4ac8a>
-                                                                                                <font
-                                                                                                    style={{
-                                                                                                        verticalAlign: "inherit",
-                                                                                                    }}
-                                                                                                >
-                                                                                                    <font
-                                                                                                        style={{
-                                                                                                            verticalAlign: "inherit",
-                                                                                                        }}
-                                                                                                    >
-                                                                                                        details
-                                                                                                    </font>
-                                                                                                </font>
-                                                                                            </a>
-                                                                                        </li>
-                                                                                        <li
-                                                                                            data-v-19a4ac8a
-                                                                                            role="menuitem"
-                                                                                            className="ant-dropdown-menu-item"
-                                                                                        >
-                                                                                            <a data-v-19a4ac8a className>
-                                                                                                <font
-                                                                                                    style={{
-                                                                                                        verticalAlign: "inherit",
-                                                                                                    }}
-                                                                                                >
-                                                                                                    <font
-                                                                                                        style={{
-                                                                                                            verticalAlign: "inherit",
-                                                                                                        }}
-                                                                                                    >
-                                                                                                        delete
-                                                                                                    </font>
-                                                                                                </font>
-                                                                                            </a>
-                                                                                        </li>
-                                                                                    </ul>
-                                                                                </div>
-                                                                            </a>
-                                                                        </span>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr
-                                                                    className="ant-table-row ant-table-row-level-0"
-                                                                    data-row-key={1595291947123662850}
-                                                                    style={{ height: "49px" }}
-                                                                >
-                                                                    <td
-                                                                        className="ant-table-row-cell-break-word"
-                                                                        style={{ textAlign: "center" }}
-                                                                    >
-                                                                        <span data-v-19a4ac8a>
-                                                                            <a data-v-19a4ac8a>
-                                                                                <font
-                                                                                    onClick={() => setshowEditPopUp(true)}
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        edit
-                                                                                    </font>
-                                                                                </font>
-                                                                            </a>
-                                                                            <div
-                                                                                data-v-19a4ac8a
-                                                                                role="separator"
-                                                                                className="ant-divider ant-divider-vertical"
-                                                                            />
-                                                                            <a
-                                                                                data-v-19a4ac8a
-                                                                                className="ant-dropdown-link ant-dropdown-trigger"
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        More
-                                                                                    </font>
-                                                                                </font>
-                                                                                <i
-                                                                                    data-v-19a4ac8a
-                                                                                    aria-label="icon: down"
-                                                                                    className="anticon anticon-down"
-                                                                                >
-                                                                                    <svg
-                                                                                        viewBox="64 64 896 896"
-                                                                                        data-icon="down"
-                                                                                        width="1em"
-                                                                                        height="1em"
-                                                                                        fill="currentColor"
-                                                                                        aria-hidden="true"
-                                                                                        focusable="false"
-                                                                                        className
-                                                                                    >
-                                                                                        <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                    </svg>
-                                                                                </i>
-                                                                            </a>
-                                                                        </span>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr
-                                                                    className="ant-table-row ant-table-row-level-0"
-                                                                    data-row-key={1595291699680698370}
-                                                                    style={{ height: "49px" }}
-                                                                >
-                                                                    <td
-                                                                        className="ant-table-row-cell-break-word"
-                                                                        style={{ textAlign: "center" }}
-                                                                    >
-                                                                        <span data-v-19a4ac8a>
-                                                                            <a data-v-19a4ac8a>
-                                                                                <font
-                                                                                    onClick={() => setshowEditPopUp(true)}
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        edit
-                                                                                    </font>
-                                                                                </font>
-                                                                            </a>
-                                                                            <div
-                                                                                data-v-19a4ac8a
-                                                                                role="separator"
-                                                                                className="ant-divider ant-divider-vertical"
-                                                                            />
-                                                                            <a
-                                                                                data-v-19a4ac8a
-                                                                                className="ant-dropdown-link ant-dropdown-trigger"
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        More
-                                                                                    </font>
-                                                                                </font>
-                                                                                <i
-                                                                                    data-v-19a4ac8a
-                                                                                    aria-label="icon: down"
-                                                                                    className="anticon anticon-down"
-                                                                                >
-                                                                                    <svg
-                                                                                        viewBox="64 64 896 896"
-                                                                                        data-icon="down"
-                                                                                        width="1em"
-                                                                                        height="1em"
-                                                                                        fill="currentColor"
-                                                                                        aria-hidden="true"
-                                                                                        focusable="false"
-                                                                                        className
-                                                                                    >
-                                                                                        <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                    </svg>
-                                                                                </i>
-                                                                            </a>
-                                                                        </span>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr
-                                                                    className="ant-table-row ant-table-row-level-0"
-                                                                    data-row-key={1595291036225691650}
-                                                                    style={{ height: "49px" }}
-                                                                >
-                                                                    <td
-                                                                        className="ant-table-row-cell-break-word"
-                                                                        style={{ textAlign: "center" }}
-                                                                    >
-                                                                        <span data-v-19a4ac8a>
-                                                                            <a data-v-19a4ac8a>
-                                                                                <font
-                                                                                    onClick={() => setshowEditPopUp(true)}
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        edit
-                                                                                    </font>
-                                                                                </font>
-                                                                            </a>
-                                                                            <div
-                                                                                data-v-19a4ac8a
-                                                                                role="separator"
-                                                                                className="ant-divider ant-divider-vertical"
-                                                                            />
-                                                                            <a
-                                                                                data-v-19a4ac8a
-                                                                                className="ant-dropdown-link ant-dropdown-trigger"
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        More
-                                                                                    </font>
-                                                                                </font>
-                                                                                <i
-                                                                                    data-v-19a4ac8a
-                                                                                    aria-label="icon: down"
-                                                                                    className="anticon anticon-down"
-                                                                                >
-                                                                                    <svg
-                                                                                        viewBox="64 64 896 896"
-                                                                                        data-icon="down"
-                                                                                        width="1em"
-                                                                                        height="1em"
-                                                                                        fill="currentColor"
-                                                                                        aria-hidden="true"
-                                                                                        focusable="false"
-                                                                                        className
-                                                                                    >
-                                                                                        <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                    </svg>
-                                                                                </i>
-                                                                            </a>
-                                                                        </span>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr
-                                                                    className="ant-table-row ant-table-row-level-0"
-                                                                    data-row-key={1595290761494585346}
-                                                                    style={{ height: "49px" }}
-                                                                >
-                                                                    <td
-                                                                        className="ant-table-row-cell-break-word"
-                                                                        style={{ textAlign: "center" }}
-                                                                    >
-                                                                        <span data-v-19a4ac8a>
-                                                                            <a data-v-19a4ac8a>
-                                                                                <font
-                                                                                    onClick={() => setshowEditPopUp(true)}
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        edit
-                                                                                    </font>
-                                                                                </font>
-                                                                            </a>
-                                                                            <div
-                                                                                data-v-19a4ac8a
-                                                                                role="separator"
-                                                                                className="ant-divider ant-divider-vertical"
-                                                                            />
-                                                                            <a
-                                                                                data-v-19a4ac8a
-                                                                                className="ant-dropdown-link ant-dropdown-trigger"
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        More
-                                                                                    </font>
-                                                                                </font>
-                                                                                <i
-                                                                                    data-v-19a4ac8a
-                                                                                    aria-label="icon: down"
-                                                                                    className="anticon anticon-down"
-                                                                                >
-                                                                                    <svg
-                                                                                        viewBox="64 64 896 896"
-                                                                                        data-icon="down"
-                                                                                        width="1em"
-                                                                                        height="1em"
-                                                                                        fill="currentColor"
-                                                                                        aria-hidden="true"
-                                                                                        focusable="false"
-                                                                                        className
-                                                                                    >
-                                                                                        <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                    </svg>
-                                                                                </i>
-                                                                            </a>
-                                                                        </span>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr
-                                                                    className="ant-table-row ant-table-row-level-0"
-                                                                    data-row-key={1595290288230293506}
-                                                                    style={{ height: "49px" }}
-                                                                >
-                                                                    <td
-                                                                        className="ant-table-row-cell-break-word"
-                                                                        style={{ textAlign: "center" }}
-                                                                    >
-                                                                        <span data-v-19a4ac8a>
-                                                                            <a data-v-19a4ac8a>
-                                                                                <font
-                                                                                    onClick={() => setshowEditPopUp(true)}
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        edit
-                                                                                    </font>
-                                                                                </font>
-                                                                            </a>
-                                                                            <div
-                                                                                data-v-19a4ac8a
-                                                                                role="separator"
-                                                                                className="ant-divider ant-divider-vertical"
-                                                                            />
-                                                                            <a
-                                                                                data-v-19a4ac8a
-                                                                                className="ant-dropdown-link ant-dropdown-trigger"
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        More
-                                                                                    </font>
-                                                                                </font>
-                                                                                <i
-                                                                                    data-v-19a4ac8a
-                                                                                    aria-label="icon: down"
-                                                                                    className="anticon anticon-down"
-                                                                                >
-                                                                                    <svg
-                                                                                        viewBox="64 64 896 896"
-                                                                                        data-icon="down"
-                                                                                        width="1em"
-                                                                                        height="1em"
-                                                                                        fill="currentColor"
-                                                                                        aria-hidden="true"
-                                                                                        focusable="false"
-                                                                                        className
-                                                                                    >
-                                                                                        <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                    </svg>
-                                                                                </i>
-                                                                            </a>
-                                                                        </span>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr
-                                                                    className="ant-table-row ant-table-row-level-0"
-                                                                    data-row-key={1592846006210822146}
-                                                                    style={{ height: "49px" }}
-                                                                >
-                                                                    <td
-                                                                        className="ant-table-row-cell-break-word"
-                                                                        style={{ textAlign: "center" }}
-                                                                    >
-                                                                        <span data-v-19a4ac8a>
-                                                                            <a data-v-19a4ac8a>
-                                                                                <font
-                                                                                    onClick={() => setshowEditPopUp(true)}
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        edit
-                                                                                    </font>
-                                                                                </font>
-                                                                            </a>
-                                                                            <div
-                                                                                data-v-19a4ac8a
-                                                                                role="separator"
-                                                                                className="ant-divider ant-divider-vertical"
-                                                                            />
-                                                                            <a
-                                                                                data-v-19a4ac8a
-                                                                                className="ant-dropdown-link ant-dropdown-trigger"
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        More
-                                                                                    </font>
-                                                                                </font>
-                                                                                <i
-                                                                                    data-v-19a4ac8a
-                                                                                    aria-label="icon: down"
-                                                                                    className="anticon anticon-down"
-                                                                                >
-                                                                                    <svg
-                                                                                        viewBox="64 64 896 896"
-                                                                                        data-icon="down"
-                                                                                        width="1em"
-                                                                                        height="1em"
-                                                                                        fill="currentColor"
-                                                                                        aria-hidden="true"
-                                                                                        focusable="false"
-                                                                                        className
-                                                                                    >
-                                                                                        <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                    </svg>
-                                                                                </i>
-                                                                            </a>
-                                                                        </span>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr
-                                                                    className="ant-table-row ant-table-row-level-0"
-                                                                    data-row-key={1592845821967630338}
-                                                                    style={{ height: "49px" }}
-                                                                >
-                                                                    <td
-                                                                        className="ant-table-row-cell-break-word"
-                                                                        style={{ textAlign: "center" }}
-                                                                    >
-                                                                        <span data-v-19a4ac8a>
-                                                                            <a data-v-19a4ac8a>
-                                                                                <font
-                                                                                    onClick={() => setshowEditPopUp(true)}
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        edit
-                                                                                    </font>
-                                                                                </font>
-                                                                            </a>
-                                                                            <div
-                                                                                data-v-19a4ac8a
-                                                                                role="separator"
-                                                                                className="ant-divider ant-divider-vertical"
-                                                                            />
-                                                                            <a
-                                                                                data-v-19a4ac8a
-                                                                                className="ant-dropdown-link ant-dropdown-trigger"
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        More
-                                                                                    </font>
-                                                                                </font>
-                                                                                <i
-                                                                                    data-v-19a4ac8a
-                                                                                    aria-label="icon: down"
-                                                                                    className="anticon anticon-down"
-                                                                                >
-                                                                                    <svg
-                                                                                        viewBox="64 64 896 896"
-                                                                                        data-icon="down"
-                                                                                        width="1em"
-                                                                                        height="1em"
-                                                                                        fill="currentColor"
-                                                                                        aria-hidden="true"
-                                                                                        focusable="false"
-                                                                                        className
-                                                                                    >
-                                                                                        <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                    </svg>
-                                                                                </i>
-                                                                            </a>
-                                                                        </span>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr
-                                                                    className="ant-table-row ant-table-row-level-0"
-                                                                    data-row-key={1592845580493160449}
-                                                                    style={{ height: "49px" }}
-                                                                >
-                                                                    <td
-                                                                        className="ant-table-row-cell-break-word"
-                                                                        style={{ textAlign: "center" }}
-                                                                    >
-                                                                        <span data-v-19a4ac8a>
-                                                                            <a data-v-19a4ac8a>
-                                                                                <font
-                                                                                    onClick={() => setshowEditPopUp(true)}
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        edit
-                                                                                    </font>
-                                                                                </font>
-                                                                            </a>
-                                                                            <div
-                                                                                data-v-19a4ac8a
-                                                                                role="separator"
-                                                                                className="ant-divider ant-divider-vertical"
-                                                                            />
-                                                                            <a
-                                                                                data-v-19a4ac8a
-                                                                                className="ant-dropdown-link ant-dropdown-trigger"
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        More
-                                                                                    </font>
-                                                                                </font>
-                                                                                <i
-                                                                                    data-v-19a4ac8a
-                                                                                    aria-label="icon: down"
-                                                                                    className="anticon anticon-down"
-                                                                                >
-                                                                                    <svg
-                                                                                        viewBox="64 64 896 896"
-                                                                                        data-icon="down"
-                                                                                        width="1em"
-                                                                                        height="1em"
-                                                                                        fill="currentColor"
-                                                                                        aria-hidden="true"
-                                                                                        focusable="false"
-                                                                                        className
-                                                                                    >
-                                                                                        <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                    </svg>
-                                                                                </i>
-                                                                            </a>
-                                                                        </span>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr
-                                                                    className="ant-table-row ant-table-row-level-0"
-                                                                    data-row-key={1592843985005084674}
-                                                                    style={{ height: "49px" }}
-                                                                >
-                                                                    <td
-                                                                        className="ant-table-row-cell-break-word"
-                                                                        style={{ textAlign: "center" }}
-                                                                    >
-                                                                        <span data-v-19a4ac8a>
-                                                                            <a data-v-19a4ac8a>
-                                                                                <font
-                                                                                    onClick={() => setshowEditPopUp(true)}
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        edit
-                                                                                    </font>
-                                                                                </font>
-                                                                            </a>
-                                                                            <div
-                                                                                data-v-19a4ac8a
-                                                                                role="separator"
-                                                                                className="ant-divider ant-divider-vertical"
-                                                                            />
-                                                                            <a
-                                                                                data-v-19a4ac8a
-                                                                                className="ant-dropdown-link ant-dropdown-trigger"
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        More
-                                                                                    </font>
-                                                                                </font>
-                                                                                <i
-                                                                                    data-v-19a4ac8a
-                                                                                    aria-label="icon: down"
-                                                                                    className="anticon anticon-down"
-                                                                                >
-                                                                                    <svg
-                                                                                        viewBox="64 64 896 896"
-                                                                                        data-icon="down"
-                                                                                        width="1em"
-                                                                                        height="1em"
-                                                                                        fill="currentColor"
-                                                                                        aria-hidden="true"
-                                                                                        focusable="false"
-                                                                                        className
-                                                                                    >
-                                                                                        <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                    </svg>
-                                                                                </i>
-                                                                            </a>
-                                                                        </span>
-                                                                    </td>
-                                                                </tr> */}
+                                                                {contractProduct?.map((data, index) => {
+                                                                    return (
+                                                                        <EditContractProduct getproducts={getproducts} contractProduct={contractProduct} data={data} index={index} handleShowPopUp={handleShowPopUp} />
+
+                                                                    )
+                                                                })
+
+                                                                }
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -2189,13 +1061,20 @@ return (
                                         unselectable="unselectable"
                                         className="ant-pagination mini ant-table-pagination"
                                     >
+
                                         <li className="ant-pagination-total-text">
+
                                             <font style={{ verticalAlign: "inherit" }}>
+
                                                 <font style={{ verticalAlign: "inherit" }}>
                                                     1-10 total 21 items
+
                                                 </font>
+
                                             </font>
+
                                         </li>
+
                                         <li
                                             title="previous page"
                                             aria-disabled="true"
@@ -2220,40 +1099,60 @@ return (
                                                     </svg>
                                                 </i>
                                             </a>
+
                                         </li>
+
                                         <li
                                             title={1}
                                             tabIndex={0}
                                             className="ant-pagination-item ant-pagination-item-1 ant-pagination-item-active"
                                         >
                                             <a>
+
                                                 <font style={{ verticalAlign: "inherit" }}>
-                                                    <font style={{ verticalAlign: "inherit" }}>1</font>
+
+                                                    <font style={{ verticalAlign: "inherit" }}>1
+                                                    </font>
+
                                                 </font>
                                             </a>
+
                                         </li>
+
                                         <li
                                             title={2}
                                             tabIndex={0}
                                             className="ant-pagination-item ant-pagination-item-2"
                                         >
                                             <a>
+
                                                 <font style={{ verticalAlign: "inherit" }}>
-                                                    <font style={{ verticalAlign: "inherit" }}>2</font>
+
+                                                    <font style={{ verticalAlign: "inherit" }}>2
+                                                    </font>
+
                                                 </font>
                                             </a>
+
                                         </li>
+
                                         <li
                                             title={3}
                                             tabIndex={0}
                                             className="ant-pagination-item ant-pagination-item-3"
                                         >
                                             <a>
+
                                                 <font style={{ verticalAlign: "inherit" }}>
-                                                    <font style={{ verticalAlign: "inherit" }}>3</font>
+
+                                                    <font style={{ verticalAlign: "inherit" }}>3
+                                                    </font>
+
                                                 </font>
                                             </a>
+
                                         </li>
+
                                         <li
                                             title="next page"
                                             tabIndex={0}
@@ -2278,7 +1177,9 @@ return (
                                                     </svg>
                                                 </i>
                                             </a>
+
                                         </li>
+
                                         <li className="ant-pagination-options">
                                             <div
                                                 tabIndex={0}
@@ -2297,13 +1198,18 @@ return (
                                                             className="ant-select-selection-selected-value"
                                                             style={{ display: "block", opacity: 1 }}
                                                         >
+
                                                             <font style={{ verticalAlign: "inherit" }}>
+
                                                                 <font style={{ verticalAlign: "inherit" }}>
                                                                     10 items/page
+
                                                                 </font>
+
                                                             </font>
                                                         </div>
                                                     </div>
+
                                                     <span
                                                         unselectable="on"
                                                         className="ant-select-arrow"
@@ -2326,20 +1232,30 @@ return (
                                                                 <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
                                                             </svg>
                                                         </i>
+
                                                     </span>
                                                 </div>
                                             </div>
                                             <div className="ant-pagination-options-quick-jumper">
+
                                                 <font style={{ verticalAlign: "inherit" }}>
+
                                                     <font style={{ verticalAlign: "inherit" }}>
                                                         jump to
+
                                                     </font>
+
                                                 </font>
                                                 <input type="text" />
+
                                                 <font style={{ verticalAlign: "inherit" }}>
-                                                    <font style={{ verticalAlign: "inherit" }}>Page</font>
+
+                                                    <font style={{ verticalAlign: "inherit" }}>Page
+                                                    </font>
+
                                                 </font>
                                             </div>
+
                                         </li>
                                     </ul>
                                 </div>
@@ -2377,6 +1293,7 @@ return (
                                         setshowPopUp(0);
                                     }}
                                 >
+
                                     <span className="ant-modal-close-x">
                                         <i
                                             aria-label="icon: close"
@@ -2395,14 +1312,19 @@ return (
                                                 <path d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 0 0 203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z" />
                                             </svg>
                                         </i>
+
                                     </span>
                                 </button>
                                 <div className="ant-modal-header">
                                     <div id="rcDialogTitle8" className="ant-modal-title">
                                         <div className="j-modal-title-row ant-row-flex">
                                             <div className="left ant-col">
+
                                                 <font style={{ verticalAlign: "inherit" }}>
-                                                    <font style={{ verticalAlign: "inherit" }}>Add</font>
+
+                                                    <font style={{ verticalAlign: "inherit" }}>Add
+                                                    </font>
+
                                                 </font>
                                             </div>
                                             <div className="right ant-col">
@@ -2449,25 +1371,36 @@ return (
                                                                             title="product name"
                                                                             className="ant-form-item-required"
                                                                         >
+
                                                                             <font
                                                                                 style={{ verticalAlign: "inherit" }}
                                                                             >
+
                                                                                 <font
                                                                                     style={{ verticalAlign: "inherit" }}
                                                                                 >
                                                                                     product name
+
                                                                                 </font>
+
                                                                             </font>
                                                                         </label>
                                                                     </div>
                                                                     <div className="ant-col ant-col-xs-24 ant-col-sm-16 ant-form-item-control-wrapper">
                                                                         <div className="ant-form-item-control">
+
                                                                             <span className="ant-form-item-children">
                                                                                 <input
                                                                                     placeholder="please input the product name"
                                                                                     type="text"
                                                                                     className="ant-input"
+                                                                                    name="product_name"
+                                                                                    value={addSecondProduct.product_name}
+                                                                                    onChange={handleInputChange}
+
+
                                                                                 />
+
                                                                             </span>
                                                                             {/**/}
                                                                         </div>
@@ -2481,24 +1414,30 @@ return (
                                                                             title="Currency"
                                                                             className="ant-form-item-required"
                                                                         >
+
                                                                             <font
                                                                                 style={{ verticalAlign: "inherit" }}
                                                                             >
+
                                                                                 <font
                                                                                     style={{ verticalAlign: "inherit" }}
                                                                                 >
                                                                                     Currency
+
                                                                                 </font>
+
                                                                             </font>
                                                                         </label>
                                                                     </div>
                                                                     <div className="ant-col ant-col-xs-24 ant-col-sm-16 ant-form-item-control-wrapper">
                                                                         <div className="ant-form-item-control">
+
                                                                             <span className="ant-form-item-children">
                                                                                 <div
                                                                                     data-v-17b4e467
                                                                                     tabIndex={0}
                                                                                     className="ant-select ant-select-enabled"
+                                                                                    onClick={() => setshowCurrency(!showCurrency)}
                                                                                 >
                                                                                     <div
                                                                                         role="combobox"
@@ -2508,30 +1447,37 @@ return (
                                                                                         className="ant-select-selection ant-select-selection--single"
                                                                                     >
                                                                                         <div className="ant-select-selection__rendered">
-                                                                                            <div
+                                                                                            <div className={addSecondProduct?.Currency ? "ant-select-selection__placeholder1" : "ant-select-selection__placeholder"}
                                                                                                 unselectable="on"
-                                                                                                className="ant-select-selection__placeholder"
                                                                                                 style={{
                                                                                                     display: "block",
                                                                                                     userSelect: "none",
                                                                                                 }}
                                                                                             >
+
                                                                                                 <font
                                                                                                     style={{
                                                                                                         verticalAlign: "inherit",
                                                                                                     }}
                                                                                                 >
+
                                                                                                     <font
                                                                                                         style={{
                                                                                                             verticalAlign: "inherit",
                                                                                                         }}
                                                                                                     >
-                                                                                                        Please select currency
+                                                                                                        {addSecondProduct?.Currency ? addSecondProduct?.Currency : "Please select currency"}
+
                                                                                                     </font>
+
                                                                                                 </font>
                                                                                             </div>
+
+
                                                                                         </div>
+
                                                                                         <span
+
                                                                                             unselectable="on"
                                                                                             className="ant-select-arrow"
                                                                                             style={{ userSelect: "none" }}
@@ -2553,9 +1499,90 @@ return (
                                                                                                     <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
                                                                                                 </svg>
                                                                                             </i>
+
                                                                                         </span>
                                                                                     </div>
+                                                                                    {showCurrency && ///aliant-select ant-select-enabled
+                                                                                        <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '100%', left: '0px', top: '30px', display: 'flex' }}><div id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)', width: "100%" }}>
+                                                                                            <ul role="listbox" onClick={() => { setshowCurrency(!showCurrency) }} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
+
+                                                                                                <li name="product_name" role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                                                                                    <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                        <font style={{ verticalAlign: 'inherit' }}>please choose
+                                                                                                        </font>
+                                                                                                    </font>
+                                                                                                </li>
+
+
+                                                                                                <li onClick={() => { handleInputChange2("Currency", "BTC") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                                                                                    <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
+                                                                                                        <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                            <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                                BTC
+                                                                                                            </font>
+                                                                                                        </font>
+                                                                                                    </span>
+                                                                                                </li>
+
+                                                                                                <li onClick={() => { handleInputChange2("Currency", "USDT") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                                                                                    <span data-v-17b4e467 title="USDT" style={{ display: 'inline-block', width: '100%' }}>
+                                                                                                        <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                            <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                                USDT
+                                                                                                            </font>
+                                                                                                        </font>
+                                                                                                    </span>
+                                                                                                </li>
+
+                                                                                                <li onClick={() => { handleInputChange2("Currency", "ETH") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                                                                                    <span data-v-17b4e467 title="ETH" style={{ display: 'inline-block', width: '100%' }}>
+                                                                                                        <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                            <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                                ETH
+                                                                                                            </font>
+                                                                                                        </font>
+                                                                                                    </span>
+                                                                                                </li>
+                                                                                                <li onClick={() => { handleInputChange2("Currency", "DOT") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                                                                                    <span data-v-17b4e467 title="DOT" style={{ display: 'inline-block', width: '100%' }}>
+                                                                                                        <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                            <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                                DOT
+                                                                                                            </font>
+                                                                                                        </font>
+                                                                                                    </span>
+                                                                                                </li>
+                                                                                                <li onClick={() => { handleInputChange2("Currency", "TRX") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                                                                                    <span data-v-17b4e467 title="TRX" style={{ display: 'inline-block', width: '100%' }}>
+                                                                                                        <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                            <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                                TRX
+                                                                                                            </font>
+                                                                                                        </font>
+                                                                                                    </span>
+                                                                                                </li>
+                                                                                                <li onClick={() => { handleInputChange2("Currency", "ETHW") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                                                                                    <span data-v-17b4e467 title="ETHW" style={{ display: 'inline-block', width: '100%' }}>
+                                                                                                        <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                            <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                                ETHW
+                                                                                                            </font>
+                                                                                                        </font>
+                                                                                                    </span>
+                                                                                                </li>
+                                                                                                <li onClick={() => { handleInputChange2("Currency", "USDC") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                                                                                    <span data-v-17b4e467 title="USDC" style={{ display: 'inline-block', width: '100%' }}>
+                                                                                                        <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                            <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                                USDC
+                                                                                                            </font>
+                                                                                                        </font>
+                                                                                                    </span>
+                                                                                                </li></ul></div></div>
+                                                                                    }
                                                                                 </div>
+
+
                                                                             </span>
                                                                             {/**/}
                                                                         </div>
@@ -2569,25 +1596,31 @@ return (
                                                                             title="Delivery time (seconds)"
                                                                             className="ant-form-item-required"
                                                                         >
+
                                                                             <font
                                                                                 style={{ verticalAlign: "inherit" }}
                                                                             >
+
                                                                                 <font
                                                                                     style={{ verticalAlign: "inherit" }}
                                                                                 >
                                                                                     Delivery time (seconds)
+
                                                                                 </font>
+
                                                                             </font>
                                                                         </label>
                                                                     </div>
                                                                     <div className="ant-col ant-col-xs-24 ant-col-sm-16 ant-form-item-control-wrapper">
                                                                         <div className="ant-form-item-control">
+
                                                                             <span className="ant-form-item-children">
                                                                                 <div
                                                                                     className="ant-input-number"
                                                                                     style={{ width: "100%" }}
                                                                                 >
                                                                                     <div className="ant-input-number-handler-wrap">
+
                                                                                         <span
                                                                                             className="ant-input-number-handler ant-input-number-handler-up "
                                                                                             unselectable="unselectable"
@@ -2611,7 +1644,9 @@ return (
                                                                                                     <path d="M890.5 755.3L537.9 269.2c-12.8-17.6-39-17.6-51.7 0L133.5 755.3A8 8 0 0 0 140 768h75c5.1 0 9.9-2.5 12.9-6.6L512 369.8l284.1 391.6c3 4.1 7.8 6.6 12.9 6.6h75c6.5 0 10.3-7.4 6.5-12.7z" />
                                                                                                 </svg>
                                                                                             </i>
+
                                                                                         </span>
+
                                                                                         <span
                                                                                             className="ant-input-number-handler ant-input-number-handler-down "
                                                                                             unselectable="unselectable"
@@ -2635,6 +1670,7 @@ return (
                                                                                                     <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
                                                                                                 </svg>
                                                                                             </i>
+
                                                                                         </span>
                                                                                     </div>
                                                                                     <div className="ant-input-number-input-wrap">
@@ -2646,9 +1682,13 @@ return (
                                                                                             min={-9007199254740991}
                                                                                             step={1}
                                                                                             className="ant-input-number-input"
+                                                                                            name="Delivery_time"
+                                                                                            value={addSecondProduct.Delivery_time}
+                                                                                            onChange={handleInputChange}
                                                                                         />
                                                                                     </div>
                                                                                 </div>
+
                                                                             </span>
                                                                             {/**/}
                                                                         </div>
@@ -2662,25 +1702,31 @@ return (
                                                                             title="odds"
                                                                             className="ant-form-item-required"
                                                                         >
+
                                                                             <font
                                                                                 style={{ verticalAlign: "inherit" }}
                                                                             >
+
                                                                                 <font
                                                                                     style={{ verticalAlign: "inherit" }}
                                                                                 >
                                                                                     odds
+
                                                                                 </font>
+
                                                                             </font>
                                                                         </label>
                                                                     </div>
                                                                     <div className="ant-col ant-col-xs-24 ant-col-sm-16 ant-form-item-control-wrapper">
                                                                         <div className="ant-form-item-control">
+
                                                                             <span className="ant-form-item-children">
                                                                                 <div
                                                                                     className="ant-input-number"
                                                                                     style={{ width: "100%" }}
                                                                                 >
                                                                                     <div className="ant-input-number-handler-wrap">
+
                                                                                         <span
                                                                                             className="ant-input-number-handler ant-input-number-handler-up "
                                                                                             unselectable="unselectable"
@@ -2704,7 +1750,9 @@ return (
                                                                                                     <path d="M890.5 755.3L537.9 269.2c-12.8-17.6-39-17.6-51.7 0L133.5 755.3A8 8 0 0 0 140 768h75c5.1 0 9.9-2.5 12.9-6.6L512 369.8l284.1 391.6c3 4.1 7.8 6.6 12.9 6.6h75c6.5 0 10.3-7.4 6.5-12.7z" />
                                                                                                 </svg>
                                                                                             </i>
+
                                                                                         </span>
+
                                                                                         <span
                                                                                             className="ant-input-number-handler ant-input-number-handler-down "
                                                                                             unselectable="unselectable"
@@ -2728,6 +1776,7 @@ return (
                                                                                                     <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
                                                                                                 </svg>
                                                                                             </i>
+
                                                                                         </span>
                                                                                     </div>
                                                                                     <div className="ant-input-number-input-wrap">
@@ -2739,9 +1788,13 @@ return (
                                                                                             min={-9007199254740991}
                                                                                             step={1}
                                                                                             className="ant-input-number-input"
+                                                                                            name="odds"
+                                                                                            value={addSecondProduct.odds}
+                                                                                            onChange={handleInputChange}
                                                                                         />
                                                                                     </div>
                                                                                 </div>
+
                                                                             </span>
                                                                             {/**/}
                                                                         </div>
@@ -2755,25 +1808,31 @@ return (
                                                                             title="maximum amount"
                                                                             className="ant-form-item-required"
                                                                         >
+
                                                                             <font
                                                                                 style={{ verticalAlign: "inherit" }}
                                                                             >
+
                                                                                 <font
                                                                                     style={{ verticalAlign: "inherit" }}
                                                                                 >
                                                                                     maximum amount
+
                                                                                 </font>
+
                                                                             </font>
                                                                         </label>
                                                                     </div>
                                                                     <div className="ant-col ant-col-xs-24 ant-col-sm-16 ant-form-item-control-wrapper">
                                                                         <div className="ant-form-item-control">
+
                                                                             <span className="ant-form-item-children">
                                                                                 <div
                                                                                     className="ant-input-number"
                                                                                     style={{ width: "100%" }}
                                                                                 >
                                                                                     <div className="ant-input-number-handler-wrap">
+
                                                                                         <span
                                                                                             className="ant-input-number-handler ant-input-number-handler-up "
                                                                                             unselectable="unselectable"
@@ -2797,7 +1856,9 @@ return (
                                                                                                     <path d="M890.5 755.3L537.9 269.2c-12.8-17.6-39-17.6-51.7 0L133.5 755.3A8 8 0 0 0 140 768h75c5.1 0 9.9-2.5 12.9-6.6L512 369.8l284.1 391.6c3 4.1 7.8 6.6 12.9 6.6h75c6.5 0 10.3-7.4 6.5-12.7z" />
                                                                                                 </svg>
                                                                                             </i>
+
                                                                                         </span>
+
                                                                                         <span
                                                                                             className="ant-input-number-handler ant-input-number-handler-down "
                                                                                             unselectable="unselectable"
@@ -2821,6 +1882,7 @@ return (
                                                                                                     <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
                                                                                                 </svg>
                                                                                             </i>
+
                                                                                         </span>
                                                                                     </div>
                                                                                     <div className="ant-input-number-input-wrap">
@@ -2832,9 +1894,14 @@ return (
                                                                                             min={-9007199254740991}
                                                                                             step={1}
                                                                                             className="ant-input-number-input"
+                                                                                            name="maximum_amount"
+                                                                                            value={addSecondProduct.maximum_amount}
+                                                                                            onChange={handleInputChange}
+
                                                                                         />
                                                                                     </div>
                                                                                 </div>
+
                                                                             </span>
                                                                             {/**/}
                                                                         </div>
@@ -2848,25 +1915,31 @@ return (
                                                                             title="minimum amount"
                                                                             className="ant-form-item-required"
                                                                         >
+
                                                                             <font
                                                                                 style={{ verticalAlign: "inherit" }}
                                                                             >
+
                                                                                 <font
                                                                                     style={{ verticalAlign: "inherit" }}
                                                                                 >
                                                                                     minimum amount
+
                                                                                 </font>
+
                                                                             </font>
                                                                         </label>
                                                                     </div>
                                                                     <div className="ant-col ant-col-xs-24 ant-col-sm-16 ant-form-item-control-wrapper">
                                                                         <div className="ant-form-item-control">
+
                                                                             <span className="ant-form-item-children">
                                                                                 <div
                                                                                     className="ant-input-number"
                                                                                     style={{ width: "100%" }}
                                                                                 >
                                                                                     <div className="ant-input-number-handler-wrap">
+
                                                                                         <span
                                                                                             className="ant-input-number-handler ant-input-number-handler-up "
                                                                                             unselectable="unselectable"
@@ -2890,7 +1963,9 @@ return (
                                                                                                     <path d="M890.5 755.3L537.9 269.2c-12.8-17.6-39-17.6-51.7 0L133.5 755.3A8 8 0 0 0 140 768h75c5.1 0 9.9-2.5 12.9-6.6L512 369.8l284.1 391.6c3 4.1 7.8 6.6 12.9 6.6h75c6.5 0 10.3-7.4 6.5-12.7z" />
                                                                                                 </svg>
                                                                                             </i>
+
                                                                                         </span>
+
                                                                                         <span
                                                                                             className="ant-input-number-handler ant-input-number-handler-down "
                                                                                             unselectable="unselectable"
@@ -2914,6 +1989,7 @@ return (
                                                                                                     <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
                                                                                                 </svg>
                                                                                             </i>
+
                                                                                         </span>
                                                                                     </div>
                                                                                     <div className="ant-input-number-input-wrap">
@@ -2925,9 +2001,13 @@ return (
                                                                                             min={-9007199254740991}
                                                                                             step={1}
                                                                                             className="ant-input-number-input"
+                                                                                            name="minimum_amount"
+                                                                                            value={addSecondProduct.minimum_amount}
+                                                                                            onChange={handleInputChange}
                                                                                         />
                                                                                     </div>
                                                                                 </div>
+
                                                                             </span>
                                                                             {/**/}
                                                                         </div>
@@ -2938,26 +2018,35 @@ return (
                                                                 <div className="ant-row ant-form-item">
                                                                     <div className="ant-col ant-col-xs-24 ant-col-sm-5 ant-form-item-label">
                                                                         <label title="Remark" className>
+
                                                                             <font
                                                                                 style={{ verticalAlign: "inherit" }}
                                                                             >
+
                                                                                 <font
                                                                                     style={{ verticalAlign: "inherit" }}
                                                                                 >
                                                                                     Remark
+
                                                                                 </font>
+
                                                                             </font>
                                                                         </label>
                                                                     </div>
                                                                     <div className="ant-col ant-col-xs-24 ant-col-sm-16 ant-form-item-control-wrapper">
                                                                         <div className="ant-form-item-control">
+
                                                                             <span className="ant-form-item-children">
                                                                                 <textarea
                                                                                     placeholder="Please enter a note"
                                                                                     className="ant-input"
                                                                                     rows={4}
                                                                                     defaultValue={""}
+                                                                                    name="Remark"
+                                                                                    value={addSecondProduct.Remark}
+                                                                                    onChange={handleInputChange}
                                                                                 />
+
                                                                             </span>
                                                                             {/**/}
                                                                         </div>
@@ -2981,19 +2070,31 @@ return (
                                             type="button"
                                             className="ant-btn"
                                         >
+
                                             <span>
+
                                                 <font style={{ verticalAlign: "inherit" }}>
+
                                                     <font style={{ verticalAlign: "inherit" }}>
                                                         closure
+
                                                     </font>
+
                                                 </font>
+
                                             </span>
                                         </button>
-                                        <button type="button" className="ant-btn ant-btn-primary">
+                                        <button onClick={() => CreateSecondContractProduct()} type="button" className="ant-btn ant-btn-primary">
+
                                             <span>
+
                                                 <font style={{ verticalAlign: "inherit" }}>
-                                                    <font style={{ verticalAlign: "inherit" }}>Sure</font>
+
+                                                    <font style={{ verticalAlign: "inherit" }}>Sure
+                                                    </font>
+
                                                 </font>
+
                                             </span>
                                         </button>
                                     </div>
@@ -3042,6 +2143,7 @@ return (
                                         aria-label="Close"
                                         className="ant-modal-close"
                                     >
+
                                         <span className="ant-modal-close-x">
                                             <i
                                                 aria-label="icon: close"
@@ -3060,16 +2162,21 @@ return (
                                                     <path d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 0 0 203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z" />
                                                 </svg>
                                             </i>
+
                                         </span>
                                     </button>
                                     <div className="ant-modal-header">
                                         <div id="rcDialogTitle13" className="ant-modal-title">
                                             <div className="j-modal-title-row ant-row-flex">
                                                 <div className="left ant-col">
+
                                                     <font style={{ verticalAlign: "inherit" }}>
+
                                                         <font style={{ verticalAlign: "inherit" }}>
                                                             Advanced Query Builder
+
                                                         </font>
+
                                                     </font>
                                                 </div>
                                                 {/**/}
@@ -3104,25 +2211,31 @@ return (
                                                                     >
                                                                         <div className="ant-col ant-col-xs-24 ant-col-md-6 ant-form-item-label">
                                                                             <label title="filter match" className>
+
                                                                                 <font
                                                                                     style={{ verticalAlign: "inherit" }}
                                                                                 >
+
                                                                                     <font
                                                                                         style={{ verticalAlign: "inherit" }}
                                                                                     >
                                                                                         filter match
+
                                                                                     </font>
+
                                                                                 </font>
                                                                             </label>
                                                                         </div>
                                                                         <div className="ant-col ant-col-xs-24 ant-col-md-18 ant-form-item-control-wrapper">
                                                                             <div className="ant-form-item-control">
+
                                                                                 <span className="ant-form-item-children">
                                                                                     <div
                                                                                         data-v-3d25e7a4
                                                                                         tabIndex={0}
                                                                                         className="ant-select ant-select-enabled"
                                                                                         style={{ width: "100%" }}
+
                                                                                     >
                                                                                         <div
                                                                                             role="combobox"
@@ -3140,11 +2253,13 @@ return (
                                                                                                         opacity: 1,
                                                                                                     }}
                                                                                                 >
+
                                                                                                     <font
                                                                                                         style={{
                                                                                                             verticalAlign: "inherit",
                                                                                                         }}
                                                                                                     >
+
                                                                                                         <font
                                                                                                             style={{
                                                                                                                 verticalAlign:
@@ -3152,10 +2267,13 @@ return (
                                                                                                             }}
                                                                                                         >
                                                                                                             {queryPopUpValue}
+
                                                                                                         </font>
+
                                                                                                     </font>
                                                                                                 </div>
                                                                                             </div>
+
                                                                                             <span
                                                                                                 unselectable="on"
                                                                                                 className="ant-select-arrow"
@@ -3181,9 +2299,11 @@ return (
                                                                                                         <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
                                                                                                     </svg>
                                                                                                 </i>
+
                                                                                             </span>
                                                                                         </div>
                                                                                     </div>
+
                                                                                 </span>
                                                                                 <div
                                                                                     className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft"
@@ -3209,6 +2329,7 @@ return (
                                                                                             tabIndex={0}
                                                                                             className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root"
                                                                                         >
+
                                                                                             <li
                                                                                                 onClick={(e) =>
                                                                                                     setqueryPopUpValue(
@@ -3220,11 +2341,13 @@ return (
                                                                                                 unselectable="on"
                                                                                                 style={{ userSelect: "none" }}
                                                                                             >
+
                                                                                                 <font
                                                                                                     style={{
                                                                                                         verticalAlign: "inherit",
                                                                                                     }}
                                                                                                 >
+
                                                                                                     <font
                                                                                                         style={{
                                                                                                             verticalAlign: "inherit",
@@ -3232,9 +2355,13 @@ return (
                                                                                                     >
                                                                                                         AND (all conditions are
                                                                                                         required to match)
+
                                                                                                     </font>
+
                                                                                                 </font>
+
                                                                                             </li>
+
                                                                                             <li
                                                                                                 onClick={(e) =>
                                                                                                     setqueryPopUpValue(
@@ -3247,11 +2374,13 @@ return (
                                                                                                 style={{ userSelect: "none" }}
                                                                                                 aria-selected="true"
                                                                                             >
+
                                                                                                 <font
                                                                                                     style={{
                                                                                                         verticalAlign: "inherit",
                                                                                                     }}
                                                                                                 >
+
                                                                                                     <font
                                                                                                         style={{
                                                                                                             verticalAlign: "inherit",
@@ -3259,8 +2388,11 @@ return (
                                                                                                     >
                                                                                                         OR (any one of the
                                                                                                         conditions matches)
+
                                                                                                     </font>
+
                                                                                                 </font>
+
                                                                                             </li>
                                                                                         </ul>
                                                                                     </div>
@@ -3290,6 +2422,7 @@ return (
                                                                         marginBottom: "12px",
                                                                     }}
                                                                 >
+
                                                                     <span
                                                                         data-v-3d25e7a4
                                                                         role="combobox"
@@ -3298,22 +2431,32 @@ return (
                                                                         className="ant-select ant-select-enabled ant-select-allow-clear"
                                                                         style={{ width: "100%" }}
                                                                     >
+
                                                                         <span className="ant-select-selection ant-select-selection--single">
+
                                                                             <span className="ant-select-selection__rendered">
+
                                                                                 <span className="ant-select-selection__placeholder">
+
                                                                                     <font
                                                                                         style={{ verticalAlign: "inherit" }}
                                                                                     >
+
                                                                                         <font
                                                                                             style={{
                                                                                                 verticalAlign: "inherit",
                                                                                             }}
                                                                                         >
                                                                                             {selectQueryFieldValue}
+
                                                                                         </font>
+
                                                                                     </font>
+
                                                                                 </span>
+
                                                                             </span>
+
                                                                             <span
                                                                                 className="ant-select-arrow"
                                                                                 style={{ outline: "none" }}
@@ -3340,6 +2483,7 @@ return (
                                                                                         <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
                                                                                     </svg>
                                                                                 </i>
+
                                                                             </span>
                                                                             {selectQueryField && (
                                                                                 <div
@@ -3358,7 +2502,9 @@ return (
                                                                                         tabIndex={-1}
                                                                                         className="ant-select-dropdown-content"
                                                                                     >
+
                                                                                         <span className="ant-select-dropdown-search">
+
                                                                                             <span className="ant-select-search__field__wrap">
                                                                                                 <input
                                                                                                     type="text"
@@ -3368,16 +2514,21 @@ return (
                                                                                                     aria-multiline="false"
                                                                                                     className="ant-select-search__field"
                                                                                                 />
+
                                                                                                 <span className="ant-select-search__field__mirror">
                                                                                                     &nbsp;
+
                                                                                                 </span>
+
                                                                                             </span>
+
                                                                                         </span>
                                                                                         <ul
                                                                                             role="tree"
                                                                                             unselectable="on"
                                                                                             className="ant-select-tree"
                                                                                         >
+
                                                                                             <li
                                                                                                 role="treeitem"
                                                                                                 className="ant-select-tree-treenode-switcher-open"
@@ -3387,18 +2538,23 @@ return (
                                                                                                     )
                                                                                                 }
                                                                                             >
+
                                                                                                 <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+
                                                                                                 <span
                                                                                                     title="product name"
                                                                                                     className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
                                                                                                 >
+
                                                                                                     <span className="ant-select-tree-title">
+
                                                                                                         <font
                                                                                                             style={{
                                                                                                                 verticalAlign:
                                                                                                                     "inherit",
                                                                                                             }}
                                                                                                         >
+
                                                                                                             <font
                                                                                                                 style={{
                                                                                                                     verticalAlign:
@@ -3406,11 +2562,17 @@ return (
                                                                                                                 }}
                                                                                                             >
                                                                                                                 product name
+
                                                                                                             </font>
+
                                                                                                         </font>
+
                                                                                                     </span>
+
                                                                                                 </span>
+
                                                                                             </li>
+
                                                                                             <li
                                                                                                 role="treeitem"
                                                                                                 className="ant-select-tree-treenode-switcher-open"
@@ -3420,18 +2582,23 @@ return (
                                                                                                     )
                                                                                                 }
                                                                                             >
+
                                                                                                 <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+
                                                                                                 <span
                                                                                                     title="Delivery time (seconds)"
                                                                                                     className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
                                                                                                 >
+
                                                                                                     <span className="ant-select-tree-title">
+
                                                                                                         <font
                                                                                                             style={{
                                                                                                                 verticalAlign:
                                                                                                                     "inherit",
                                                                                                             }}
                                                                                                         >
+
                                                                                                             <font
                                                                                                                 style={{
                                                                                                                     verticalAlign:
@@ -3439,11 +2606,17 @@ return (
                                                                                                                 }}
                                                                                                             >
                                                                                                                 Delivery time (seconds)
+
                                                                                                             </font>
+
                                                                                                         </font>
+
                                                                                                     </span>
+
                                                                                                 </span>
+
                                                                                             </li>
+
                                                                                             <li
                                                                                                 role="treeitem"
                                                                                                 className="ant-select-tree-treenode-switcher-open"
@@ -3453,18 +2626,23 @@ return (
                                                                                                     )
                                                                                                 }
                                                                                             >
+
                                                                                                 <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+
                                                                                                 <span
                                                                                                     title="odds"
                                                                                                     className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
                                                                                                 >
+
                                                                                                     <span className="ant-select-tree-title">
+
                                                                                                         <font
                                                                                                             style={{
                                                                                                                 verticalAlign:
                                                                                                                     "inherit",
                                                                                                             }}
                                                                                                         >
+
                                                                                                             <font
                                                                                                                 style={{
                                                                                                                     verticalAlign:
@@ -3472,11 +2650,17 @@ return (
                                                                                                                 }}
                                                                                                             >
                                                                                                                 odds
+
                                                                                                             </font>
+
                                                                                                         </font>
+
                                                                                                     </span>
+
                                                                                                 </span>
+
                                                                                             </li>
+
                                                                                             <li
                                                                                                 role="treeitem"
                                                                                                 className="ant-select-tree-treenode-switcher-open"
@@ -3486,18 +2670,23 @@ return (
                                                                                                     )
                                                                                                 }
                                                                                             >
+
                                                                                                 <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+
                                                                                                 <span
                                                                                                     title="maximum amount"
                                                                                                     className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
                                                                                                 >
+
                                                                                                     <span className="ant-select-tree-title">
+
                                                                                                         <font
                                                                                                             style={{
                                                                                                                 verticalAlign:
                                                                                                                     "inherit",
                                                                                                             }}
                                                                                                         >
+
                                                                                                             <font
                                                                                                                 style={{
                                                                                                                     verticalAlign:
@@ -3505,11 +2694,17 @@ return (
                                                                                                                 }}
                                                                                                             >
                                                                                                                 maximum amount
+
                                                                                                             </font>
+
                                                                                                         </font>
+
                                                                                                     </span>
+
                                                                                                 </span>
+
                                                                                             </li>
+
                                                                                             <li
                                                                                                 role="treeitem"
                                                                                                 className="ant-select-tree-treenode-switcher-open"
@@ -3519,18 +2714,23 @@ return (
                                                                                                     )
                                                                                                 }
                                                                                             >
+
                                                                                                 <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+
                                                                                                 <span
                                                                                                     title="minimum amount"
                                                                                                     className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
                                                                                                 >
+
                                                                                                     <span className="ant-select-tree-title">
+
                                                                                                         <font
                                                                                                             style={{
                                                                                                                 verticalAlign:
                                                                                                                     "inherit",
                                                                                                             }}
                                                                                                         >
+
                                                                                                             <font
                                                                                                                 style={{
                                                                                                                     verticalAlign:
@@ -3538,11 +2738,17 @@ return (
                                                                                                                 }}
                                                                                                             >
                                                                                                                 minimum amount
+
                                                                                                             </font>
+
                                                                                                         </font>
+
                                                                                                     </span>
+
                                                                                                 </span>
+
                                                                                             </li>
+
                                                                                             <li
                                                                                                 role="treeitem"
                                                                                                 className="ant-select-tree-treenode-switcher-open"
@@ -3552,18 +2758,23 @@ return (
                                                                                                     )
                                                                                                 }
                                                                                             >
+
                                                                                                 <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+
                                                                                                 <span
                                                                                                     title="Remark"
                                                                                                     className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
                                                                                                 >
+
                                                                                                     <span className="ant-select-tree-title">
+
                                                                                                         <font
                                                                                                             style={{
                                                                                                                 verticalAlign:
                                                                                                                     "inherit",
                                                                                                             }}
                                                                                                         >
+
                                                                                                             <font
                                                                                                                 style={{
                                                                                                                     verticalAlign:
@@ -3571,16 +2782,23 @@ return (
                                                                                                                 }}
                                                                                                             >
                                                                                                                 Remark
+
                                                                                                             </font>
+
                                                                                                         </font>
+
                                                                                                     </span>
+
                                                                                                 </span>
+
                                                                                             </li>
                                                                                         </ul>
                                                                                     </div>
                                                                                 </div>
                                                                             )}
+
                                                                         </span>
+
                                                                     </span>
                                                                 </div>
                                                                 <div
@@ -3601,7 +2819,9 @@ return (
                                                                         tabIndex={-1}
                                                                         className="ant-select-dropdown-content"
                                                                     >
+
                                                                         <span className="ant-select-dropdown-search">
+
                                                                             <span className="ant-select-search__field__wrap">
                                                                                 <input
                                                                                     type="text"
@@ -3611,171 +2831,241 @@ return (
                                                                                     aria-multiline="false"
                                                                                     className="ant-select-search__field"
                                                                                 />
+
                                                                                 <span className="ant-select-search__field__mirror">
                                                                                     &nbsp;
+
                                                                                 </span>
+
                                                                             </span>
+
                                                                         </span>
                                                                         <ul
                                                                             role="tree"
                                                                             unselectable="on"
                                                                             className="ant-select-tree"
                                                                         >
+
                                                                             <li
                                                                                 role="treeitem"
                                                                                 className="ant-select-tree-treenode-switcher-open"
                                                                             >
+
                                                                                 <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+
                                                                                 <span
                                                                                     title="product name"
                                                                                     className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
                                                                                 >
+
                                                                                     <span className="ant-select-tree-title">
+
                                                                                         <font
                                                                                             style={{
                                                                                                 verticalAlign: "inherit",
                                                                                             }}
                                                                                         >
+
                                                                                             <font
                                                                                                 style={{
                                                                                                     verticalAlign: "inherit",
                                                                                                 }}
                                                                                             >
                                                                                                 product name
+
                                                                                             </font>
+
                                                                                         </font>
+
                                                                                     </span>
+
                                                                                 </span>
+
                                                                             </li>
+
                                                                             <li
                                                                                 role="treeitem"
                                                                                 className="ant-select-tree-treenode-switcher-open"
                                                                             >
+
                                                                                 <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+
                                                                                 <span
                                                                                     title="Delivery time (seconds)"
                                                                                     className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
                                                                                 >
+
                                                                                     <span className="ant-select-tree-title">
+
                                                                                         <font
                                                                                             style={{
                                                                                                 verticalAlign: "inherit",
                                                                                             }}
                                                                                         >
+
                                                                                             <font
                                                                                                 style={{
                                                                                                     verticalAlign: "inherit",
                                                                                                 }}
                                                                                             >
                                                                                                 Delivery time (seconds)
+
                                                                                             </font>
+
                                                                                         </font>
+
                                                                                     </span>
+
                                                                                 </span>
+
                                                                             </li>
+
                                                                             <li
                                                                                 role="treeitem"
                                                                                 className="ant-select-tree-treenode-switcher-open"
                                                                             >
+
                                                                                 <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+
                                                                                 <span
                                                                                     title="odds"
                                                                                     className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
                                                                                 >
+
                                                                                     <span className="ant-select-tree-title">
+
                                                                                         <font
                                                                                             style={{
                                                                                                 verticalAlign: "inherit",
                                                                                             }}
                                                                                         >
+
                                                                                             <font
                                                                                                 style={{
                                                                                                     verticalAlign: "inherit",
                                                                                                 }}
                                                                                             >
                                                                                                 odds
+
                                                                                             </font>
+
                                                                                         </font>
+
                                                                                     </span>
+
                                                                                 </span>
+
                                                                             </li>
+
                                                                             <li
                                                                                 role="treeitem"
                                                                                 className="ant-select-tree-treenode-switcher-open"
                                                                             >
+
                                                                                 <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+
                                                                                 <span
                                                                                     title="maximum amount"
                                                                                     className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
                                                                                 >
+
                                                                                     <span className="ant-select-tree-title">
+
                                                                                         <font
                                                                                             style={{
                                                                                                 verticalAlign: "inherit",
                                                                                             }}
                                                                                         >
+
                                                                                             <font
                                                                                                 style={{
                                                                                                     verticalAlign: "inherit",
                                                                                                 }}
                                                                                             >
                                                                                                 maximum amount
+
                                                                                             </font>
+
                                                                                         </font>
+
                                                                                     </span>
+
                                                                                 </span>
+
                                                                             </li>
+
                                                                             <li
                                                                                 role="treeitem"
                                                                                 className="ant-select-tree-treenode-switcher-open"
                                                                             >
+
                                                                                 <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+
                                                                                 <span
                                                                                     title="minimum amount"
                                                                                     className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
                                                                                 >
+
                                                                                     <span className="ant-select-tree-title">
+
                                                                                         <font
                                                                                             style={{
                                                                                                 verticalAlign: "inherit",
                                                                                             }}
                                                                                         >
+
                                                                                             <font
                                                                                                 style={{
                                                                                                     verticalAlign: "inherit",
                                                                                                 }}
                                                                                             >
                                                                                                 minimum amount
+
                                                                                             </font>
+
                                                                                         </font>
+
                                                                                     </span>
+
                                                                                 </span>
+
                                                                             </li>
+
                                                                             <li
                                                                                 role="treeitem"
                                                                                 className="ant-select-tree-treenode-switcher-open"
                                                                             >
+
                                                                                 <span className="ant-select-tree-switcher ant-select-tree-switcher-noop" />
+
                                                                                 <span
                                                                                     title="Remark"
                                                                                     className="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal"
                                                                                 >
+
                                                                                     <span className="ant-select-tree-title">
+
                                                                                         <font
                                                                                             style={{
                                                                                                 verticalAlign: "inherit",
                                                                                             }}
                                                                                         >
+
                                                                                             <font
                                                                                                 style={{
                                                                                                     verticalAlign: "inherit",
                                                                                                 }}
                                                                                             >
                                                                                                 Remark
+
                                                                                             </font>
+
                                                                                         </font>
+
                                                                                     </span>
+
                                                                                 </span>
+
                                                                             </li>
                                                                         </ul>
                                                                     </div>
@@ -3811,16 +3101,20 @@ return (
                                                                                         userSelect: "none",
                                                                                     }}
                                                                                 >
+
                                                                                     <font
                                                                                         style={{ verticalAlign: "inherit" }}
                                                                                     >
+
                                                                                         <font
                                                                                             style={{
                                                                                                 verticalAlign: "inherit",
                                                                                             }}
                                                                                         >
                                                                                             matching rules
+
                                                                                         </font>
+
                                                                                     </font>
                                                                                 </div>
                                                                                 <div
@@ -3831,16 +3125,20 @@ return (
                                                                                         opacity: 1,
                                                                                     }}
                                                                                 >
+
                                                                                     <font
                                                                                         style={{ verticalAlign: "inherit" }}
                                                                                     >
+
                                                                                         <font
                                                                                             style={{
                                                                                                 verticalAlign: "inherit",
                                                                                             }}
                                                                                         >
                                                                                             {QueryEqualto}
+
                                                                                         </font>
+
                                                                                     </font>
                                                                                 </div>
                                                                             </div>
@@ -3868,6 +3166,7 @@ return (
                                                                                             tabIndex={0}
                                                                                             className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root"
                                                                                         >
+
                                                                                             <li
                                                                                                 role="option"
                                                                                                 aria-selected="true"
@@ -3880,20 +3179,26 @@ return (
                                                                                                     )
                                                                                                 }
                                                                                             >
+
                                                                                                 <font
                                                                                                     style={{
                                                                                                         verticalAlign: "inherit",
                                                                                                     }}
                                                                                                 >
+
                                                                                                     <font
                                                                                                         style={{
                                                                                                             verticalAlign: "inherit",
                                                                                                         }}
                                                                                                     >
                                                                                                         equal
+
                                                                                                     </font>
+
                                                                                                 </font>
+
                                                                                             </li>
+
                                                                                             <li
                                                                                                 role="option"
                                                                                                 className="ant-select-dropdown-menu-item"
@@ -3905,20 +3210,26 @@ return (
                                                                                                     )
                                                                                                 }
                                                                                             >
+
                                                                                                 <font
                                                                                                     style={{
                                                                                                         verticalAlign: "inherit",
                                                                                                     }}
                                                                                                 >
+
                                                                                                     <font
                                                                                                         style={{
                                                                                                             verticalAlign: "inherit",
                                                                                                         }}
                                                                                                     >
                                                                                                         Include
+
                                                                                                     </font>
+
                                                                                                 </font>
+
                                                                                             </li>
+
                                                                                             <li
                                                                                                 role="option"
                                                                                                 className="ant-select-dropdown-menu-item"
@@ -3930,20 +3241,26 @@ return (
                                                                                                     )
                                                                                                 }
                                                                                             >
+
                                                                                                 <font
                                                                                                     style={{
                                                                                                         verticalAlign: "inherit",
                                                                                                     }}
                                                                                                 >
+
                                                                                                     <font
                                                                                                         style={{
                                                                                                             verticalAlign: "inherit",
                                                                                                         }}
                                                                                                     >
                                                                                                         start with
+
                                                                                                     </font>
+
                                                                                                 </font>
+
                                                                                             </li>
+
                                                                                             <li
                                                                                                 onClick={(e) =>
                                                                                                     setQueryEqualto(
@@ -3955,20 +3272,26 @@ return (
                                                                                                 unselectable="on"
                                                                                                 style={{ userSelect: "none" }}
                                                                                             >
+
                                                                                                 <font
                                                                                                     style={{
                                                                                                         verticalAlign: "inherit",
                                                                                                     }}
                                                                                                 >
+
                                                                                                     <font
                                                                                                         style={{
                                                                                                             verticalAlign: "inherit",
                                                                                                         }}
                                                                                                     >
                                                                                                         ends with
+
                                                                                                     </font>
+
                                                                                                 </font>
+
                                                                                             </li>
+
                                                                                             <li
                                                                                                 role="option"
                                                                                                 className="ant-select-dropdown-menu-item"
@@ -3980,20 +3303,26 @@ return (
                                                                                                     )
                                                                                                 }
                                                                                             >
+
                                                                                                 <font
                                                                                                     style={{
                                                                                                         verticalAlign: "inherit",
                                                                                                     }}
                                                                                                 >
+
                                                                                                     <font
                                                                                                         style={{
                                                                                                             verticalAlign: "inherit",
                                                                                                         }}
                                                                                                     >
                                                                                                         in
+
                                                                                                     </font>
+
                                                                                                 </font>
+
                                                                                             </li>
+
                                                                                             <li
                                                                                                 role="option"
                                                                                                 className="ant-select-dropdown-menu-item"
@@ -4005,20 +3334,26 @@ return (
                                                                                                     )
                                                                                                 }
                                                                                             >
+
                                                                                                 <font
                                                                                                     style={{
                                                                                                         verticalAlign: "inherit",
                                                                                                     }}
                                                                                                 >
+
                                                                                                     <font
                                                                                                         style={{
                                                                                                             verticalAlign: "inherit",
                                                                                                         }}
                                                                                                     >
                                                                                                         not equal to
+
                                                                                                     </font>
+
                                                                                                 </font>
+
                                                                                             </li>
+
                                                                                             <li
                                                                                                 role="option"
                                                                                                 className="ant-select-dropdown-menu-item"
@@ -4030,20 +3365,26 @@ return (
                                                                                                     )
                                                                                                 }
                                                                                             >
+
                                                                                                 <font
                                                                                                     style={{
                                                                                                         verticalAlign: "inherit",
                                                                                                     }}
                                                                                                 >
+
                                                                                                     <font
                                                                                                         style={{
                                                                                                             verticalAlign: "inherit",
                                                                                                         }}
                                                                                                     >
                                                                                                         more than the
+
                                                                                                     </font>
+
                                                                                                 </font>
+
                                                                                             </li>
+
                                                                                             <li
                                                                                                 role="option"
                                                                                                 className="ant-select-dropdown-menu-item"
@@ -4055,20 +3396,26 @@ return (
                                                                                                     )
                                                                                                 }
                                                                                             >
+
                                                                                                 <font
                                                                                                     style={{
                                                                                                         verticalAlign: "inherit",
                                                                                                     }}
                                                                                                 >
+
                                                                                                     <font
                                                                                                         style={{
                                                                                                             verticalAlign: "inherit",
                                                                                                         }}
                                                                                                     >
                                                                                                         greater or equal to
+
                                                                                                     </font>
+
                                                                                                 </font>
+
                                                                                             </li>
+
                                                                                             <li
                                                                                                 role="option"
                                                                                                 className="ant-select-dropdown-menu-item"
@@ -4080,20 +3427,26 @@ return (
                                                                                                     )
                                                                                                 }
                                                                                             >
+
                                                                                                 <font
                                                                                                     style={{
                                                                                                         verticalAlign: "inherit",
                                                                                                     }}
                                                                                                 >
+
                                                                                                     <font
                                                                                                         style={{
                                                                                                             verticalAlign: "inherit",
                                                                                                         }}
                                                                                                     >
                                                                                                         less than
+
                                                                                                     </font>
+
                                                                                                 </font>
+
                                                                                             </li>
+
                                                                                             <li
                                                                                                 role="option"
                                                                                                 className="ant-select-dropdown-menu-item"
@@ -4105,24 +3458,30 @@ return (
                                                                                                     )
                                                                                                 }
                                                                                             >
+
                                                                                                 <font
                                                                                                     style={{
                                                                                                         verticalAlign: "inherit",
                                                                                                     }}
                                                                                                 >
+
                                                                                                     <font
                                                                                                         style={{
                                                                                                             verticalAlign: "inherit",
                                                                                                         }}
                                                                                                     >
                                                                                                         less than or equal to
+
                                                                                                     </font>
+
                                                                                                 </font>
+
                                                                                             </li>
                                                                                         </ul>
                                                                                     </div>
                                                                                 </div>
                                                                             )}
+
 
                                                                             <span
                                                                                 unselectable="on"
@@ -4151,6 +3510,7 @@ return (
                                                                                         <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
                                                                                     </svg>
                                                                                 </i>
+
                                                                             </span>
                                                                         </div>
                                                                     </div>
@@ -4305,14 +3665,18 @@ return (
                                                                 <div className="ant-card-head-wrapper">
                                                                     <div className="ant-card-head-title">
                                                                         <div data-v-3d25e7a4>
+
                                                                             <font
                                                                                 style={{ verticalAlign: "inherit" }}
                                                                             >
+
                                                                                 <font
                                                                                     style={{ verticalAlign: "inherit" }}
                                                                                 >
                                                                                     saved query
+
                                                                                 </font>
+
                                                                             </font>
                                                                         </div>
                                                                     </div>
@@ -4378,12 +3742,16 @@ return (
                                                                         </svg>
                                                                     </div>
                                                                     <p className="ant-empty-description">
+
                                                                         <font style={{ verticalAlign: "inherit" }}>
+
                                                                             <font
                                                                                 style={{ verticalAlign: "inherit" }}
                                                                             >
                                                                                 no queries saved
+
                                                                             </font>
+
                                                                         </font>
                                                                     </p>
                                                                 </div>
@@ -4398,21 +3766,33 @@ return (
                                     <div className="ant-modal-footer">
                                         <div data-v-3d25e7a4 style={{ float: "left" }}>
                                             <button data-v-3d25e7a4 type="button" className="ant-btn">
+
                                                 <span>
+
                                                     <font style={{ verticalAlign: "inherit" }}>
+
                                                         <font style={{ verticalAlign: "inherit" }}>
                                                             reset
+
                                                         </font>
+
                                                     </font>
+
                                                 </span>
                                             </button>
                                             <button data-v-3d25e7a4 type="button" className="ant-btn">
+
                                                 <span>
+
                                                     <font style={{ verticalAlign: "inherit" }}>
+
                                                         <font style={{ verticalAlign: "inherit" }}>
                                                             save query
+
                                                         </font>
+
                                                     </font>
+
                                                 </span>
                                             </button>
                                         </div>
@@ -4424,12 +3804,18 @@ return (
                                             type="button"
                                             className="ant-btn"
                                         >
+
                                             <span>
+
                                                 <font style={{ verticalAlign: "inherit" }}>
+
                                                     <font style={{ verticalAlign: "inherit" }}>
                                                         closure
+
                                                     </font>
+
                                                 </font>
+
                                             </span>
                                         </button>
                                         <button
@@ -4437,12 +3823,18 @@ return (
                                             type="button"
                                             className="ant-btn ant-btn-primary"
                                         >
+
                                             <span>
+
                                                 <font style={{ verticalAlign: "inherit" }}>
+
                                                     <font style={{ verticalAlign: "inherit" }}>
                                                         Inquire
+
                                                     </font>
+
                                                 </font>
+
                                             </span>
                                         </button>
                                     </div>
