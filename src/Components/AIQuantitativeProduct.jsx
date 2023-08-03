@@ -5,7 +5,7 @@ import EditQuantitaveProduct from "../Forms/EditQuantitaveProduct";
 import { toast } from "react-hot-toast";
 
 function AIQuantitativeProduct() {
-    const { getproducts, quantitativeProduct, addSecondProduct } = useContext(MyContext)
+    const { getproducts, quantitativeProduct, getQuantitativeProduct } = useContext(MyContext)
     const [showAdd, setShowAdd] = useState(false);
     const [selectedImagesNFT, setSelectedImagesNFT] = useState("");
     const [testingImage, setTestingImage] = useState('')
@@ -139,7 +139,7 @@ function AIQuantitativeProduct() {
             toast.success("Quantitative product created successfully", { id: 1 });
             setQuantitaveProduct("");
             setShowAdd(false);
-            getproducts();
+            
 
 
     
@@ -166,8 +166,8 @@ function AIQuantitativeProduct() {
 
 
     useEffect(() => {
-        getproducts();
-    }, [addSecondProduct])
+        getQuantitativeProduct();
+    }, [addQuantitaveProduct])
 
     return (
         <div>

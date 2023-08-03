@@ -1,10 +1,13 @@
 import React, { useContext, useState } from "react";
 import { MyContext } from "../Context/MyContext";
 import EditMiningProduct from "../Forms/EditMiningProduct";
+import { toast } from "react-hot-toast";
+import apis from "../Services";
 
 function MiningMachineProducts() {
     const { miningProduct, getMiningProductProduct } = useContext(MyContext)
     const [addMiningShow, setAddMiningShow] = useState(false)
+    const [showCurrency, setshowCurrency] = useState(false);
 
     const [addMiningProduct, setMiningProduct] = useState({
         product_name: "",
@@ -39,6 +42,42 @@ function MiningMachineProducts() {
     };
 
 
+    const CreateSecondContractProduct = async () => {
+
+        if (!addMiningProduct.product_name  == "" &&
+            !addMiningProduct.product_life == "" &&
+            !addMiningProduct.product_to_sort == "" &&
+            !addMiningProduct.product_status == "" &&
+            !addMiningProduct.unit_price == "" &&
+            !addMiningProduct.maximum_amount == "" &&
+            !addMiningProduct.minimum_amount == "" &&
+            !addMiningProduct.maximum_output == "" &&
+            !addMiningProduct.minimum_output == "" &&
+            !addMiningProduct.computing_power == "" &&
+            !addMiningProduct.power == ""
+            
+        ) {
+
+            const resut = await apis.createMiningProduct({
+                "product_name" : addMiningProduct.product_name,
+                "product_life":addMiningProduct.product_life,
+                "product_to_sort":addMiningProduct.product_to_sort ,
+                "product_status":addMiningProduct.product_status,
+                "unit_price":addMiningProduct.unit_price,
+                "maximum_amount":addMiningProduct.maximum_amount,
+                "minimum_amount":addMiningProduct.minimum_amount,
+                "maximum_output":addMiningProduct.maximum_output,
+                "minimum_output":addMiningProduct.minimum_output,
+                "computing_power":addMiningProduct.computing_power,
+                "power":addMiningProduct.power
+            })
+            toast.success(resut.data.message, { id: 1 });
+            setAddMiningShow(false);
+            setMiningProduct("")
+        } else {
+            toast.error("Please input data all required fields", { id: 1 });
+        }
+    }
 
 
 
@@ -1187,6 +1226,10 @@ function MiningMachineProducts() {
                                                                                 type="text"
                                                                                 className="ant-input"
                                                                                 fdprocessedid="utkn1w"
+                                                                                name="product_name"
+                                                                                value={addMiningProduct?.product_name
+                                                                                }
+                                                                                onChange={handleInputChange}
                                                                             />
                                                                         </span>
                                                                         {/**/}
@@ -1277,6 +1320,10 @@ function MiningMachineProducts() {
                                                                                         step={1}
                                                                                         className="ant-input-number-input"
                                                                                         fdprocessedid="zsobul"
+                                                                                        name="product_life"
+                                                                                        value={addMiningProduct?.product_life
+                                                                                        }
+                                                                                        onChange={handleInputChange}
                                                                                     />
                                                                                 </div>
                                                                             </div>
@@ -1369,6 +1416,10 @@ function MiningMachineProducts() {
                                                                                         step={1}
                                                                                         className="ant-input-number-input"
                                                                                         fdprocessedid="b3vyo6"
+                                                                                        name="product_to_sort"
+                                                                                        value={addMiningProduct?.product_to_sort
+                                                                                        }
+                                                                                        onChange={handleInputChange}
                                                                                     />
                                                                                 </div>
                                                                             </div>
@@ -1379,85 +1430,243 @@ function MiningMachineProducts() {
                                                             </div>
                                                         </div>
                                                         <div className="ant-col ant-col-24">
-                                                            <div className="ant-row ant-form-item">
-                                                                <div className="ant-col ant-col-xs-24 ant-col-sm-5 ant-form-item-label">
-                                                                    <label
-                                                                        title="product status"
-                                                                        className="ant-form-item-required"
-                                                                    >
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            <font style={{ verticalAlign: "inherit" }}>
-                                                                                product status
-                                                                            </font>
-                                                                        </font>
-                                                                    </label>
-                                                                </div>
-                                                                <div className="ant-col ant-col-xs-24 ant-col-sm-16 ant-form-item-control-wrapper">
-                                                                    <div className="ant-form-item-control">
-                                                                        <span className="ant-form-item-children">
-                                                                            <div
-                                                                                data-v-17b4e467
-                                                                                tabIndex={0}
-                                                                                className="ant-select ant-select-enabled"
+                                                                    <div className="ant-row ant-form-item">
+                                                                        <div className="ant-col ant-col-xs-24 ant-col-sm-5 ant-form-item-label">
+                                                                            <label
+                                                                                title="product status"
+                                                                                className="ant-form-item-required"
                                                                             >
-                                                                                <div
-                                                                                    role="combobox"
-                                                                                    aria-autocomplete="list"
-                                                                                    aria-haspopup="true"
-                                                                                    aria-controls="6219dfd3-54c3-4b9f-986a-40b894760e08"
-                                                                                    className="ant-select-selection ant-select-selection--single"
+                                                                                <font
+                                                                                    style={{ verticalAlign: "inherit" }}
                                                                                 >
-                                                                                    <div className="ant-select-selection__rendered">
-                                                                                        <div
-                                                                                            unselectable="on"
-                                                                                            className="ant-select-selection__placeholder"
-                                                                                            style={{
-                                                                                                display: "block",
-                                                                                                userSelect: "none",
-                                                                                            }}
-                                                                                        >
-                                                                                            <font
-                                                                                                style={{ verticalAlign: "inherit" }}
-                                                                                            >
-                                                                                                <font
-                                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                                >
-                                                                                                    Please select a product status
-                                                                                                </font>
-                                                                                            </font>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <span
-                                                                                        unselectable="on"
-                                                                                        className="ant-select-arrow"
-                                                                                        style={{ userSelect: "none" }}
+                                                                                    <font
+                                                                                        style={{ verticalAlign: "inherit" }}
                                                                                     >
-                                                                                        <i
-                                                                                            aria-label="icon: down"
-                                                                                            className="anticon anticon-down ant-select-arrow-icon"
+                                                                                        product status
+                                                                                    </font>
+                                                                                </font>
+                                                                            </label>
+                                                                        </div>
+                                                                        <div className="ant-col ant-col-xs-24 ant-col-sm-16 ant-form-item-control-wrapper">
+                                                                            <div className="ant-form-item-control">
+                                                                                <span className="ant-form-item-children">
+                                                                                    <div
+                                                                                        data-v-17b4e467
+                                                                                        tabIndex={0}
+                                                                                        className="ant-select ant-select-enabled"
+                                                                                        onClick={() =>
+                                                                                            setshowCurrency(!showCurrency)
+                                                                                        }
+                                                                                    >
+                                                                                        <div
+                                                                                            role="combobox"
+                                                                                            aria-autocomplete="list"
+                                                                                            aria-haspopup="true"
+                                                                                            aria-controls="55c9fdb7-9025-4afe-c57a-5a20b62add5f"
+                                                                                            className="ant-select-selection ant-select-selection--single"
                                                                                         >
-                                                                                            <svg
-                                                                                                viewBox="64 64 896 896"
-                                                                                                data-icon="down"
-                                                                                                width="1em"
-                                                                                                height="1em"
-                                                                                                fill="currentColor"
-                                                                                                aria-hidden="true"
-                                                                                                focusable="false"
-                                                                                                className
+                                                                                            <div className="ant-select-selection__rendered">
+                                                                                                <div
+                                                                                                    className={
+                                                                                                        "ant-select-selection__placeholder1"
+                                                                                                    }
+                                                                                                    unselectable="on"
+                                                                                                    style={{
+                                                                                                        display: "block",
+                                                                                                        userSelect: "none",
+                                                                                                    }}
+                                                                                                >
+                                                                                                    <font
+                                                                                                        style={{
+                                                                                                            verticalAlign: "inherit",
+                                                                                                        }}
+                                                                                                    >
+                                                                                                        <font
+                                                                                                            style={{
+                                                                                                                verticalAlign:
+                                                                                                                    "inherit",
+                                                                                                            }}
+                                                                                                        >
+                                                                                                            {addMiningProduct?.product_status
+                                                                                                                ? addMiningProduct?.product_status
+                                                                                                                : "Please Select Status"}
+                                                                                                        </font>
+                                                                                                    </font>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <span
+                                                                                                unselectable="on"
+                                                                                                className="ant-select-arrow"
+                                                                                                style={{ userSelect: "none" }}
                                                                                             >
-                                                                                                <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                                            </svg>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                </div>
+                                                                                                <i
+                                                                                                    aria-label="icon: down"
+                                                                                                    className="anticon anticon-down ant-select-arrow-icon"
+                                                                                                >
+                                                                                                    <svg
+                                                                                                        viewBox="64 64 896 896"
+                                                                                                        data-icon="down"
+                                                                                                        width="1em"
+                                                                                                        height="1em"
+                                                                                                        fill="currentColor"
+                                                                                                        aria-hidden="true"
+                                                                                                        focusable="false"
+                                                                                                        className
+                                                                                                    >
+                                                                                                        <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
+                                                                                                    </svg>
+                                                                                                </i>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        {showCurrency && ( ///aliant-select ant-select-enabled
+                                                                                            <div
+                                                                                                className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft"
+                                                                                                style={{
+                                                                                                    width: "100%",
+                                                                                                    left: "0px",
+                                                                                                    top: "30px",
+                                                                                                    display: "flex",
+                                                                                                }}
+                                                                                            >
+                                                                                                <div
+                                                                                                    id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51"
+                                                                                                    tabIndex={-1}
+                                                                                                    className="ant-select-dropdown-content"
+                                                                                                    style={{
+                                                                                                        overflow: "auto",
+                                                                                                        transform:
+                                                                                                            "translateZ(0px)",
+                                                                                                        width: "100%",
+                                                                                                    }}
+                                                                                                >
+                                                                                                    <ul
+                                                                                                        role="listbox"
+                                                                                                        onClick={() => {
+                                                                                                            setshowCurrency(
+                                                                                                                !showCurrency
+                                                                                                            );
+                                                                                                        }}
+                                                                                                        tabIndex={0}
+                                                                                                        className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root"
+                                                                                                    >
+                                                                                                        <li
+                                                                                                            name="product_name"
+                                                                                                            role="option"
+                                                                                                            className="ant-select-dropdown-menu-item"
+                                                                                                            unselectable="on"
+                                                                                                            style={{
+                                                                                                                userSelect: "none",
+                                                                                                            }}
+                                                                                                        >
+                                                                                                            <font
+                                                                                                                style={{
+                                                                                                                    verticalAlign:
+                                                                                                                        "inherit",
+                                                                                                                }}
+                                                                                                            >
+                                                                                                                <font
+                                                                                                                    style={{
+                                                                                                                        verticalAlign:
+                                                                                                                            "inherit",
+                                                                                                                    }}
+                                                                                                                >
+                                                                                                                    Product Status
+                                                                                                                </font>
+                                                                                                            </font>
+                                                                                                        </li>
+
+                                                                                                        <li
+                                                                                                            onClick={() => {
+                                                                                                                handleInputChange2(
+                                                                                                                    "product_status",
+                                                                                                                    "not_available"
+                                                                                                                );
+                                                                                                            }}
+                                                                                                            role="option"
+                                                                                                            className="ant-select-dropdown-menu-item"
+                                                                                                            unselectable="on"
+                                                                                                            style={{
+                                                                                                                userSelect: "none",
+                                                                                                            }}
+                                                                                                        >
+                                                                                                            <span
+                                                                                                                data-v-17b4e467
+                                                                                                                title="BTC"
+                                                                                                                style={{
+                                                                                                                    display:
+                                                                                                                        "inline-block",
+                                                                                                                    width: "100%",
+                                                                                                                }}
+                                                                                                            >
+                                                                                                                <font
+                                                                                                                    style={{
+                                                                                                                        verticalAlign:
+                                                                                                                            "inherit",
+                                                                                                                    }}
+                                                                                                                >
+                                                                                                                    <font
+                                                                                                                        style={{
+                                                                                                                            verticalAlign:
+                                                                                                                                "inherit",
+                                                                                                                        }}
+                                                                                                                    >
+                                                                                                                        Not Available
+                                                                                                                    </font>
+                                                                                                                </font>
+                                                                                                            </span>
+                                                                                                        </li>
+
+                                                                                                        <li
+                                                                                                            onClick={() => {
+                                                                                                                handleInputChange2(
+                                                                                                                    "product_status",
+                                                                                                                    "added"
+                                                                                                                );
+                                                                                                            }}
+                                                                                                            role="option"
+                                                                                                            className="ant-select-dropdown-menu-item"
+                                                                                                            unselectable="on"
+                                                                                                            style={{
+                                                                                                                userSelect: "none",
+                                                                                                            }}
+                                                                                                        >
+                                                                                                            <span
+                                                                                                                data-v-17b4e467
+                                                                                                                title="USDT"
+                                                                                                                style={{
+                                                                                                                    display:
+                                                                                                                        "inline-block",
+                                                                                                                    width: "100%",
+                                                                                                                }}
+                                                                                                            >
+                                                                                                                <font
+                                                                                                                    style={{
+                                                                                                                        verticalAlign:
+                                                                                                                            "inherit",
+                                                                                                                    }}
+                                                                                                                >
+                                                                                                                    <font
+                                                                                                                        style={{
+                                                                                                                            verticalAlign:
+                                                                                                                                "inherit",
+                                                                                                                        }}
+                                                                                                                    >
+                                                                                                                        It has been added to
+                                                                                                                    </font>
+                                                                                                                </font>
+                                                                                                            </span>
+                                                                                                        </li>
+                                                                                                    </ul>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        )}
+                                                                                    </div>
+                                                                                </span>
                                                                             </div>
-                                                                        </span>
-                                                                        {/**/}
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                        </div>
                                                         {/**/}
                                                         <div className="ant-col ant-col-24">
                                                             <div className="ant-row ant-form-item">
@@ -1540,6 +1749,10 @@ function MiningMachineProducts() {
                                                                                         step={1}
                                                                                         className="ant-input-number-input"
                                                                                         fdprocessedid="t2s22c"
+                                                                                        name="unit_price"
+                                                                                        value={addMiningProduct?.unit_price
+                                                                                        }
+                                                                                        onChange={handleInputChange}
                                                                                     />
                                                                                 </div>
                                                                             </div>
@@ -1630,6 +1843,10 @@ function MiningMachineProducts() {
                                                                                         step={1}
                                                                                         className="ant-input-number-input"
                                                                                         fdprocessedid="kf67ij"
+                                                                                        name="minimum_amount"
+                                                                                        value={addMiningProduct?.minimum_amount
+                                                                                        }
+                                                                                        onChange={handleInputChange}
                                                                                     />
                                                                                 </div>
                                                                             </div>
@@ -1720,6 +1937,10 @@ function MiningMachineProducts() {
                                                                                         step={1}
                                                                                         className="ant-input-number-input"
                                                                                         fdprocessedid="bf0ui"
+                                                                                        name="maximum_amount"
+                                                                                        value={addMiningProduct?.maximum_amount
+                                                                                        }
+                                                                                        onChange={handleInputChange}
                                                                                     />
                                                                                 </div>
                                                                             </div>
@@ -1810,6 +2031,10 @@ function MiningMachineProducts() {
                                                                                         step={1}
                                                                                         className="ant-input-number-input"
                                                                                         fdprocessedid="dzr3o"
+                                                                                        name="maximum_output"
+                                                                                        value={addMiningProduct?.maximum_output
+                                                                                        }
+                                                                                        onChange={handleInputChange}
                                                                                     />
                                                                                 </div>
                                                                             </div>
@@ -1900,6 +2125,10 @@ function MiningMachineProducts() {
                                                                                         step={1}
                                                                                         className="ant-input-number-input"
                                                                                         fdprocessedid="76von"
+                                                                                        name="minimum_output"
+                                                                                        value={addMiningProduct?.minimum_output
+                                                                                        }
+                                                                                        onChange={handleInputChange}
                                                                                     />
                                                                                 </div>
                                                                             </div>
@@ -1990,6 +2219,10 @@ function MiningMachineProducts() {
                                                                                         step={1}
                                                                                         className="ant-input-number-input"
                                                                                         fdprocessedid="o8geqb"
+                                                                                        name="computing_power"
+                                                                                        value={addMiningProduct?.computing_power
+                                                                                        }
+                                                                                        onChange={handleInputChange}
                                                                                     />
                                                                                 </div>
                                                                             </div>
@@ -2080,6 +2313,9 @@ function MiningMachineProducts() {
                                                                                         step={1}
                                                                                         className="ant-input-number-input"
                                                                                         fdprocessedid="2xt208"
+                                                                                        name="power"
+                                                                                        value={addMiningProduct?.power}
+                                                                                        onChange={handleInputChange}
                                                                                     />
                                                                                 </div>
                                                                             </div>
@@ -2106,7 +2342,7 @@ function MiningMachineProducts() {
                                             </font>
                                         </span>
                                     </button>
-                                    <button
+                                    <button onClick={()=>CreateSecondContractProduct()}
                                         type="button"
                                         className="ant-btn ant-btn-primary"
                                         fdprocessedid="lvd3fa"
@@ -2128,7 +2364,6 @@ function MiningMachineProducts() {
                     </div>
                 </div>
             }
-
 
         </div>
     );
