@@ -85,12 +85,15 @@ const [sideBarExpand, setsideBarExpand] = useState(true)
         }
     }
 
+    const [alluserWallets, setAllUserWallet] = useState([])
 
-
-
-
-
-    
+    const getAllUserWallet = async () => {
+        const response = await apis.getAllUserWallets();
+        console.log("response", response);
+        if (response?.data?.status) {
+            setAllUserWallet(response?.data?.wallet);
+        }
+    }
 
 
 
@@ -103,6 +106,7 @@ const [sideBarExpand, setsideBarExpand] = useState(true)
         getContractOrder();
         getUsers();
         getMiningProductProduct();
+        getAllUserWallet()
     }, [])
 
 
@@ -111,7 +115,7 @@ const [sideBarExpand, setsideBarExpand] = useState(true)
 
 
 const state = { sideBarExpand, setsideBarExpand, contractProduct, getproducts, contractOrder, user, quantitativeProduct,getQuantitativeProduct,miningProduct,
-    getMiningProductProduct,quantitativeOrder,miningOrder,getMiningOders}
+    getMiningProductProduct,quantitativeOrder,miningOrder,getMiningOders,alluserWallets,getAllUserWallet}
     return (
         <MyContext.Provider value={state}>
             {children}

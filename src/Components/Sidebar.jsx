@@ -129,9 +129,11 @@ function Sidebar() {
                                 User Management
                             </div>
                         </NavLink>
+                        <NavLink to='/wallet-management'>
                         <div className='DropDownItem'>
                             Wallet Management
                         </div>
+                        </NavLink>
                         <div className='DropDownItem'>
                             Query Address ETH
                         </div>

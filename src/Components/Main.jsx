@@ -11,6 +11,7 @@ import MiningMachineProducts from './MiningMachineProducts'
 import QuantitativeOrder from './QuantitativeOrder'
 import MiningMachineOrder from './MiningMachineOrder'
 import WithdrawalManagement from './WithdrawalManagement'
+import WalletManagement from './WalletManagement'
 function Main() {
     return (
         <div className='Main'>
@@ -28,6 +29,8 @@ function Main() {
                     <Route path='/withdrawal-management' element={<WithdrawalManagement />} />
                     <Route path='/pending' element={<Pending />} />
                     <Route path='/user-management' element={<UserManagement />} />
+                    <Route path='/wallet-management' element={<WalletManagement/>} />
+
                 </Routes>
 
             </div>

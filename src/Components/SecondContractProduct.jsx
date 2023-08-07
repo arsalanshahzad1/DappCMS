@@ -1578,7 +1578,7 @@ function SecondContractProduct() {
                                                                                                             </font>
                                                                                                         </font>
                                                                                                     </span>
-                                                                                                </li></ul></div></div>
+                                                                                    </li></ul></div></div>
                                                                                     }
                                                                                 </div>
 
