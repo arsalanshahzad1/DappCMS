@@ -104,11 +104,16 @@ const EditQuantitaveProduct = ({ data, index }) => {
             addQuantitaveProduct?.minimum_rate_of_return,
             addQuantitaveProduct?.image,
         );
+        
+        if(addQuantitaveProduct?.minimum_amount > addQuantitaveProduct?.maximum_amount){
+            toast.error("minimum amount must be less than maximum amount");
+            return
+        } 
 
 
         const formdata = new FormData();
         
-        formdata.append("product_name", addQuantitaveProduct.product_name)
+            formdata.append("product_name", addQuantitaveProduct.product_name)
             formdata.append("product_life", addQuantitaveProduct.product_life)
             formdata.append("product_to_sort",addQuantitaveProduct.product_to_sort)
             formdata.append("product_status",addQuantitaveProduct.product_status)
@@ -558,8 +563,8 @@ const EditQuantitaveProduct = ({ data, index }) => {
                                                                                                 aria-valuemin={
                                                                                                     -9007199254740991
                                                                                                 }
-                                                                                                type="list"
-                                                                                                placeholder="Please select sort"
+                                                                                                type="number"
+                                                                                                placeholder="Please enter product life"
                                                                                                 autoComplete="off"
                                                                                                 min={-9007199254740991}
                                                                                                 step={1}
@@ -660,8 +665,8 @@ const EditQuantitaveProduct = ({ data, index }) => {
                                                                                                 aria-valuemin={
                                                                                                     -9007199254740991
                                                                                                 }
-                                                                                                type="list"
-                                                                                                placeholder="Please select sort"
+                                                                                                type="number"
+                                                                                                placeholder="Please enter sort"
                                                                                                 autoComplete="off"
                                                                                                 min={-9007199254740991}
                                                                                                 step={1}
@@ -998,8 +1003,8 @@ const EditQuantitaveProduct = ({ data, index }) => {
                                                                                                 aria-valuemin={
                                                                                                     -9007199254740991
                                                                                                 }
-                                                                                                type="list"
-                                                                                                placeholder="Please select sort"
+                                                                                                type="number"
+                                                                                                placeholder="Please enter maximum amount"
                                                                                                 autoComplete="off"
                                                                                                 min={-9007199254740991}
                                                                                                 step={1}
@@ -1100,10 +1105,11 @@ const EditQuantitaveProduct = ({ data, index }) => {
                                                                                                 aria-valuemin={
                                                                                                     -9007199254740991
                                                                                                 }
-                                                                                                placeholder="Please enter the delivery time (seconds)"
+                                                                                                placeholder="Please enter minimum amount"
                                                                                                 autoComplete="off"
                                                                                                 min={-9007199254740991}
                                                                                                 step={1}
+                                                                                                type="number"
                                                                                                 className="ant-input-number-input"
                                                                                                 aria-valuenow={60}
                                                                                                 // defaultValue={data?.deliveryTime}
@@ -1202,8 +1208,8 @@ const EditQuantitaveProduct = ({ data, index }) => {
                                                                                                 aria-valuemin={
                                                                                                     -9007199254740991
                                                                                                 }
-                                                                                                type="list"
-                                                                                                placeholder="Please select sort"
+                                                                                                type="number"
+                                                                                                placeholder="Please enter maximum yield"
                                                                                                 autoComplete="off"
                                                                                                 min={-9007199254740991}
                                                                                                 step={1}
@@ -1305,8 +1311,8 @@ const EditQuantitaveProduct = ({ data, index }) => {
                                                                                                 aria-valuemin={
                                                                                                     -9007199254740991
                                                                                                 }
-                                                                                                type="list"
-                                                                                                placeholder="Please select sort"
+                                                                                                type="number"
+                                                                                                placeholder="Please enter minimum rate of return"
                                                                                                 autoComplete="off"
                                                                                                 min={-9007199254740991}
                                                                                                 step={1}
@@ -1809,8 +1815,8 @@ const EditQuantitaveProduct = ({ data, index }) => {
                                                                                                 aria-valuemin={
                                                                                                     -9007199254740991
                                                                                                 }
-                                                                                                type="list"
-                                                                                                placeholder="Please select sort"
+                                                                                                type="number"
+                                                                                                placeholder="Please enter product life"
                                                                                                 autoComplete="off"
                                                                                                 min={-9007199254740991}
                                                                                                 step={1}
@@ -1911,8 +1917,8 @@ const EditQuantitaveProduct = ({ data, index }) => {
                                                                                                 aria-valuemin={
                                                                                                     -9007199254740991
                                                                                                 }
-                                                                                                type="list"
-                                                                                                placeholder="Please select sort"
+                                                                                                type="number"
+                                                                                                placeholder="Please enter sort"
                                                                                                 autoComplete="off"
                                                                                                 min={-9007199254740991}
                                                                                                 step={1}
@@ -2107,8 +2113,8 @@ const EditQuantitaveProduct = ({ data, index }) => {
                                                                                                 aria-valuemin={
                                                                                                     -9007199254740991
                                                                                                 }
-                                                                                                type="list"
-                                                                                                placeholder="Please select sort"
+                                                                                                type="number"
+                                                                                                placeholder="Please enter maximum_amount"
                                                                                                 autoComplete="off"
                                                                                                 min={-9007199254740991}
                                                                                                 step={1}
@@ -2209,10 +2215,11 @@ const EditQuantitaveProduct = ({ data, index }) => {
                                                                                                 aria-valuemin={
                                                                                                     -9007199254740991
                                                                                                 }
-                                                                                                placeholder="Please enter the delivery time (seconds)"
+                                                                                                placeholder="Please enter minimum_amount"
                                                                                                 autoComplete="off"
                                                                                                 min={-9007199254740991}
                                                                                                 step={1}
+                                                                                                type="number"
                                                                                                 className="ant-input-number-input"
                                                                                                 aria-valuenow={60}
                                                                                                 // defaultValue={data?.deliveryTime}
@@ -2311,8 +2318,8 @@ const EditQuantitaveProduct = ({ data, index }) => {
                                                                                                 aria-valuemin={
                                                                                                     -9007199254740991
                                                                                                 }
-                                                                                                type="list"
-                                                                                                placeholder="Please select sort"
+                                                                                                type="number"
+                                                                                                placeholder="Please enter maximum_yield"
                                                                                                 autoComplete="off"
                                                                                                 min={-9007199254740991}
                                                                                                 step={1}
@@ -2413,8 +2420,8 @@ const EditQuantitaveProduct = ({ data, index }) => {
                                                                                                 aria-valuemin={
                                                                                                     -9007199254740991
                                                                                                 }
-                                                                                                type="list"
-                                                                                                placeholder="Please select sort"
+                                                                                                type="number"
+                                                                                                placeholder="Please enter minimum_rate_of_return"
                                                                                                 autoComplete="off"
                                                                                                 min={-9007199254740991}
                                                                                                 step={1}

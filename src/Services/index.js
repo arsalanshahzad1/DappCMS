@@ -59,6 +59,7 @@ const createBackendServer = (baseURL) => {
     const createSecondContracProduct = async (body) => await api.post(`admin/contract-product`, body)
     const UpdateSecondContracProduct = async (prams, body) => await api.put(`admin/contract-product/${prams}`, body)
     const getContractDetails = async (body, type) => await api.get(`coins-details${body}?type=${type}`);
+    const getAllContracCurrency = async (body) => await api.get(`contract?coin=${body}`);
 
     //secondContractOrder
     const getAllSecondContracOrder = async () => await api.get(`admin/contract-order`);
@@ -126,6 +127,6 @@ const createBackendServer = (baseURL) => {
     };
 };
 
-const apis = createBackendServer("http://192.168.5.2:5000");
+const apis = createBackendServer("http://localhost:5000");
 
 export default apis;

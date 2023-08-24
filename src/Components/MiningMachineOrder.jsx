@@ -2104,7 +2104,7 @@ return (
                                                                             <span className="ant-form-item-children">
                                                                                 <input
                                                                                     placeholder="Please enter the amount"
-                                                                                    type="text"
+                                                                                    type="number"
                                                                                     className="ant-input"
                                                                                     fdprocessedid="fjehb"
                                                                                     name="amount"

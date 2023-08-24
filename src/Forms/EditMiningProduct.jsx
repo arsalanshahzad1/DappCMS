@@ -42,6 +42,16 @@ const handleInputChange2 = (name,value) => {
 
 
 const UpdateMiningProducts = async (id) => {
+
+    
+    if(addMiningProduct?.minimum_amount > addMiningProduct?.maximum_amount){
+        toast.error("minimum amount must be less than maximum amount");
+        return
+       }
+    else if(addMiningProduct?.minimum_output > addMiningProduct?.maximum_output){
+        toast.error("minimum output must be less than maximum output");
+        return
+       }
  
          const resut = await apis.UpdateMiningProduct(id,{
           "product_name" : addMiningProduct.product_name,
@@ -72,7 +82,6 @@ return (
     <div>
            <tr
                className="ant-table-row ant-table-row-level-0"
-               data-row-key={1595292128493756418}
                style={{
                    height: "49px",
                    position: "relative",
@@ -168,7 +177,7 @@ return (
 
                        <a
                            onMouseEnter={() => setOpenDropDown(true)}
-                           onMouseLeave={() => setOpenDropDown(true)}
+                           onMouseLeave={() => setOpenDropDown(false)}
                            data-v-19a4ac8a
                            className="ant-dropdown-link ant-dropdown-trigger"
                        >
@@ -194,22 +203,22 @@ return (
                                </svg>
                            </i>
                            <div
-                               className="ant-popover ant-popover-placement-top"
-                               style={{
-                                   position: "fixed",
-                                   left: "90%",
-                                   top: "48%",
-                                   zIndex: "9999",
-                                   transformOrigin: "50% 103px",
-                                   display: `${OpenDropDown ? "flex" : "none"}`,
-                               }}
-                            //    className="ant-dropdown ant-dropdown-placement-bottomLeft"
+                            //    className="ant-popover ant-popover-placement-top"
                             //    style={{
-                            //        left: "60px",
-                            //        top: "35px",
+                            //        position: "fixed",
+                            //        left: "90%",
+                            //        top: "48%",
+                            //        zIndex: "9999",
+                            //        transformOrigin: "50% 103px",
                             //        display: `${OpenDropDown ? "flex" : "none"}`,
-                            //        position: "absolute",
                             //    }}
+                               className="ant-dropdown ant-dropdown-placement-bottomLeft"
+                               style={{
+                                   left: "60px",
+                                   top: "35px",
+                                   display: `${OpenDropDown ? "flex" : "none"}`,
+                                   position: "absolute",
+                               }}
                            >
                                <ul
                                    data-v-19a4ac8a
@@ -467,7 +476,7 @@ return (
                                                                                     <input
                                                                                         role="spinbutton"
                                                                                         aria-valuemin={-9007199254740991}
-                                                                                        type="list"
+                                                                                        type="number"
                                                                                         placeholder="Please select a product cycle"
                                                                                         autoComplete="off"
                                                                                         min={-9007199254740991}
@@ -563,7 +572,7 @@ return (
                                                                                     <input
                                                                                         role="spinbutton"
                                                                                         aria-valuemin={-9007199254740991}
-                                                                                        type="list"
+                                                                                        type="number"
                                                                                         placeholder="Please select sort"
                                                                                         autoComplete="off"
                                                                                         min={-9007199254740991}
@@ -901,6 +910,7 @@ return (
                                                                                         autoComplete="off"
                                                                                         min={-9007199254740991}
                                                                                         step={1}
+                                                                                        type='number'
                                                                                         className="ant-input-number-input"
                                                                                         fdprocessedid="t2s22c"
                                                                                         name="unit_price"
@@ -995,6 +1005,7 @@ return (
                                                                                         autoComplete="off"
                                                                                         min={-9007199254740991}
                                                                                         step={1}
+                                                                                        type='number'
                                                                                         className="ant-input-number-input"
                                                                                         fdprocessedid="kf67ij"
                                                                                         name="minimum_amount"
@@ -1089,6 +1100,7 @@ return (
                                                                                         autoComplete="off"
                                                                                         min={-9007199254740991}
                                                                                         step={1}
+                                                                                        type='number'
                                                                                         className="ant-input-number-input"
                                                                                         fdprocessedid="bf0ui"
                                                                                         name="maximum_amount"
@@ -1183,6 +1195,7 @@ return (
                                                                                         autoComplete="off"
                                                                                         min={-9007199254740991}
                                                                                         step={1}
+                                                                                        type='number'
                                                                                         className="ant-input-number-input"
                                                                                         fdprocessedid="dzr3o"
                                                                                         name="maximum_output"
@@ -1277,6 +1290,7 @@ return (
                                                                                         autoComplete="off"
                                                                                         min={-9007199254740991}
                                                                                         step={1}
+                                                                                        type='number'
                                                                                         className="ant-input-number-input"
                                                                                         fdprocessedid="76von"
                                                                                         name="minimum_output"
@@ -1371,6 +1385,7 @@ return (
                                                                                         autoComplete="off"
                                                                                         min={-9007199254740991}
                                                                                         step={1}
+                                                                                        type='number'
                                                                                         className="ant-input-number-input"
                                                                                         fdprocessedid="o8geqb"
                                                                                         name="computing_power"
@@ -1465,6 +1480,7 @@ return (
                                                                                         autoComplete="off"
                                                                                         min={-9007199254740991}
                                                                                         step={1}
+                                                                                        type='number'
                                                                                         className="ant-input-number-input"
                                                                                         fdprocessedid="2xt208"
                                                                                         name="power"
@@ -1717,7 +1733,7 @@ return (
                                                                             <input
                                                                                 role="spinbutton"
                                                                                 aria-valuemin={-9007199254740991}
-                                                                                type="list"
+                                                                                type="number"
                                                                                 placeholder="Please select a product cycle"
                                                                                 autoComplete="off"
                                                                                 min={-9007199254740991}
@@ -1813,7 +1829,7 @@ return (
                                                                             <input
                                                                                 role="spinbutton"
                                                                                 aria-valuemin={-9007199254740991}
-                                                                                type="list"
+                                                                                type="number"
                                                                                 placeholder="Please select sort"
                                                                                 autoComplete="off"
                                                                                 min={-9007199254740991}
@@ -2151,6 +2167,7 @@ return (
                                                                                 autoComplete="off"
                                                                                 min={-9007199254740991}
                                                                                 step={1}
+                                                                                type='number'
                                                                                 className="ant-input-number-input"
                                                                                 fdprocessedid="t2s22c"
                                                                                 name="unit_price"
@@ -2245,6 +2262,7 @@ return (
                                                                                 autoComplete="off"
                                                                                 min={-9007199254740991}
                                                                                 step={1}
+                                                                                type='number'
                                                                                 className="ant-input-number-input"
                                                                                 fdprocessedid="kf67ij"
                                                                                 name="minimum_amount"
@@ -2339,6 +2357,7 @@ return (
                                                                                 autoComplete="off"
                                                                                 min={-9007199254740991}
                                                                                 step={1}
+                                                                                type='number'
                                                                                 className="ant-input-number-input"
                                                                                 fdprocessedid="bf0ui"
                                                                                 name="maximum_amount"
@@ -2433,6 +2452,7 @@ return (
                                                                                 autoComplete="off"
                                                                                 min={-9007199254740991}
                                                                                 step={1}
+                                                                                type='number'
                                                                                 className="ant-input-number-input"
                                                                                 fdprocessedid="dzr3o"
                                                                                 name="maximum_output"
@@ -2527,6 +2547,7 @@ return (
                                                                                 autoComplete="off"
                                                                                 min={-9007199254740991}
                                                                                 step={1}
+                                                                                type='number'
                                                                                 className="ant-input-number-input"
                                                                                 fdprocessedid="76von"
                                                                                 name="minimum_output"
@@ -2621,6 +2642,7 @@ return (
                                                                                 autoComplete="off"
                                                                                 min={-9007199254740991}
                                                                                 step={1}
+                                                                                type='number'
                                                                                 className="ant-input-number-input"
                                                                                 fdprocessedid="o8geqb"
                                                                                 name="computing_power"
@@ -2715,6 +2737,7 @@ return (
                                                                                 autoComplete="off"
                                                                                 min={-9007199254740991}
                                                                                 step={1}
+                                                                                type='number'
                                                                                 className="ant-input-number-input"
                                                                                 fdprocessedid="2xt208"
                                                                                 name="power"

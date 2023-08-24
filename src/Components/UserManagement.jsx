@@ -5,7 +5,33 @@ import { MyContext } from "../Context/MyContext";
 
 function UserManagement() {
 
-    const {user} = useContext(MyContext)
+    const {user,getAllUserWallet} = useContext(MyContext)
+
+    useEffect(()=>{
+     getAllUserWallet();
+    },[])
+
+    const[search ,setSearch]=useState({
+    username :"",
+    actualname :"",
+    Whethertoauthorize :"",
+    realauthorization :"",
+    acting :"",
+    })
+
+
+
+     // Event handler to update the state on input change
+     const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setSearch((prevState) => ({
+            ...prevState,
+            [name]: value, // Update the corresponding property based on the input name
+        }));
+    };
+
+
+
     // const [user, setUser] = useState([])
 
     // const getUsers = async () => {
@@ -39,6 +65,9 @@ function UserManagement() {
                                                 className="InputItemfield"
                                                 type="text"
                                                 placeholder="Please Enter your username"
+                                                name="username"
+                                                value={search.username}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -48,7 +77,10 @@ function UserManagement() {
                                             <input
                                                 className="InputItemfield"
                                                 type="text"
-                                                placeholder="Please Enter your username"
+                                                placeholder="Please Enter your actual name "
+                                                name="actualname"
+                                                value={search.actualname}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -58,7 +90,10 @@ function UserManagement() {
                                             <input
                                                 className="InputItemfield"
                                                 type="text"
-                                                placeholder="Please Enter your username"
+                                                placeholder="Please Enter your "
+                                                name="Whethertoauthorize"
+                                                value={search.Whethertoauthorize}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -68,7 +103,10 @@ function UserManagement() {
                                             <input
                                                 className="InputItemfield"
                                                 type="text"
-                                                placeholder="Please Enter your username"
+                                                placeholder="Please Enter "
+                                                name="realauthorization"
+                                                value={search.realauthorization}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -78,7 +116,10 @@ function UserManagement() {
                                             <input
                                                 className="InputItemfield"
                                                 type="text"
-                                                placeholder="Please Enter your username"
+                                                placeholder="Please Enter "
+                                                name="acting"
+                                                value={search.acting}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>

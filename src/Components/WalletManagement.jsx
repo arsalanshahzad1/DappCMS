@@ -1,10 +1,26 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { MyContext } from '../Context/MyContext'
 import EditWalletManagement from '../Forms/EditWalletManagement'
 
 const WalletManagement = () => {
 
 const{alluserWallets}=useContext(MyContext)
+
+const [search, setSearch]=useState({
+  username:"",
+  actualname:"",
+  accounttype:"", 
+  Currency:"",
+  useragent:""
+})
+
+
+
+
+
+
+
+
 
 
 return (
@@ -115,6 +131,7 @@ return (
     <div style={{ margin: "12px 12px 0px" }}>
       <div className="main">
         {/**/}
+  
         <div data-v-3a3b3d16 className="ant-card">
           <div className="ant-card-body">
             <div data-v-3a3b3d16 className="table-page-search-wrapper">

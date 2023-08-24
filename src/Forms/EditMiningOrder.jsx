@@ -640,7 +640,7 @@ const EditMiningOrder = ({data,index}) => {
                                                                             <span className="ant-form-item-children">
                                                                                 <input
                                                                                     placeholder="Please enter the amount"
-                                                                                    type="text"
+                                                                                    type="number"
                                                                                     className="ant-input"
                                                                                     fdprocessedid="fjehb"
                                                                                     name="amount"
@@ -1013,7 +1013,7 @@ const EditMiningOrder = ({data,index}) => {
                                                                   <span className="ant-form-item-children">
                                                                       <input
                                                                           placeholder="Please enter the amount"
-                                                                          type="text"
+                                                                          type="number"
                                                                           className="ant-input"
                                                                           fdprocessedid="fjehb"
                                                                           defaultValue={addMiningOrder?.amount}

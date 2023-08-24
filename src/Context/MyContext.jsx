@@ -97,7 +97,6 @@ const [sideBarExpand, setsideBarExpand] = useState(true)
 
 
 
-
     useEffect(() => {
         getMiningOders();
         getQuantitativeOrder();
@@ -105,8 +104,8 @@ const [sideBarExpand, setsideBarExpand] = useState(true)
         getproducts();
         getContractOrder();
         getUsers();
-        getMiningProductProduct();
-        getAllUserWallet()
+        // getMiningProductProduct();
+        // getAllUserWallet()
     }, [])
 
 
@@ -114,8 +113,8 @@ const [sideBarExpand, setsideBarExpand] = useState(true)
 
 
 
-const state = { sideBarExpand, setsideBarExpand, contractProduct, getproducts, contractOrder, user, quantitativeProduct,getQuantitativeProduct,miningProduct,
-    getMiningProductProduct,quantitativeOrder,miningOrder,getMiningOders,alluserWallets,getAllUserWallet}
+const state = { getAllUserWallet, sideBarExpand, setsideBarExpand, contractProduct, getproducts, contractOrder, user, quantitativeProduct,getQuantitativeProduct,miningProduct,
+    getMiningProductProduct,quantitativeOrder,miningOrder,getMiningOders,alluserWallets,getAllUserWallet,getQuantitativeOrder}
     return (
         <MyContext.Provider value={state}>
             {children}

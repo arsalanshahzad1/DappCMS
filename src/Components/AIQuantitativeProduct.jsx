@@ -9,8 +9,8 @@ function AIQuantitativeProduct() {
     const [showAdd, setShowAdd] = useState(false);
     const [selectedImagesNFT, setSelectedImagesNFT] = useState("");
     const [testingImage, setTestingImage] = useState('')
+    const [showStatus, setShowStatus]=useState(false)
     const [showCurrency, setshowCurrency] = useState(false);
-
     const [addQuantitaveProduct, setQuantitaveProduct] = useState({
         product_name: "",
         product_life: "",
@@ -23,7 +23,16 @@ function AIQuantitativeProduct() {
         image: testingImage,
     });
 
-    // console.log("addQuantitaveProduct",addQuantitaveProduct);
+    const [search, setSearch] = useState({
+        product_name: "",
+        product_status: ""
+    })
+
+
+
+
+
+
 
     // Event handler to update the state on input change
     const handleInputChange = (event) => {
@@ -40,6 +49,22 @@ function AIQuantitativeProduct() {
             [name]: value, // Update the corresponding property based on the input name
         }));
     };
+
+    const handleInputChange3 = (event) => {
+        const { name, value } = event.target;
+        setSearch((prevState) => ({
+            ...prevState,
+            [name]: value, // Update the corresponding property based on the input name
+        }));
+    };
+
+    const handleInputChange4 = (name, value) => {
+        setSearch((prevState) => ({
+            ...prevState,
+            [name]: value, // Update the corresponding property based on the input name
+        }));
+    };
+
 
 
 
@@ -83,20 +108,6 @@ function AIQuantitativeProduct() {
 
     const CreateQuantitaveProduct = async () => {
 
-        console.log(
-            "!!!!!",
-            addQuantitaveProduct?.product_name,
-            addQuantitaveProduct?.product_life,
-            addQuantitaveProduct?.product_to_sort,
-            addQuantitaveProduct?.product_status,
-            addQuantitaveProduct?.maximum_amount,
-            addQuantitaveProduct?.minimum_amount,
-            addQuantitaveProduct?.maximum_yield,
-            addQuantitaveProduct?.minimum_rate_of_return,
-            addQuantitaveProduct?.image
-
-        );
-
         if (!addQuantitaveProduct?.product_name == "" &&
             !addQuantitaveProduct?.product_life == "" &&
             !addQuantitaveProduct?.product_to_sort == "" &&
@@ -108,48 +119,47 @@ function AIQuantitativeProduct() {
             !testingImage == ""
         ) {
 
-        
-
+           if(addQuantitaveProduct?.minimum_amount > addQuantitaveProduct?.maximum_amount){
+            toast.error("minimum amount must be less than maximum amount");
+            return
+           } 
+           
+           else if(addQuantitaveProduct?.minimum_rate_of_return > addQuantitaveProduct?.maximum_yield){
+            toast.error("maximum yield amount must be less than minimum rate of return amount");
+            return
+           } 
+            
             const sendData = new FormData();
 
-            
             sendData.append("product_name", addQuantitaveProduct.product_name)
             sendData.append("product_life", addQuantitaveProduct.product_life)
-            sendData.append("product_to_sort",addQuantitaveProduct.product_to_sort)
-            sendData.append("product_status",addQuantitaveProduct.product_status)
-            sendData.append("maximum_amount",addQuantitaveProduct.maximum_amount)
-            sendData.append( "minimum_amount",addQuantitaveProduct.minimum_amount)
-            sendData.append("maximum_yield",addQuantitaveProduct.maximum_yield)
-            sendData.append("minimum_rate_of_return",addQuantitaveProduct.minimum_rate_of_return)
-            
-           
-                    for (let i = 0; i < testingImage.length; i++) {
+            sendData.append("product_to_sort", addQuantitaveProduct.product_to_sort)
+            sendData.append("product_status", addQuantitaveProduct.product_status)
+            sendData.append("maximum_amount", addQuantitaveProduct.maximum_amount)
+            sendData.append("minimum_amount", addQuantitaveProduct.minimum_amount)
+            sendData.append("maximum_yield", addQuantitaveProduct.maximum_yield)
+            sendData.append("minimum_rate_of_return", addQuantitaveProduct.minimum_rate_of_return)
 
-                            console.log("mew",testingImage[i][0]);
-                            sendData.append('image', testingImage[i][0]);
-                        // }
 
-                    }
+            for (let i = 0; i < testingImage.length; i++) {
 
-                  
-   
+                console.log("mew", testingImage[i][0]);
+                sendData.append('image', testingImage[i][0]);
+                // }
+
+            }
+
 
             const resut = await apis.createQuantitativeProduct(sendData);
-            console.log("resut",resut);
+            console.log("resut", resut);
             toast.success("Quantitative product created successfully", { id: 1 });
             setQuantitaveProduct("");
             setShowAdd(false);
-            
 
+        }
+        else{
 
-    
-                    
-               
-
-
-
-
-
+            toast.error("Please input data all required fields", { id: 1 });
         }
 
     }
@@ -173,6 +183,7 @@ function AIQuantitativeProduct() {
         <div>
             <div data-v-140419ff className="ant-card">
                 <div className="ant-card-body">
+                    
                     <div data-v-140419ff className="table-page-search-wrapper">
                         <form data-v-140419ff className="ant-form ant-form-inline">
                             <div
@@ -213,6 +224,9 @@ function AIQuantitativeProduct() {
                                                         placeholder="please input the product name"
                                                         type="text"
                                                         className="ant-input"
+                                                        name="product_name"
+                                                        Value={search?.product_name}
+                                                        onChange={handleInputChange3}
                                                     />
                                                 </span>
                                                 {/**/}
@@ -262,9 +276,13 @@ function AIQuantitativeProduct() {
                                                             className="ant-select-selection ant-select-selection--single"
                                                         >
                                                             <div className="ant-select-selection__rendered">
-                                                                <div
+                                                                <div  onClick={() => {
+                                                                    setShowStatus(
+                                                                           !showStatus
+                                                                       );
+                                                                   }}
                                                                     unselectable="on"
-                                                                    className="ant-select-selection__placeholder"
+                                                                    className={search?.product_status ? "ant-select-selection__placeholder1" : "ant-select-selection__placeholder"}
                                                                     style={{
                                                                         display: "block",
                                                                         userSelect: "none",
@@ -272,7 +290,7 @@ function AIQuantitativeProduct() {
                                                                 >
                                                                     <font style={{ verticalAlign: "inherit" }}>
                                                                         <font style={{ verticalAlign: "inherit" }}>
-                                                                          {addQuantitaveProduct?.product_status ? addQuantitaveProduct?.product_status : "Please select a product status"}  
+                                                                            {search?.product_status ? search?.product_status : "Please select a product status"}
                                                                         </font>
                                                                     </font>
                                                                 </div>
@@ -301,110 +319,132 @@ function AIQuantitativeProduct() {
                                                                 </i>
                                                             </span>
                                                         </div>
+                                                    {showStatus && (
+                                                        
+                                                       <div
+                                                           className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft"
+                                                           style={{
+                                                               width: "100%",
+                                                               left: "0px",
+                                                               top: "30px",
+                                                               display: "flex",
+                                                           }}
+                                                       >
+                                                           <div
+                                                               id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51"
+                                                               tabIndex={-1}
+                                                               className="ant-select-dropdown-content"
+                                                               style={{
+                                                                   overflow: "auto",
+                                                                   transform:
+                                                                       "translateZ(0px)",
+                                                                   width: "100%",
+                                                               }}
+                                                           >
+                                                               <ul
+                                                                   role="listbox"
+                                                                   onClick={() => {
+                                                                    setShowStatus(
+                                                                           !showStatus
+                                                                       );
+                                                                   }}
+                                                                   tabIndex={0}
+                                                                   className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root"
+                                                               >
+                                              
+                                                                   <li
+                                                                       onClick={() => {
+                                                                        handleInputChange4(
+                                                                               "product_status",
+                                                                               "not_available"
+                                                                           );
+                                                                       }}
+                                                                       role="option"
+                                                                       className="ant-select-dropdown-menu-item"
+                                                                       unselectable="on"
+                                                                       style={{
+                                                                           userSelect: "none",
+                                                                       }}
+                                                                   >
+                                                                       <span
+                                                                           data-v-17b4e467
+                                                                           title="BTC"
+                                                                           style={{
+                                                                               display:
+                                                                                   "inline-block",
+                                                                               width: "100%",
+                                                                           }}
+                                                                       >
+                                                                           <font
+                                                                               style={{
+                                                                                   verticalAlign:
+                                                                                       "inherit",
+                                                                               }}
+                                                                           >
+                                                                               <font
+                                                                                   style={{
+                                                                                       verticalAlign:
+                                                                                           "inherit",
+                                                                                   }}
+                                                                               >
+                                                                                   Not Available
+                                                                               </font>
+                                                                           </font>
+                                                                       </span>
+                                                                   </li>
+
+                                                                   <li
+                                                                       onClick={() => {
+                                                                        handleInputChange4(
+                                                                               "product_status",
+                                                                               "added"
+                                                                           );
+                                                                       }}
+                                                                       role="option"
+                                                                       className="ant-select-dropdown-menu-item"
+                                                                       unselectable="on"
+                                                                       style={{
+                                                                           userSelect: "none",
+                                                                       }}
+                                                                   >
+                                                                       <span
+                                                                           data-v-17b4e467
+                                                                           title="USDT"
+                                                                           style={{
+                                                                               display:
+                                                                                   "inline-block",
+                                                                               width: "100%",
+                                                                           }}
+                                                                       >
+                                                                           <font
+                                                                               style={{
+                                                                                   verticalAlign:
+                                                                                       "inherit",
+                                                                               }}
+                                                                           >
+                                                                               <font
+                                                                                   style={{
+                                                                                       verticalAlign:
+                                                                                           "inherit",
+                                                                                   }}
+                                                                               >
+                                                                                   added
+                                                                               </font>
+                                                                           </font>
+                                                                       </span>
+                                                                   </li>
+                                                               </ul>
+                                                           </div>
+                                                       </div>
+                                                
+                                                    )
+                                                    }
                                                     </div>
-                                                    <div
-                                                        style={{
-                                                            position: "absolute",
-                                                            top: "0px",
-                                                            left: "0px",
-                                                            width: "100%",
-                                                        }}
-                                                    >
-                                                        <div>
-                                                            <div
-                                                                className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft"
-                                                                style={{
-                                                                    width: "142px",
-                                                                    left: "0px",
-                                                                    top: "30px",
-                                                                    display: "none",
-                                                                }}
-                                                            >
-                                                                <div
-                                                                    id="740b3652-5f6e-4792-c950-aa8c7934d778"
-                                                                    tabIndex={-1}
-                                                                    className="ant-select-dropdown-content"
-                                                                    style={{
-                                                                        overflow: "auto",
-                                                                        transform: "translateZ(0px)",
-                                                                    }}
-                                                                >
-                                                                    <ul
-                                                                        role="listbox"
-                                                                        tabIndex={0}
-                                                                        className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root"
-                                                                    >
-                                                                        <li
-                                                                            role="option"
-                                                                            className="ant-select-dropdown-menu-item ant-select-dropdown-menu-item-active"
-                                                                            unselectable="on"
-                                                                            style={{ userSelect: "none" }}
-                                                                        >
-                                                                            <font
-                                                                                style={{ verticalAlign: "inherit" }}
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    please choose
-                                                                                </font>
-                                                                            </font>
-                                                                        </li>
-                                                                        <li onClick={()=>{handleInputChange("product_status","not_available")}}
-                                                                            role="option"
-                                                                            className="ant-select-dropdown-menu-item"
-                                                                            unselectable="on"
-                                                                            style={{ userSelect: "none" }}
-                                                                        >
-                                                                            <span
-                                                                                data-v-17b4e467
-                                                                                title="Not available"
-                                                                                style={{
-                                                                                    display: "inline-block",
-                                                                                    width: "100%",
-                                                                                }}
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        Not available
-                                                                                    </font>
-                                                                                </font>
-                                                                            </span>
-                                                                        </li>
-                                                                        <li onClick={()=>{handleInputChange("product_status","added")}}
-                                                                            role="option"
-                                                                            className="ant-select-dropdown-menu-item"
-                                                                            unselectable="on"
-                                                                            style={{ userSelect: "none" }}
-                                                                        >
-                                                                            <span
-                                                                                data-v-17b4e467
-                                                                                title="It has been added to"
-                                                                                style={{
-                                                                                    display: "inline-block",
-                                                                                    width: "100%",
-                                                                                }}
-                                                                            >
-                                                                                <font
-                                                                                    style={{ verticalAlign: "inherit" }}
-                                                                                >
-                                                                                    <font
-                                                                                        style={{ verticalAlign: "inherit" }}
-                                                                                    >
-                                                                                        It has been added to
-                                                                                    </font>
-                                                                                </font>
-                                                                            </span>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+
+
+
+
+
                                                 </span>
                                                 {/**/}
                                             </div>
@@ -487,6 +527,7 @@ function AIQuantitativeProduct() {
                             </div>
                         </form>
                     </div>
+
                     <div data-v-140419ff className="table-operator">
                         <button onClick={() => setShowAdd(true)}
                             data-v-140419ff
@@ -1034,67 +1075,7 @@ function AIQuantitativeProduct() {
                                                                     return (
 
                                                                         <EditQuantitaveProduct data={data} index={index} />
-                                                                        // <tr
-                                                                        //     className="ant-table-row ant-table-row-level-0"
-                                                                        //     data-row-key={1596486446243954689}
-                                                                        //     style={{ height: "49px" }}
-                                                                        // >
-                                                                        //     <td
-                                                                        //         className="ant-table-row-cell-break-word"
-                                                                        //         style={{ textAlign: "center" }}
-                                                                        //     >
-                                                                        //         <span data-v-140419ff>
-                                                                        //             <a data-v-140419ff>
-                                                                        //                 <font
-                                                                        //                     style={{ verticalAlign: "inherit" }}
-                                                                        //                 >
-                                                                        //                     <font
-                                                                        //                         style={{ verticalAlign: "inherit" }}
-                                                                        //                     >
-                                                                        //                         edit
-                                                                        //                     </font>
-                                                                        //                 </font>
-                                                                        //             </a>
-                                                                        //             <div
-                                                                        //                 data-v-140419ff
-                                                                        //                 role="separator"
-                                                                        //                 className="ant-divider ant-divider-vertical"
-                                                                        //             />
-                                                                        //             <a
-                                                                        //                 data-v-140419ff
-                                                                        //                 className="ant-dropdown-link ant-dropdown-trigger"
-                                                                        //             >
-                                                                        //                 <font
-                                                                        //                     style={{ verticalAlign: "inherit" }}
-                                                                        //                 >
-                                                                        //                     <font
-                                                                        //                         style={{ verticalAlign: "inherit" }}
-                                                                        //                     >
-                                                                        //                         More
-                                                                        //                     </font>
-                                                                        //                 </font>
-                                                                        //                 <i
-                                                                        //                     data-v-140419ff
-                                                                        //                     aria-label="icon: down"
-                                                                        //                     className="anticon anticon-down"
-                                                                        //                 >
-                                                                        //                     <svg
-                                                                        //                         viewBox="64 64 896 896"
-                                                                        //                         data-icon="down"
-                                                                        //                         width="1em"
-                                                                        //                         height="1em"
-                                                                        //                         fill="currentColor"
-                                                                        //                         aria-hidden="true"
-                                                                        //                         focusable="false"
-                                                                        //                         className
-                                                                        //                     >
-                                                                        //                         <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                        //                     </svg>
-                                                                        //                 </i>
-                                                                        //             </a>
-                                                                        //         </span>
-                                                                        //     </td>
-                                                                        // </tr>
+
                                                                     )
                                                                 })}
                                                             </tbody>
@@ -1408,8 +1389,8 @@ function AIQuantitativeProduct() {
                                                                                                 aria-valuemin={
                                                                                                     -9007199254740991
                                                                                                 }
-                                                                                                type="list"
-                                                                                                placeholder="Please select sort"
+                                                                                                type="number"
+                                                                                                placeholder="Please Inpt value in Days"
                                                                                                 autoComplete="off"
                                                                                                 min={-9007199254740991}
                                                                                                 step={1}
@@ -1509,7 +1490,7 @@ function AIQuantitativeProduct() {
                                                                                                 aria-valuemin={
                                                                                                     -9007199254740991
                                                                                                 }
-                                                                                                type="list"
+                                                                                                type="number"
                                                                                                 placeholder="Please select sort"
                                                                                                 autoComplete="off"
                                                                                                 min={-9007199254740991}
@@ -1847,8 +1828,8 @@ function AIQuantitativeProduct() {
                                                                                                 aria-valuemin={
                                                                                                     -9007199254740991
                                                                                                 }
-                                                                                                type="list"
-                                                                                                placeholder="Please select sort"
+                                                                                                type="number"
+                                                                                                placeholder="Please enter maximum_amount"
                                                                                                 autoComplete="off"
                                                                                                 min={-9007199254740991}
                                                                                                 step={1}
@@ -1949,7 +1930,8 @@ function AIQuantitativeProduct() {
                                                                                                 aria-valuemin={
                                                                                                     -9007199254740991
                                                                                                 }
-                                                                                                placeholder="Please enter the delivery time (seconds)"
+                                                                                                type="number"
+                                                                                                placeholder="Please enter minimum_amount"
                                                                                                 autoComplete="off"
                                                                                                 min={-9007199254740991}
                                                                                                 step={1}
@@ -2051,8 +2033,8 @@ function AIQuantitativeProduct() {
                                                                                                 aria-valuemin={
                                                                                                     -9007199254740991
                                                                                                 }
-                                                                                                type="list"
-                                                                                                placeholder="Please select sort"
+                                                                                                type="number"
+                                                                                                placeholder="Please enter maximum_yield"
                                                                                                 autoComplete="off"
                                                                                                 min={-9007199254740991}
                                                                                                 step={1}
@@ -2154,8 +2136,8 @@ function AIQuantitativeProduct() {
                                                                                                 aria-valuemin={
                                                                                                     -9007199254740991
                                                                                                 }
-                                                                                                type="list"
-                                                                                                placeholder="Please select sort"
+                                                                                                type="number"
+                                                                                                placeholder="Please enter minimum_rate_of_return"
                                                                                                 autoComplete="off"
                                                                                                 min={-9007199254740991}
                                                                                                 step={1}
@@ -2289,7 +2271,7 @@ function AIQuantitativeProduct() {
 
 
                                                                                         </> */}
-                                                                                       {selectedImagesNFT == "" ?
+                                                                                        {selectedImagesNFT == "" ?
 
                                                                                             null :
                                                                                             <>

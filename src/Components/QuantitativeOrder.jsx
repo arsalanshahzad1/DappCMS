@@ -2,11 +2,14 @@ import React, { useContext, useState } from "react";
 import { MyContext } from "../Context/MyContext";
 import { EditQuantitativeOerder } from "../Forms/EditQuantitativeOerder";
 import { toast } from "react-hot-toast";
+import apis from "../Services";
 
 function QuantitativeOrder() {
+    const {user}=useContext(MyContext);
     const { quantitativeOrder, quantitativeProduct } = useContext(MyContext)
     const [showAdd, setShowAdd] = useState(false);
     const [showProduct, setShowProduct] = useState(0)
+    
     const [addQuantitativeOrder, setQuantitativeOrder] = useState({
         product_name: "",
         user_address:"",
@@ -34,6 +37,8 @@ const handleInputChange = (event) => {
 
 
 const CreateQuantitativeOrder = async () => {
+console.log("noooo",addQuantitativeOrder?.productId,addQuantitativeOrder?.userId,addQuantitativeOrder?.amount);
+
 if (!addQuantitativeOrder?.productId == "" && !addQuantitativeOrder?.userId == "" && !addQuantitativeOrder?.amount == "") {
         const resut = await apis.createQuantitativeOrder({
             "productId": addQuantitativeOrder?.productId,
@@ -1139,12 +1144,12 @@ return (
                                                             </tr>
                                                         </thead>
                                                         <tbody className="ant-table-tbody">
-
+                                                        {console.log(quantitativeOrder,"quantitativeOrder")}
                                                             {quantitativeOrder?.map((data, index) => {
                                                                 return (
                                                                     <tr
                                                                         className="ant-table-row ant-table-row-level-0"
-                                                                        data-row-key={1671311295663104002}
+                                                                       
                                                                     >
                                                                         <td className="ant-table-selection-column">
                                                                             <span>
@@ -1180,7 +1185,7 @@ return (
                                                                         <td className style={{ textAlign: "center" }}>
                                                                             <font style={{ verticalAlign: "inherit" }}>
                                                                                 <font style={{ verticalAlign: "inherit" }}>
-                                                                                    {data?.userId}
+                                                                                    {data?.userId?._id}
                                                                                 </font>
                                                                             </font>
                                                                         </td>
@@ -1772,7 +1777,9 @@ return (
                                                                                         {showProduct == 1 &&
                                                                                             <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '100%', left: '0px', top: '30px', display: 'flex' }}><div id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)', width: "100%" }}>
                                                                                                 <ul role="listbox" onClick={() => { setShowProduct(0) }} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
+                                                                                                  
                                                                                                     {quantitativeProduct?.map((data, index) => {
+                                                                                                        
                                                                                                         return (
                                                                                                             <li onClick={() => { handleInputChange2("productId", data?._id),handleInputChange2("product_name", data?.product_name) }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
                                                                                                                 <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
@@ -1890,14 +1897,14 @@ return (
                                                                                         {showProduct == 2 &&
                                                                                             <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '100%', left: '0px', top: '30px', display: 'flex' }}><div id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)', width: "100%" }}>
                                                                                                 <ul role="listbox" onClick={() => { setShowProduct(0) }} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
-                                                                                                    {quantitativeProduct?.map((data, index) => {
+                                                                                                    {user?.map((data, index) => {
                                                                                                         return (
-                                                                                                            <li onClick={() => { handleInputChange2("userId", data?.userId),handleInputChange2("user_address", data?.userId) }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                                                                                            <li onClick={() => { handleInputChange2("userId", data?._id),handleInputChange2("user_address", data?.user_address) }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
                                                                                                                 <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
                                                                                                                     <font style={{ verticalAlign: 'inherit' }}>
                                                                                                                         <font style={{ verticalAlign: 'inherit' }}>
                                                                                                                         
-                                                                                                                            {data?.userId}
+                                                                                                                            {data?.user_address}
                                                                                                                         </font>
                                                                                                                     </font>
                                                                                                                 </span>
@@ -1958,7 +1965,7 @@ return (
                                                                             <span className="ant-form-item-children">
                                                                                 <input
                                                                                     placeholder="Please enter the amount"
-                                                                                    type="text"
+                                                                                    type="number"
                                                                                     className="ant-input"
                                                                                     fdprocessedid="fjehb"
                                                                                     name="amount"

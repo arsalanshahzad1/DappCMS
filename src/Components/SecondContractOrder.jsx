@@ -2,13 +2,25 @@ import React, { useContext, useEffect, useState } from "react";
 import apis from "../Services";
 import { MyContext } from "../Context/MyContext";
 import { EditConractOrder } from "../Forms/EditContractOrder";
+import { toast } from "react-hot-toast";
 
 function SecondContractOrder() {
-  const{contractOrder,contractProduct,user}=useContext(MyContext)
+  const { contractOrder, contractProduct, user } = useContext(MyContext)
 
-    //const [contractOrder, setContractOrder] = useState();
+  const [filter ,setfilter] = useState([]) 
+
+  const [search, SetSearch] = useState({
+    product_name: "",
+    user_address: "",
+    status: "",
+    result: "",
+    createdAt: "",
+  });
+
   const [showPopUp, setshowPopUp] = useState(0);
-  const[showProduct,setShowProduct]=useState(0)
+  const [showProduct, setShowProduct] = useState(0)
+  const [showSearch, setShowSearch] = useState(0)
+
 
   const [addSecondOrder, setSecondOrder] = useState({
     product_name: "",
@@ -16,7 +28,33 @@ function SecondContractOrder() {
     currency: "",
     direction: "",
     amount: "",
+    productId: "",
+    opening_price: "",
+    expected: ""
   });
+
+  const filerData = () =>{
+    const filteredItems = contractOrder.filter(item => {
+      return (
+        item.createdAt === search.createdAt ||
+        item.user_address === search.user_address ||
+        item.result === search.result &&
+        item.status === search.status  
+      );
+    }); 
+
+    setfilter(filteredItems)
+
+  }
+
+
+  console.log("filter",filter);
+
+
+
+
+
+
 
   // Event handler to update the state on input change
   const handleInputChange = (event) => {
@@ -34,6 +72,57 @@ function SecondContractOrder() {
       [name]: value, // Update the corresponding property based on the input name
     }));
   };
+
+  const CreateSecondContractOrder = async () => {
+    console.log("caddSecondOrder", addSecondOrder);
+    if (!addSecondOrder.product_name == "" &&
+      !addSecondOrder.user_address == "" &&
+      !addSecondOrder.currency == "" &&
+      !addSecondOrder.direction == "" &&
+      !addSecondOrder.amount == "" &&
+      !addSecondOrder.coin == "" &&
+      !addSecondOrder.productId == "" &&
+      !addSecondOrder.opening_price == "" &&
+      !addSecondOrder.expected == ""
+    ) {
+     
+
+      const resut = await apis.createSecondContracOrder({
+        "coin":addSecondOrder.product_name,
+        "productId":addSecondOrder.productId,
+        "user_address":addSecondOrder.user_address,
+        "currency":addSecondOrder.currency,
+        "opening_price":addSecondOrder.opening_price,
+        "amount":addSecondOrder.amount,
+        "expected":addSecondOrder.expected,
+        "direction":addSecondOrder.direction
+      })
+
+      toast.success(resut.data.message, { id: 1 });
+
+      setshowPopUp(0);
+      setSecondOrder("")
+    } else {
+      toast.error("Please input data all required fields", { id: 1 });
+    }
+  }
+
+  const handleInputChange3 = (name, value) => {
+    // const { name, value } = event.target;
+    SetSearch((prevState) => ({
+      ...prevState,
+      [name]: value, // Update the corresponding property based on the input name
+    }));
+  };
+
+  const handleInputChange4 = (event) => {
+    const { name, value } = event.target;
+    SetSearch((prevState) => ({
+      ...prevState,
+      [name]: value, // Update the corresponding property based on the input name
+    }));
+  };
+
 
 
 
@@ -54,6 +143,8 @@ function SecondContractOrder() {
                   className="ant-col ant-col-sm-24 ant-col-md-12 ant-col-lg-11 ant-col-xl-10"
                   style={{ paddingLeft: "12px", paddingRight: "12px" }}
                 >
+
+
                   <div data-v-19524346 className="ant-row ant-form-item">
                     <div
                       className="ant-col ant-form-item-label"
@@ -67,44 +158,33 @@ function SecondContractOrder() {
                         </font>
                       </label>
                     </div>
+
+
+
                     <div className="ant-col ant-form-item-control-wrapper">
                       <div className="ant-form-item-control">
                         <span className="ant-form-item-children">
-                          <span
+                          <span onClick={() => setshowPopUp(3)}
                             data-v-19524346
                             className="query-group-cust ant-calendar-picker"
                             style={{ minWidth: "195px" }}
                           >
                             <div className>
                               <input
-                                readOnly="true"
                                 placeholder="Please select a start time"
                                 className="ant-calendar-picker-input ant-input"
+                                type="date"
+                                // onClick={() => { e => handleInputChange3("product_name", e.target.value) }}
                               />
-                              <i
-                                aria-label="icon: calendar"
-                                className="anticon anticon-calendar ant-calendar-picker-icon"
-                              >
-                                <svg
-                                  viewBox="64 64 896 896"
-                                  data-icon="calendar"
-                                  width="1em"
-                                  height="1em"
-                                  fill="currentColor"
-                                  aria-hidden="true"
-                                  focusable="false"
-                                  className
-                                >
-                                  <path d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z" />
-                                </svg>
-                              </i>
                             </div>
                           </span>
+
                           <span
                             data-v-19524346
                             className="query-group-split-cust"
                           />
-                          <span
+
+                          {/* <span
                             data-v-19524346
                             className="query-group-cust ant-calendar-picker"
                             style={{ minWidth: "195px" }}
@@ -114,6 +194,7 @@ function SecondContractOrder() {
                                 readOnly="true"
                                 placeholder="Please select an end time"
                                 className="ant-calendar-picker-input ant-input"
+
                               />
                               <i
                                 aria-label="icon: calendar"
@@ -134,8 +215,9 @@ function SecondContractOrder() {
                               </i>
                             </div>
                           </span>
+                           */}
                         </span>
-                        {/**/}
+
                       </div>
                     </div>
                   </div>
@@ -175,9 +257,10 @@ function SecondContractOrder() {
                               className="ant-select-selection ant-select-selection--single"
                             >
                               <div className="ant-select-selection__rendered">
-                                <div
+                                <div onClick={() => setShowSearch(1)}
                                   unselectable="on"
-                                  className="ant-select-selection__placeholder"
+                                  
+                                  className={search.product_name ? "ant-select-selection__placeholder1" : "ant-select-selection__placeholder"}
                                   style={{
                                     display: "block",
                                     userSelect: "none",
@@ -185,7 +268,8 @@ function SecondContractOrder() {
                                 >
                                   <font style={{ verticalAlign: "inherit" }}>
                                     <font style={{ verticalAlign: "inherit" }}>
-                                      Please select a product
+                                    {search.product_name ? search.product_name : "Please select a product" }
+                                  
                                     </font>
                                   </font>
                                 </div>
@@ -216,7 +300,24 @@ function SecondContractOrder() {
                             </div>
                           </div>
                         </span>
-                        {/**/}
+                        {showSearch == 1 &&
+                          <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '100%', left: '0px', top: '30px', display: 'flex' }}><div id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)', width: "100%" }}>
+                            <ul role="listbox" onClick={() => { setShowSearch(0) }} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
+                              {contractOrder?.map((data, index) => {
+                                return (
+                                  <li onClick={() => { handleInputChange3("product_name",data?.productId?.product_name) }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                    <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
+                                      <font style={{ verticalAlign: 'inherit' }}>
+                                        <font style={{ verticalAlign: 'inherit' }}>
+                                          {data?.productId?.product_name}
+                                        </font>
+                                      </font>
+                                    </span>
+                                  </li>
+                                )
+                              })}
+                            </ul></div></div>
+                        }
                       </div>
                     </div>
                   </div>
@@ -234,7 +335,7 @@ function SecondContractOrder() {
                       <label title="username" className>
                         <font style={{ verticalAlign: "inherit" }}>
                           <font style={{ verticalAlign: "inherit" }}>
-                            username
+                            userAddress
                           </font>
                         </font>
                       </label>
@@ -247,6 +348,10 @@ function SecondContractOrder() {
                             placeholder="please enter user name"
                             type="text"
                             className="ant-input"
+                            name="user_address"
+                            value={search.user_address}
+                            onChange={handleInputChange4}
+
                           />
                         </span>
                         {/**/}
@@ -261,7 +366,7 @@ function SecondContractOrder() {
                   style={{ paddingLeft: "12px", paddingRight: "12px" }}
                 >
                   <div data-v-19524346 className="ant-row ant-form-item">
-                    <div
+                    <div 
                       className="ant-col ant-form-item-label"
                       style={{ width: "50%" }}
                     >
@@ -293,9 +398,9 @@ function SecondContractOrder() {
                               className="ant-select-selection ant-select-selection--single"
                             >
                               <div className="ant-select-selection__rendered">
-                                <div
+                                <div onClick={() => setShowSearch(3)}
                                   unselectable="on"
-                                  className="ant-select-selection__placeholder"
+                                  className={search?.status ? "ant-select-selection__placeholder1": "ant-select-selection__placeholder"}
                                   style={{
                                     display: "block",
                                     userSelect: "none",
@@ -303,7 +408,7 @@ function SecondContractOrder() {
                                 >
                                   <font style={{ verticalAlign: "inherit" }}>
                                     <font style={{ verticalAlign: "inherit" }}>
-                                      Please select an order status
+                                     {search?.status ? search?.status : "Please select an order status"} 
                                     </font>
                                   </font>
                                 </div>
@@ -332,6 +437,24 @@ function SecondContractOrder() {
                                 </i>
                               </span>
                             </div>
+                            {showSearch == 3 &&
+                          <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '100%', left: '0px', top: '30px', display: 'flex' }}><div id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)', width: "100%" }}>
+                            <ul role="listbox" onClick={() => { setShowSearch(0) }} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
+                              {contractOrder?.map((data, index) => {
+                                return (
+                                  <li onClick={() => { handleInputChange3("status",data?.status) }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                    <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
+                                      <font style={{ verticalAlign: 'inherit' }}>
+                                        <font style={{ verticalAlign: 'inherit' }}>
+                                          {data?.status}
+                                        </font>
+                                      </font>
+                                    </span>
+                                  </li>
+                                )
+                              })}
+                            </ul></div></div>
+                        }
                           </div>
                         </span>
                         {/**/}
@@ -339,15 +462,18 @@ function SecondContractOrder() {
                     </div>
                   </div>
                 </div>
-                <div
+                <div 
                   data-v-19524346
                   className="ant-col ant-col-sm-24 ant-col-md-8 ant-col-lg-7 ant-col-xl-6"
                   style={{ paddingLeft: "12px", paddingRight: "12px" }}
                 >
-                  <div data-v-19524346 className="ant-row ant-form-item">
-                    <div className="ant-col ant-form-item-label">
-                      <label title="result" className>
-                        <font style={{ verticalAlign: "inherit" }}>
+                  <div  data-v-19524346 className="ant-row ant-form-item">
+                    <div 
+                    className="ant-col ant-form-item-label">
+                      <label 
+                       title="result" className>
+                        <font 
+                         style={{ verticalAlign: "inherit" }}>
                           <font style={{ verticalAlign: "inherit" }}>
                             result
                           </font>
@@ -360,7 +486,7 @@ function SecondContractOrder() {
                     >
                       <div className="ant-form-item-control">
                         <span className="ant-form-item-children">
-                          <div
+                          <div 
                             data-v-17b4e467
                             data-v-19524346
                             tabIndex={0}
@@ -374,9 +500,9 @@ function SecondContractOrder() {
                               className="ant-select-selection ant-select-selection--single"
                             >
                               <div className="ant-select-selection__rendered">
-                                <div
+                                <div onClick={() => setShowSearch(2)}
                                   unselectable="on"
-                                  className="ant-select-selection__placeholder"
+                                  className={search?.result ? "ant-select-selection__placeholder1" : "ant-select-selection__placeholder" }
                                   style={{
                                     display: "block",
                                     userSelect: "none",
@@ -384,7 +510,8 @@ function SecondContractOrder() {
                                 >
                                   <font style={{ verticalAlign: "inherit" }}>
                                     <font style={{ verticalAlign: "inherit" }}>
-                                      Please select a result
+                                     {search?.result ? search?.result : "Please select a result" }
+                                      
                                     </font>
                                   </font>
                                 </div>
@@ -412,6 +539,24 @@ function SecondContractOrder() {
                                   </svg>
                                 </i>
                               </span>
+                              {showSearch == 2 &&
+                          <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '100%', left: '0px', top: '30px', display: 'flex' }}><div id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)', width: "100%" }}>
+                            <ul role="listbox" onClick={() => {setShowSearch(0)}} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
+                              {contractOrder?.map((data, index) => {
+                                return (
+                                  <li onClick={() => { handleInputChange3("result",data?.result) }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                    <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
+                                      <font style={{ verticalAlign: 'inherit' }}>
+                                        <font style={{ verticalAlign: 'inherit' }}>
+                                          {data?.result}
+                                        </font>
+                                      </font>
+                                    </span>
+                                  </li>
+                                )
+                              })}
+                            </ul></div></div>
+                        }
                             </div>
                           </div>
                         </span>
@@ -435,7 +580,7 @@ function SecondContractOrder() {
                     className="table-page-search-submitButtons"
                     style={{ float: "left", overflow: "hidden" }}
                   >
-                    <button
+                    <button onClick={()=>filerData()}
                       data-v-19524346
                       type="button"
                       className="ant-btn ant-btn-primary"
@@ -465,7 +610,7 @@ function SecondContractOrder() {
                         </font>
                       </span>
                     </button>
-                    <button
+                    <button onClick={()=>setfilter([])}
                       data-v-19524346
                       type="button"
                       className="ant-btn ant-btn-primary"
@@ -1208,246 +1353,496 @@ function SecondContractOrder() {
                               </tr>
                             </thead>
                             <tbody className="ant-table-tbody">
-                              {contractOrder?.map((data, index) => {
+                           {filter.length > 0 ? 
+                          <>
+                            {filter?.map((data, index) => {
                                 return (
-                                  <tr
-                                    className="ant-table-row ant-table-row-level-0"
-                                    data-row-key={1671402479798509570}
-                                  >
-                                    <td className="ant-table-selection-column">
-                                      <span>
-                                        <label className="ant-checkbox-wrapper">
-                                          <span className="ant-checkbox">
-                                            <input
-                                              type="checkbox"
-                                              className="ant-checkbox-input"
-                                              defaultValue
-                                            />
-                                            <span className="ant-checkbox-inner" />
-                                          </span>
-                                        </label>
-                                      </span>
-                                    </td>
-                                    <td
-                                      className="ant-table-row-cell-break-word"
-                                      style={{ textAlign: "center" }}
+                                  <>
+                                    <tr
+                                      className="ant-table-row ant-table-row-level-0"
                                     >
-                                      <font
-                                        style={{ verticalAlign: "inherit" }}
+                                      <td className="ant-table-selection-column">
+                                        <span>
+                                          <label className="ant-checkbox-wrapper">
+                                            <span className="ant-checkbox">
+                                              <input
+                                                type="checkbox"
+                                                className="ant-checkbox-input"
+                                                defaultValue
+                                              />
+                                              <span className="ant-checkbox-inner" />
+                                            </span>
+                                          </label>
+                                        </span>
+                                      </td>
+                                      <td
+                                        className="ant-table-row-cell-break-word"
+                                        style={{ textAlign: "center" }}
                                       >
                                         <font
                                           style={{ verticalAlign: "inherit" }}
                                         >
-                                          {index + 1}
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            {index + 1}
+                                          </font>
                                         </font>
-                                      </font>
-                                    </td>
-                                    <td
-                                      className
-                                      style={{ textAlign: "center" }}
-                                    >
-                                      <font
-                                        style={{ verticalAlign: "inherit" }}
+                                      </td>
+                                      <td
+                                        className
+                                        style={{ textAlign: "center" }}
                                       >
                                         <font
                                           style={{ verticalAlign: "inherit" }}
                                         >
-                                          {data?.productId}
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            {data?.productId?._id}
+                                          </font>
                                         </font>
-                                      </font>
-                                    </td>
-                                    <td
-                                      className
-                                      style={{ textAlign: "center" }}
-                                    >
-                                      <font
-                                        style={{ verticalAlign: "inherit" }}
+                                      </td>
+                                      <td
+                                        className
+                                        style={{ textAlign: "center" }}
                                       >
                                         <font
                                           style={{ verticalAlign: "inherit" }}
                                         >
-                                          {data?.createdAt}
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            {data?.createdAt}
+                                          </font>
                                         </font>
-                                      </font>
-                                    </td>
-                                    <td
-                                      className="ant-table-column-has-actions ant-table-column-has-sorters"
-                                      style={{ textAlign: "center" }}
-                                    >
-                                      <font
-                                        style={{ verticalAlign: "inherit" }}
+                                      </td>
+                                      <td
+                                        className="ant-table-column-has-actions ant-table-column-has-sorters"
+                                        style={{ textAlign: "center" }}
                                       >
                                         <font
                                           style={{ verticalAlign: "inherit" }}
                                         >
-                                          60 seconds ?
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            60 seconds ?
+                                          </font>
                                         </font>
-                                      </font>
-                                    </td>
-                                    <td
-                                      className
-                                      style={{ textAlign: "center" }}
-                                    >
-                                      <font
-                                        style={{ verticalAlign: "inherit" }}
+                                      </td>
+                                      <td
+                                        className
+                                        style={{ textAlign: "center" }}
                                       >
                                         <font
                                           style={{ verticalAlign: "inherit" }}
                                         >
-                                          60 ?
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            60 ?
+                                          </font>
                                         </font>
-                                      </font>
-                                    </td>
-                                    <td
-                                      className="ant-table-column-has-actions ant-table-column-has-sorters"
-                                      style={{ textAlign: "center" }}
-                                    >
-                                      <font
-                                        style={{ verticalAlign: "inherit" }}
+                                      </td>
+                                      <td
+                                        className="ant-table-column-has-actions ant-table-column-has-sorters"
+                                        style={{ textAlign: "center" }}
                                       >
                                         <font
                                           style={{ verticalAlign: "inherit" }}
                                         >
-                                          {data?.user_address}
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            {data?.user_address}
+                                          </font>
                                         </font>
-                                      </font>
-                                    </td>
-                                    <td
-                                      className
-                                      style={{ textAlign: "center" }}
-                                    >
-                                      <font
-                                        style={{ verticalAlign: "inherit" }}
+                                      </td>
+                                      <td
+                                        className
+                                        style={{ textAlign: "center" }}
                                       >
                                         <font
                                           style={{ verticalAlign: "inherit" }}
                                         >
-                                          {data?.currency}
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            {data?.currency}
+                                          </font>
                                         </font>
-                                      </font>
-                                    </td>
-                                    <td
-                                      className
-                                      style={{ textAlign: "center" }}
-                                    >
-                                      <font
-                                        style={{ verticalAlign: "inherit" }}
+                                      </td>
+                                      <td
+                                        className
+                                        style={{ textAlign: "center" }}
                                       >
                                         <font
                                           style={{ verticalAlign: "inherit" }}
                                         >
-                                          {data?.direction}
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            {data?.direction}
+                                          </font>
                                         </font>
-                                      </font>
-                                    </td>
-                                    <td
-                                      className
-                                      style={{ textAlign: "center" }}
-                                    >
-                                      <font
-                                        style={{ verticalAlign: "inherit" }}
+                                      </td>
+                                      <td
+                                        className
+                                        style={{ textAlign: "center" }}
                                       >
                                         <font
                                           style={{ verticalAlign: "inherit" }}
                                         >
-                                          0.15?
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            0.15?
+                                          </font>
                                         </font>
-                                      </font>
-                                    </td>
-                                    <td
-                                      className="ant-table-column-has-actions ant-table-column-has-sorters"
-                                      style={{ textAlign: "center" }}
-                                    >
-                                      <font
-                                        style={{ verticalAlign: "inherit" }}
+                                      </td>
+                                      <td
+                                        className="ant-table-column-has-actions ant-table-column-has-sorters"
+                                        style={{ textAlign: "center" }}
                                       >
                                         <font
                                           style={{ verticalAlign: "inherit" }}
                                         >
-                                          {data?.amount}
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            {data?.amount}
+                                          </font>
                                         </font>
-                                      </font>
-                                    </td>
-                                    <td
-                                      className
-                                      style={{ textAlign: "center" }}
-                                    >
-                                      <font
-                                        style={{ verticalAlign: "inherit" }}
+                                      </td>
+                                      <td
+                                        className
+                                        style={{ textAlign: "center" }}
                                       >
                                         <font
                                           style={{ verticalAlign: "inherit" }}
                                         >
-                                          {data?.opening_price}
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            {data?.opening_price}
+                                          </font>
                                         </font>
-                                      </font>
-                                    </td>
-                                    <td
-                                      className
-                                      style={{ textAlign: "center" }}
-                                    >
-                                      <font
-                                        style={{ verticalAlign: "inherit" }}
+                                      </td>
+                                      <td
+                                        className
+                                        style={{ textAlign: "center" }}
                                       >
                                         <font
                                           style={{ verticalAlign: "inherit" }}
                                         >
-                                          {data?.closed_price}
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            {data?.closed_price}
+                                          </font>
                                         </font>
-                                      </font>
-                                    </td>
-                                    <td
-                                      className
-                                      style={{ textAlign: "center" }}
-                                    >
-                                      <font
-                                        style={{ verticalAlign: "inherit" }}
+                                      </td>
+                                      <td
+                                        className
+                                        style={{ textAlign: "center" }}
                                       >
                                         <font
                                           style={{ verticalAlign: "inherit" }}
                                         >
-                                          {data?.status}
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            {data?.status}
+                                          </font>
                                         </font>
-                                      </font>
-                                    </td>
-                                    <td
-                                      className="ant-table-column-has-actions ant-table-column-has-sorters"
-                                      style={{ textAlign: "center" }}
-                                    >
-                                      <font
-                                        style={{ verticalAlign: "inherit" }}
+                                      </td>
+                                      <td
+                                        className="ant-table-column-has-actions ant-table-column-has-sorters"
+                                        style={{ textAlign: "center" }}
                                       >
                                         <font
                                           style={{ verticalAlign: "inherit" }}
                                         >
-                                          ?
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            ?
+                                          </font>
                                         </font>
-                                      </font>
-                                    </td>
+                                      </td>
 
-                                    <td
-                                      className="ant-table-column-has-actions ant-table-column-has-sorters"
-                                      style={{ textAlign: "center" }}
-                                    >
-                                      <font
-                                        style={{ verticalAlign: "inherit" }}
+                                      <td
+                                        className="ant-table-column-has-actions ant-table-column-has-sorters"
+                                        style={{ textAlign: "center" }}
                                       >
                                         <font
                                           style={{ verticalAlign: "inherit" }}
                                         >
-                                          {data?.result}
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            {data?.result}
+                                          </font>
                                         </font>
-                                      </font>
-                                    </td>
-                                    <td
-                                      className="ant-table-fixed-columns-in-body ant-table-row-cell-break-word"
-                                      style={{ textAlign: "center" }}
-                                    >
-                                      <span data-v-19524346>{/**/}</span>
-                                    </td>
-                                  </tr>
-                                );
+                                      </td>
+                                      <td
+                                        className="ant-table-fixed-columns-in-body ant-table-row-cell-break-word"
+                                        style={{ textAlign: "center" }}
+                                      >
+                                        <span data-v-19524346></span>
+                                      </td>
+                                    </tr>
+                                  </>
+                                )
                               })}
+                          </> 
+                          :
+                          <>
+                            {contractOrder?.map((data, index) => {
+                                return (
+                                  <>
+                                    <tr
+                                      className="ant-table-row ant-table-row-level-0"
+                                    >
+                                      <td className="ant-table-selection-column">
+                                        <span>
+                                          <label className="ant-checkbox-wrapper">
+                                            <span className="ant-checkbox">
+                                              <input
+                                                type="checkbox"
+                                                className="ant-checkbox-input"
+                                                defaultValue
+                                              />
+                                              <span className="ant-checkbox-inner" />
+                                            </span>
+                                          </label>
+                                        </span>
+                                      </td>
+                                      <td
+                                        className="ant-table-row-cell-break-word"
+                                        style={{ textAlign: "center" }}
+                                      >
+                                        <font
+                                          style={{ verticalAlign: "inherit" }}
+                                        >
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            {index + 1}
+                                          </font>
+                                        </font>
+                                      </td>
+                                      <td
+                                        className
+                                        style={{ textAlign: "center" }}
+                                      >
+                                        <font
+                                          style={{ verticalAlign: "inherit" }}
+                                        >
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            {data?.productId?._id}
+                                          </font>
+                                        </font>
+                                      </td>
+                                      <td
+                                        className
+                                        style={{ textAlign: "center" }}
+                                      >
+                                        <font
+                                          style={{ verticalAlign: "inherit" }}
+                                        >
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            {data?.createdAt}
+                                          </font>
+                                        </font>
+                                      </td>
+                                      <td
+                                        className="ant-table-column-has-actions ant-table-column-has-sorters"
+                                        style={{ textAlign: "center" }}
+                                      >
+                                        <font
+                                          style={{ verticalAlign: "inherit" }}
+                                        >
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            60 seconds ?
+                                          </font>
+                                        </font>
+                                      </td>
+                                      <td
+                                        className
+                                        style={{ textAlign: "center" }}
+                                      >
+                                        <font
+                                          style={{ verticalAlign: "inherit" }}
+                                        >
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            60 ?
+                                          </font>
+                                        </font>
+                                      </td>
+                                      <td
+                                        className="ant-table-column-has-actions ant-table-column-has-sorters"
+                                        style={{ textAlign: "center" }}
+                                      >
+                                        <font
+                                          style={{ verticalAlign: "inherit" }}
+                                        >
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            {data?.user_address}
+                                          </font>
+                                        </font>
+                                      </td>
+                                      <td
+                                        className
+                                        style={{ textAlign: "center" }}
+                                      >
+                                        <font
+                                          style={{ verticalAlign: "inherit" }}
+                                        >
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            {data?.currency}
+                                          </font>
+                                        </font>
+                                      </td>
+                                      <td
+                                        className
+                                        style={{ textAlign: "center" }}
+                                      >
+                                        <font
+                                          style={{ verticalAlign: "inherit" }}
+                                        >
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            {data?.direction}
+                                          </font>
+                                        </font>
+                                      </td>
+                                      <td
+                                        className
+                                        style={{ textAlign: "center" }}
+                                      >
+                                        <font
+                                          style={{ verticalAlign: "inherit" }}
+                                        >
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            0.15?
+                                          </font>
+                                        </font>
+                                      </td>
+                                      <td
+                                        className="ant-table-column-has-actions ant-table-column-has-sorters"
+                                        style={{ textAlign: "center" }}
+                                      >
+                                        <font
+                                          style={{ verticalAlign: "inherit" }}
+                                        >
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            {data?.amount}
+                                          </font>
+                                        </font>
+                                      </td>
+                                      <td
+                                        className
+                                        style={{ textAlign: "center" }}
+                                      >
+                                        <font
+                                          style={{ verticalAlign: "inherit" }}
+                                        >
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            {data?.opening_price}
+                                          </font>
+                                        </font>
+                                      </td>
+                                      <td
+                                        className
+                                        style={{ textAlign: "center" }}
+                                      >
+                                        <font
+                                          style={{ verticalAlign: "inherit" }}
+                                        >
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            {data?.closed_price}
+                                          </font>
+                                        </font>
+                                      </td>
+                                      <td
+                                        className
+                                        style={{ textAlign: "center" }}
+                                      >
+                                        <font
+                                          style={{ verticalAlign: "inherit" }}
+                                        >
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            {data?.status}
+                                          </font>
+                                        </font>
+                                      </td>
+                                      <td
+                                        className="ant-table-column-has-actions ant-table-column-has-sorters"
+                                        style={{ textAlign: "center" }}
+                                      >
+                                        <font
+                                          style={{ verticalAlign: "inherit" }}
+                                        >
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            ?
+                                          </font>
+                                        </font>
+                                      </td>
+
+                                      <td
+                                        className="ant-table-column-has-actions ant-table-column-has-sorters"
+                                        style={{ textAlign: "center" }}
+                                      >
+                                        <font
+                                          style={{ verticalAlign: "inherit" }}
+                                        >
+                                          <font
+                                            style={{ verticalAlign: "inherit" }}
+                                          >
+                                            {data?.result}
+                                          </font>
+                                        </font>
+                                      </td>
+                                      <td
+                                        className="ant-table-fixed-columns-in-body ant-table-row-cell-break-word"
+                                        style={{ textAlign: "center" }}
+                                      >
+                                        <span data-v-19524346></span>
+                                      </td>
+                                    </tr>
+                                  </>
+                                )
+                              })}
+                          </>
+                          }
+                        
                             </tbody>
                           </table>
                         </div>
@@ -1493,11 +1888,11 @@ function SecondContractOrder() {
                                 </tr>
                               </thead>
                               <tbody className="ant-table-tbody">
-                              {contractOrder?.map((data, index) => {
-                                return (
-                                <EditConractOrder/> 
-                                );
-                              })}
+                                {contractOrder?.map((data, index) => {
+                                  return (
+                                    <EditConractOrder />
+                                  );
+                                })}
                               </tbody>
                             </table>
                           </div>
@@ -1784,71 +2179,71 @@ function SecondContractOrder() {
                     </i>
                   </span>
                 </button>
-              
-                  <div className="ant-modal-header">
-                    <div id="rcDialogTitle8" className="ant-modal-title">
+
+                <div className="ant-modal-header">
+                  <div id="rcDialogTitle8" className="ant-modal-title">
                     <button
-                                                    type="button"
-                                                    className="ant-modal-close ant-modal-close-x ant-btn ant-btn-link ant-btn-icon-only ant-btn-background-ghost"
-                                                    onClick={() => {
-                                                        setshowPopUp(0);
-                                                    }}
-                                                >
-                                                    <i
-                                                        aria-label="icon: fullscreen"
-                                                        className="anticon anticon-fullscreen"
-                                                    >
-                                                        <svg
-                                                            viewBox="64 64 896 896"
-                                                            data-icon="fullscreen"
-                                                            width="1em"
-                                                            height="1em"
-                                                            fill="currentColor"
-                                                            aria-hidden="true"
-                                                            focusable="false"
-                                                            className
-                                                        >
-                                                            <path d="M290 236.4l43.9-43.9a8.01 8.01 0 0 0-4.7-13.6L169 160c-5.1-.6-9.5 3.7-8.9 8.9L179 329.1c.8 6.6 8.9 9.4 13.6 4.7l43.7-43.7L370 423.7c3.1 3.1 8.2 3.1 11.3 0l42.4-42.3c3.1-3.1 3.1-8.2 0-11.3L290 236.4zm352.7 187.3c3.1 3.1 8.2 3.1 11.3 0l133.7-133.6 43.7 43.7a8.01 8.01 0 0 0 13.6-4.7L863.9 169c.6-5.1-3.7-9.5-8.9-8.9L694.8 179c-6.6.8-9.4 8.9-4.7 13.6l43.9 43.9L600.3 370a8.03 8.03 0 0 0 0 11.3l42.4 42.4zM845 694.9c-.8-6.6-8.9-9.4-13.6-4.7l-43.7 43.7L654 600.3a8.03 8.03 0 0 0-11.3 0l-42.4 42.3a8.03 8.03 0 0 0 0 11.3L734 787.6l-43.9 43.9a8.01 8.01 0 0 0 4.7 13.6L855 864c5.1.6 9.5-3.7 8.9-8.9L845 694.9zm-463.7-94.6a8.03 8.03 0 0 0-11.3 0L236.3 733.9l-43.7-43.7a8.01 8.01 0 0 0-13.6 4.7L160.1 855c-.6 5.1 3.7 9.5 8.9 8.9L329.2 845c6.6-.8 9.4-8.9 4.7-13.6L290 787.6 423.7 654c3.1-3.1 3.1-8.2 0-11.3l-42.4-42.4z" />
-                                                        </svg>
-                                                    </i>
-                                                </button>
-                      <div className="j-modal-title-row ant-row-flex">
-                        <div className="left ant-col">
+                      type="button"
+                      className="ant-modal-close ant-modal-close-x ant-btn ant-btn-link ant-btn-icon-only ant-btn-background-ghost"
+                      onClick={() => {
+                        setshowPopUp(0);
+                      }}
+                    >
+                      <i
+                        aria-label="icon: fullscreen"
+                        className="anticon anticon-fullscreen"
+                      >
+                        <svg
+                          viewBox="64 64 896 896"
+                          data-icon="fullscreen"
+                          width="1em"
+                          height="1em"
+                          fill="currentColor"
+                          aria-hidden="true"
+                          focusable="false"
+                          className
+                        >
+                          <path d="M290 236.4l43.9-43.9a8.01 8.01 0 0 0-4.7-13.6L169 160c-5.1-.6-9.5 3.7-8.9 8.9L179 329.1c.8 6.6 8.9 9.4 13.6 4.7l43.7-43.7L370 423.7c3.1 3.1 8.2 3.1 11.3 0l42.4-42.3c3.1-3.1 3.1-8.2 0-11.3L290 236.4zm352.7 187.3c3.1 3.1 8.2 3.1 11.3 0l133.7-133.6 43.7 43.7a8.01 8.01 0 0 0 13.6-4.7L863.9 169c.6-5.1-3.7-9.5-8.9-8.9L694.8 179c-6.6.8-9.4 8.9-4.7 13.6l43.9 43.9L600.3 370a8.03 8.03 0 0 0 0 11.3l42.4 42.4zM845 694.9c-.8-6.6-8.9-9.4-13.6-4.7l-43.7 43.7L654 600.3a8.03 8.03 0 0 0-11.3 0l-42.4 42.3a8.03 8.03 0 0 0 0 11.3L734 787.6l-43.9 43.9a8.01 8.01 0 0 0 4.7 13.6L855 864c5.1.6 9.5-3.7 8.9-8.9L845 694.9zm-463.7-94.6a8.03 8.03 0 0 0-11.3 0L236.3 733.9l-43.7-43.7a8.01 8.01 0 0 0-13.6 4.7L160.1 855c-.6 5.1 3.7 9.5 8.9 8.9L329.2 845c6.6-.8 9.4-8.9 4.7-13.6L290 787.6 423.7 654c3.1-3.1 3.1-8.2 0-11.3l-42.4-42.4z" />
+                        </svg>
+                      </i>
+                    </button>
+                    <div className="j-modal-title-row ant-row-flex">
+                      <div className="left ant-col">
+                        <font style={{ verticalAlign: "inherit" }}>
                           <font style={{ verticalAlign: "inherit" }}>
-                            <font style={{ verticalAlign: "inherit" }}>
-                              Add
-                            </font>
+                            Add
                           </font>
-                        </div>
-                        <div className="right ant-col">
-                          <button
-                            type="button"
-                            className="ant-modal-close ant-modal-close-x ant-btn ant-btn-link ant-btn-icon-only ant-btn-background-ghost"
-                            fdprocessedid="1bj728"
+                        </font>
+                      </div>
+                      <div className="right ant-col">
+                        <button
+                          type="button"
+                          className="ant-modal-close ant-modal-close-x ant-btn ant-btn-link ant-btn-icon-only ant-btn-background-ghost"
+                          fdprocessedid="1bj728"
+                        >
+                          <i
+                            aria-label="icon: fullscreen"
+                            className="anticon anticon-fullscreen"
                           >
-                            <i
-                              aria-label="icon: fullscreen"
-                              className="anticon anticon-fullscreen"
+                            <svg
+                              viewBox="64 64 896 896"
+                              data-icon="fullscreen"
+                              width="1em"
+                              height="1em"
+                              fill="currentColor"
+                              aria-hidden="true"
+                              focusable="false"
+                              className
                             >
-                              <svg
-                                viewBox="64 64 896 896"
-                                data-icon="fullscreen"
-                                width="1em"
-                                height="1em"
-                                fill="currentColor"
-                                aria-hidden="true"
-                                focusable="false"
-                                className
-                              >
-                                <path d="M290 236.4l43.9-43.9a8.01 8.01 0 0 0-4.7-13.6L169 160c-5.1-.6-9.5 3.7-8.9 8.9L179 329.1c.8 6.6 8.9 9.4 13.6 4.7l43.7-43.7L370 423.7c3.1 3.1 8.2 3.1 11.3 0l42.4-42.3c3.1-3.1 3.1-8.2 0-11.3L290 236.4zm352.7 187.3c3.1 3.1 8.2 3.1 11.3 0l133.7-133.6 43.7 43.7a8.01 8.01 0 0 0 13.6-4.7L863.9 169c.6-5.1-3.7-9.5-8.9-8.9L694.8 179c-6.6.8-9.4 8.9-4.7 13.6l43.9 43.9L600.3 370a8.03 8.03 0 0 0 0 11.3l42.4 42.4zM845 694.9c-.8-6.6-8.9-9.4-13.6-4.7l-43.7 43.7L654 600.3a8.03 8.03 0 0 0-11.3 0l-42.4 42.3a8.03 8.03 0 0 0 0 11.3L734 787.6l-43.9 43.9a8.01 8.01 0 0 0 4.7 13.6L855 864c5.1.6 9.5-3.7 8.9-8.9L845 694.9zm-463.7-94.6a8.03 8.03 0 0 0-11.3 0L236.3 733.9l-43.7-43.7a8.01 8.01 0 0 0-13.6 4.7L160.1 855c-.6 5.1 3.7 9.5 8.9 8.9L329.2 845c6.6-.8 9.4-8.9 4.7-13.6L290 787.6 423.7 654c3.1-3.1 3.1-8.2 0-11.3l-42.4-42.4z" />
-                              </svg>
-                            </i>
-                          </button>
-                        </div>
+                              <path d="M290 236.4l43.9-43.9a8.01 8.01 0 0 0-4.7-13.6L169 160c-5.1-.6-9.5 3.7-8.9 8.9L179 329.1c.8 6.6 8.9 9.4 13.6 4.7l43.7-43.7L370 423.7c3.1 3.1 8.2 3.1 11.3 0l42.4-42.3c3.1-3.1 3.1-8.2 0-11.3L290 236.4zm352.7 187.3c3.1 3.1 8.2 3.1 11.3 0l133.7-133.6 43.7 43.7a8.01 8.01 0 0 0 13.6-4.7L863.9 169c.6-5.1-3.7-9.5-8.9-8.9L694.8 179c-6.6.8-9.4 8.9-4.7 13.6l43.9 43.9L600.3 370a8.03 8.03 0 0 0 0 11.3l42.4 42.4zM845 694.9c-.8-6.6-8.9-9.4-13.6-4.7l-43.7 43.7L654 600.3a8.03 8.03 0 0 0-11.3 0l-42.4 42.3a8.03 8.03 0 0 0 0 11.3L734 787.6l-43.9 43.9a8.01 8.01 0 0 0 4.7 13.6L855 864c5.1.6 9.5-3.7 8.9-8.9L845 694.9zm-463.7-94.6a8.03 8.03 0 0 0-11.3 0L236.3 733.9l-43.7-43.7a8.01 8.01 0 0 0-13.6 4.7L160.1 855c-.6 5.1 3.7 9.5 8.9 8.9L329.2 845c6.6-.8 9.4-8.9 4.7-13.6L290 787.6 423.7 654c3.1-3.1 3.1-8.2 0-11.3l-42.4-42.4z" />
+                            </svg>
+                          </i>
+                        </button>
                       </div>
                     </div>
                   </div>
-                
+                </div>
+
 
                 <div className="ant-modal-body">
                   <div className="ant-spin-nested-loading">
@@ -1880,17 +2275,17 @@ function SecondContractOrder() {
                                           tabIndex={0}
                                           className="ant-select ant-select-enabled"
                                         >
-                                          <div 
+                                          <div
                                             role="combobox"
                                             aria-autocomplete="list"
                                             aria-haspopup="true"
                                             aria-controls="44baef9e-e679-46a4-b7b0-722bcb7cf102"
                                             className="ant-select-selection ant-select-selection--single"
                                           >
-                                            <div onClick={()=>setShowProduct(1)} className="ant-select-selection__rendered">
-                                              <div  className={addSecondOrder?.product_name ?  "ant-select-selection__placeholder1":"ant-select-selection__placeholder"}
+                                            <div onClick={() => setShowProduct(1)} className="ant-select-selection__rendered">
+                                              <div className={addSecondOrder?.product_name ? "ant-select-selection__placeholder1" : "ant-select-selection__placeholder"}
                                                 unselectable="on"
-                                               
+
                                                 style={{
                                                   display: "block",
                                                   userSelect: "none",
@@ -1905,31 +2300,31 @@ function SecondContractOrder() {
                                                     style={{
                                                       verticalAlign: "inherit",
                                                     }}
-                                                  >        
-                                                {addSecondOrder?.product_name ? addSecondOrder?.product_name : "Please select a product"}
+                                                  >
+                                                    {addSecondOrder?.product_name ? addSecondOrder?.product_name : "Please select a product"}
                                                   </font>
                                                 </font>
-                                                
+
                                               </div>
                                             </div>
-                                        {showProduct == 1 &&        
-                                    <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '100%', left: '0px', top: '30px', display: 'flex' }}><div id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)', width: "100%" }}>
-                                        <ul role="listbox" onClick={() => { setShowProduct(0) }} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
-                                            {contractProduct?.map((data,index)=>{
-                                                return(
-                                            <li onClick={() => { handleInputChange2("product_name",data?.product_name)}}role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
-                                                <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
-                                                    <font style={{ verticalAlign: 'inherit' }}>
-                                                        <font style={{ verticalAlign: 'inherit' }}>
-                                                        {data?.product_name}
-                                                        </font>
-                                                    </font>
-                                                </span>
-                                            </li>
-                                                )
-                                            })}
-                                         </ul></div></div>
-                                        }
+                                            {showProduct == 1 &&
+                                              <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '100%', left: '0px', top: '30px', display: 'flex' }}><div id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)', width: "100%" }}>
+                                                <ul role="listbox" onClick={() => { setShowProduct(0) }} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
+                                                  {contractProduct?.map((data, index) => {
+                                                    return (
+                                                      <li onClick={() => { handleInputChange2("product_name", data?.product_name) }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                                        <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
+                                                          <font style={{ verticalAlign: 'inherit' }}>
+                                                            <font style={{ verticalAlign: 'inherit' }}>
+                                                              {data?.product_name}
+                                                            </font>
+                                                          </font>
+                                                        </span>
+                                                      </li>
+                                                    )
+                                                  })}
+                                                </ul></div></div>
+                                            }
 
                                             <span
                                               unselectable="on"
@@ -1995,9 +2390,9 @@ function SecondContractOrder() {
                                             className="ant-select-selection ant-select-selection--single"
                                           >
                                             <div onClick={() => { setShowProduct(2) }} className="ant-select-selection__rendered">
-                                              <div className={addSecondOrder?.user_address ?  "ant-select-selection__placeholder1":"ant-select-selection__placeholder"}
+                                              <div className={addSecondOrder?.user_address ? "ant-select-selection__placeholder1" : "ant-select-selection__placeholder"}
                                                 unselectable="on"
-                                               
+
                                                 style={{
                                                   display: "block",
                                                   userSelect: "none",
@@ -2013,8 +2408,8 @@ function SecondContractOrder() {
                                                       verticalAlign: "inherit",
                                                     }}
                                                   >
-                                                  {addSecondOrder?.user_address ? addSecondOrder?.user_address : "Please select a username"}
-                                             
+                                                    {addSecondOrder?.user_address ? addSecondOrder?.user_address : "Please select a username"}
+
                                                   </font>
                                                 </font>
                                               </div>
@@ -2057,24 +2452,24 @@ function SecondContractOrder() {
                                                 </svg>
                                               </i>
                                             </span>
-                                            {showProduct == 2 &&        
-                                    <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '100%', left: '0px', top: '30px', display: 'flex' }}><div id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)', width: "100%" }}>
-                                        <ul role="listbox" onClick={() => { setShowProduct(0) }} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
-                                            {user?.map((data,index)=>{
-                                                return(
-                                            <li onClick={() => { handleInputChange2("user_address",data?.user_address)}} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
-                                                <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
-                                                    <font style={{ verticalAlign: 'inherit' }}>
-                                                        <font style={{ verticalAlign: 'inherit' }}>
-                                                        {data?.user_address}
-                                                        </font>
-                                                    </font>
-                                                </span>
-                                            </li>
-                                                )
-                                            })}
-                                         </ul></div></div>
-                                        }
+                                            {showProduct == 2 &&
+                                              <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '100%', left: '0px', top: '30px', display: 'flex' }}><div id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)', width: "100%" }}>
+                                                <ul role="listbox" onClick={() => { setShowProduct(0) }} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
+                                                  {user?.map((data, index) => {
+                                                    return (
+                                                      <li onClick={() => { handleInputChange2("user_address", data?.user_address) }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                                        <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
+                                                          <font style={{ verticalAlign: 'inherit' }}>
+                                                            <font style={{ verticalAlign: 'inherit' }}>
+                                                              {data?.user_address}
+                                                            </font>
+                                                          </font>
+                                                        </span>
+                                                      </li>
+                                                    )
+                                                  })}
+                                                </ul></div></div>
+                                            }
                                           </div>
                                         </div>
                                       </span>
@@ -2115,9 +2510,9 @@ function SecondContractOrder() {
                                           >
                                             <div onClick={() => { setShowProduct(3) }} className="ant-select-selection__rendered">
                                               <div
-                                              className={addSecondOrder?.currency ?  "ant-select-selection__placeholder1":"ant-select-selection__placeholder"}
+                                                className={addSecondOrder?.currency ? "ant-select-selection__placeholder1" : "ant-select-selection__placeholder"}
                                                 unselectable="on"
-                                                
+
                                                 style={{
                                                   display: "block",
                                                   userSelect: "none",
@@ -2133,7 +2528,7 @@ function SecondContractOrder() {
                                                       verticalAlign: "inherit",
                                                     }}
                                                   >
-                                                 {addSecondOrder?.currency ? addSecondOrder?.currency : "Please select currency"}
+                                                    {addSecondOrder?.currency ? addSecondOrder?.currency : "Please select currency"}
 
                                                   </font>
                                                 </font>
@@ -2162,24 +2557,24 @@ function SecondContractOrder() {
                                                 </svg>
                                               </i>
                                             </span>
-                                            {showProduct == 3 &&        
-                                    <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '100%', left: '0px', top: '30px', display: 'flex' }}><div id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)', width: "100%" }}>
-                                        <ul role="listbox" onClick={() => { setShowProduct(0) }} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
-                                            {contractProduct?.map((data,index)=>{
-                                                return(
-                                            <li onClick={() => { handleInputChange2("currency",data?.currency)}} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
-                                                <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
-                                                    <font style={{ verticalAlign: 'inherit' }}>
-                                                        <font style={{ verticalAlign: 'inherit' }}>
-                                                        {data?.currency}
-                                                        </font>
-                                                    </font>
-                                                </span>
-                                            </li>
-                                                )
-                                            })}
-                                         </ul></div></div>
-                                        }
+                                            {showProduct == 3 &&
+                                              <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '100%', left: '0px', top: '30px', display: 'flex' }}><div id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)', width: "100%" }}>
+                                                <ul role="listbox" onClick={() => { setShowProduct(0) }} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
+                                                  {contractProduct?.map((data, index) => {
+                                                    return (
+                                                      <li onClick={() => { handleInputChange2("currency", data?.currency) }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                                        <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
+                                                          <font style={{ verticalAlign: 'inherit' }}>
+                                                            <font style={{ verticalAlign: 'inherit' }}>
+                                                              {data?.currency}
+                                                            </font>
+                                                          </font>
+                                                        </span>
+                                                      </li>
+                                                    )
+                                                  })}
+                                                </ul></div></div>
+                                            }
                                           </div>
                                         </div>
                                       </span>
@@ -2219,7 +2614,7 @@ function SecondContractOrder() {
                                             className="ant-select-selection ant-select-selection--single"
                                           >
                                             <div onClick={() => { setShowProduct(4) }} className="ant-select-selection__rendered">
-                                              <div className={addSecondOrder?.direction ?  "ant-select-selection__placeholder1":"ant-select-selection__placeholder"}
+                                              <div className={addSecondOrder?.direction ? "ant-select-selection__placeholder1" : "ant-select-selection__placeholder"}
                                                 unselectable="on"
                                                 // className="ant-select-selection__placeholder"
                                                 style={{
@@ -2238,7 +2633,7 @@ function SecondContractOrder() {
                                                     }}
                                                   >
                                                     {addSecondOrder?.direction ? addSecondOrder?.direction : "Please select direction"}
-                                                    
+
                                                   </font>
                                                 </font>
                                               </div>
@@ -2266,24 +2661,24 @@ function SecondContractOrder() {
                                                 </svg>
                                               </i>
                                             </span>
-                                            {showProduct == 4 &&        
-                                    <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '100%', left: '0px', top: '30px', display: 'flex' }}><div id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)', width: "100%" }}>
-                                        <ul role="listbox" onClick={() => { setShowProduct(0) }} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
-                                            {contractOrder?.map((data,index)=>{
-                                                return(
-                                            <li onClick={() => { handleInputChange2("direction",data?.direction)}} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
-                                                <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
-                                                    <font style={{ verticalAlign: 'inherit' }}>
-                                                        <font style={{ verticalAlign: 'inherit' }}>
-                                                        {data?.direction}
-                                                        </font>
-                                                    </font>
-                                                </span>
-                                            </li>
-                                                )
-                                            })}
-                                         </ul></div></div>
-                                        }
+                                            {showProduct == 4 &&
+                                              <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '100%', left: '0px', top: '30px', display: 'flex' }}><div id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)', width: "100%" }}>
+                                                <ul role="listbox" onClick={() => { setShowProduct(0) }} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
+                                                  {contractOrder?.map((data, index) => {
+                                                    return (
+                                                      <li onClick={() => { handleInputChange2("direction", data?.direction) }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                                        <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
+                                                          <font style={{ verticalAlign: 'inherit' }}>
+                                                            <font style={{ verticalAlign: 'inherit' }}>
+                                                              {data?.direction}
+                                                            </font>
+                                                          </font>
+                                                        </span>
+                                                      </li>
+                                                    )
+                                                  })}
+                                                </ul></div></div>
+                                            }
                                           </div>
                                         </div>
                                       </span>
@@ -2372,6 +2767,7 @@ function SecondContractOrder() {
                                               autoComplete="off"
                                               min={-9007199254740991}
                                               step={1}
+                                              type="number"
                                               className="ant-input-number-input"
                                               fdprocessedid="15e0wa"
                                               name="amount"
@@ -2413,8 +2809,7 @@ function SecondContractOrder() {
                         </font>
                       </span>
                     </button>
-                    <button
-                     
+                    <button onClick={()=>CreateSecondContractOrder()}
                       type="button"
                       className="ant-btn ant-btn-primary"
                     >
@@ -2620,9 +3015,8 @@ function SecondContractOrder() {
                                             width: "283px",
                                             left: "0px",
                                             top: "36px",
-                                            display: `${
-                                              queryPopUp ? "flex" : "none"
-                                            }`,
+                                            display: `${queryPopUp ? "flex" : "none"
+                                              }`,
                                           }}
                                         >
                                           <div
@@ -3030,9 +3424,8 @@ function SecondContractOrder() {
                                 <div
                                   className="ant-select-dropdown ant-select-tree-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft"
                                   style={{
-                                    display: `${
-                                      queryFieldPopUp ? "flex" : "none"
-                                    }`,
+                                    display: `${queryFieldPopUp ? "flex" : "none"
+                                      }`,
                                     maxHeight: "400px",
                                     overflow: "auto",
                                     left: "0px",

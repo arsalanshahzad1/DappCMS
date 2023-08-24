@@ -53,7 +53,15 @@ const CreateSecondContractProduct = async (id) => {
  addSecondProduct.maximum_amount,
    addSecondProduct.minimum_amount,
     addSecondProduct.Remark);
-        const resut = await apis.UpdateSecondContracProduct(id,{
+
+    
+    if(addSecondProduct?.minimum_amount > addSecondProduct?.maximum_amount){
+        toast.error("minimum amount must be less than maximum amount");
+        return
+       } 
+
+
+    const resut = await apis.UpdateSecondContracProduct(id,{
             "product_name": addSecondProduct.product_name,
             "currency": addSecondProduct.Currency,
             "deliveryTime": addSecondProduct.Delivery_time,
@@ -511,82 +519,82 @@ useEffect(()=>{
                                                                                    </span>
                                                                                </div>
                                                                                {showCurrency && ///aliant-select ant-select-enabled
-                                                                                   <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '100%', left: '0px', top: '30px', display: 'flex' }}><div id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)', width: "100%" }}>
-                                                                                       <ul role="listbox" onClick={() => { setshowCurrency(!showCurrency) }} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
+                                                                                     <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '100%', left: '0px', top: '30px', display: 'flex' }}><div id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)', width: "100%" }}>
+                                                                                     <ul role="listbox" onClick={() => { setshowCurrency(!showCurrency) }} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
 
-                                                                                           <li name="product_name" role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
-                                                                                               <font style={{ verticalAlign: 'inherit' }}>
-                                                                                                   <font style={{ verticalAlign: 'inherit' }}>please choose
-                                                                                                   </font>
-                                                                                               </font>
-                                                                                           </li>
+                                                                                         <li name="product_name" role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                                                                             <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                 <font style={{ verticalAlign: 'inherit' }}>please choose
+                                                                                                 </font>
+                                                                                             </font>
+                                                                                         </li>
 
 
-                                                                                           <li onClick={() => { handleInputChange2("Currency","BTC")}} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
-                                                                                               <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
-                                                                                                   <font style={{ verticalAlign: 'inherit' }}>
-                                                                                                       <font style={{ verticalAlign: 'inherit' }}>
-                                                                                                           BTC
-                                                                                                       </font>
-                                                                                                   </font>
-                                                                                               </span>
-                                                                                           </li>
+                                                                                         <li onClick={() => { handleInputChange2("Currency", "BTC") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                                                                             <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
+                                                                                                 <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                     <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                     BTC
+                                                                                                     </font>
+                                                                                                 </font>
+                                                                                             </span>
+                                                                                         </li>
 
-                                                                                           <li onClick={() => { handleInputChange2("Currency","USDT")}} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
-                                                                                               <span data-v-17b4e467 title="USDT" style={{ display: 'inline-block', width: '100%' }}>
-                                                                                                   <font style={{ verticalAlign: 'inherit' }}>
-                                                                                                       <font style={{ verticalAlign: 'inherit' }}>
-                                                                                                           USDT
-                                                                                                       </font>
-                                                                                                   </font>
-                                                                                               </span>
-                                                                                           </li>
+                                                                                         <li onClick={() => { handleInputChange2("Currency", "ETH") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                                                                             <span data-v-17b4e467 title="USDT" style={{ display: 'inline-block', width: '100%' }}>
+                                                                                                 <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                     <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                     ETH
+                                                                                                     </font>
+                                                                                                 </font>
+                                                                                             </span>
+                                                                                         </li>
 
-                                                                                           <li  onClick={() => { handleInputChange2("Currency","ETH")}} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
-                                                                                               <span data-v-17b4e467 title="ETH" style={{ display: 'inline-block', width: '100%' }}>
-                                                                                                   <font style={{ verticalAlign: 'inherit' }}>
-                                                                                                       <font style={{ verticalAlign: 'inherit' }}>
-                                                                                                           ETH
-                                                                                                       </font>
-                                                                                                   </font>
-                                                                                               </span>
-                                                                                           </li>
-                                                                                           <li   onClick={() => { handleInputChange2("Currency","DOT")}} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
-                                                                                               <span data-v-17b4e467 title="DOT" style={{ display: 'inline-block', width: '100%' }}>
-                                                                                                   <font style={{ verticalAlign: 'inherit' }}>
-                                                                                                       <font style={{ verticalAlign: 'inherit' }}>
-                                                                                                           DOT
-                                                                                                       </font>
-                                                                                                   </font>
-                                                                                               </span>
-                                                                                           </li>
-                                                                                           <li  onClick={() => { handleInputChange2("Currency","TRX")}} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
-                                                                                               <span data-v-17b4e467 title="TRX" style={{ display: 'inline-block', width: '100%' }}>
-                                                                                                   <font style={{ verticalAlign: 'inherit' }}>
-                                                                                                       <font style={{ verticalAlign: 'inherit' }}>
-                                                                                                           TRX
-                                                                                                       </font>
-                                                                                                   </font>
-                                                                                               </span>
-                                                                                           </li>
-                                                                                           <li  onClick={() => { handleInputChange2("Currency","ETHW")}} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
-                                                                                               <span data-v-17b4e467 title="ETHW" style={{ display: 'inline-block', width: '100%' }}>
-                                                                                                   <font style={{ verticalAlign: 'inherit' }}>
-                                                                                                       <font style={{ verticalAlign: 'inherit' }}>
-                                                                                                           ETHW
-                                                                                                       </font>
-                                                                                                   </font>
-                                                                                               </span>
-                                                                                           </li>
-                                                                                           <li  onClick={() => { handleInputChange2("Currency","USDC")}} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
-                                                                                               <span data-v-17b4e467 title="USDC" style={{ display: 'inline-block', width: '100%' }}>
-                                                                                                   <font style={{ verticalAlign: 'inherit' }}>
-                                                                                                       <font style={{ verticalAlign: 'inherit' }}>
-                                                                                                           USDC
-                                                                                                       </font>
-                                                                                                   </font>
-                                                                                               </span>
-                                                                                           </li></ul></div></div>
+                                                                                         <li onClick={() => { handleInputChange2("Currency", "XLM") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                                                                             <span data-v-17b4e467 title="ETH" style={{ display: 'inline-block', width: '100%' }}>
+                                                                                                 <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                     <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                     XLM
+                                                                                                     </font>
+                                                                                                 </font>
+                                                                                             </span>
+                                                                                         </li>
+                                                                                         <li onClick={() => { handleInputChange2("Currency", "BCH") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                                                                             <span data-v-17b4e467 title="DOT" style={{ display: 'inline-block', width: '100%' }}>
+                                                                                                 <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                     <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                     BCH
+                                                                                                     </font>
+                                                                                                 </font>
+                                                                                             </span>
+                                                                                         </li>
+                                                                                         <li onClick={() => { handleInputChange2("Currency", "ATOM") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                                                                             <span data-v-17b4e467 title="TRX" style={{ display: 'inline-block', width: '100%' }}>
+                                                                                                 <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                     <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                     ATOM
+                                                                                                     </font>
+                                                                                                 </font>
+                                                                                             </span>
+                                                                                         </li>
+                                                                                         <li onClick={() => { handleInputChange2("Currency", "XRP") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                                                                             <span data-v-17b4e467 title="ETHW" style={{ display: 'inline-block', width: '100%' }}>
+                                                                                                 <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                     <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                     XRP
+                                                                                                     </font>
+                                                                                                 </font>
+                                                                                             </span>
+                                                                                         </li>
+                                                                                         <li onClick={() => { handleInputChange2("Currency", "LINK") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                                                                             <span data-v-17b4e467 title="USDC" style={{ display: 'inline-block', width: '100%' }}>
+                                                                                                 <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                     <font style={{ verticalAlign: 'inherit' }}>
+                                                                                                     LINK 
+                                                                                                     </font>
+                                                                                                 </font>
+                                                                                             </span>
+                                                                             </li></ul></div></div>
                                                                                }
                                                                            </div>
 
@@ -691,6 +699,7 @@ useEffect(()=>{
                                                                                            autoComplete="off"
                                                                                            min={-9007199254740991}
                                                                                            step={1}
+                                                                                           type='number'
                                                                                            className="ant-input-number-input"
                                                                                            aria-valuenow={60}
                                                                                            // defaultValue={data?.deliveryTime}
@@ -801,6 +810,7 @@ useEffect(()=>{
                                                                                            autoComplete="off"
                                                                                            min={-9007199254740991}
                                                                                            step={1}
+                                                                                           type='number'
                                                                                            className="ant-input-number-input"
                                                                                            aria-valuenow="0.25"
                                                                                            // defaultValue={data?.odds}
@@ -911,6 +921,7 @@ useEffect(()=>{
                                                                                            autoComplete="off"
                                                                                            min={-9007199254740991}
                                                                                            step={1}
+                                                                                           type='number'
                                                                                            className="ant-input-number-input"
                                                                                            aria-valuenow={100000}
                                                                                            // defaultValue={data?.maximum_amount}  
@@ -1021,6 +1032,7 @@ useEffect(()=>{
                                                                                            autoComplete="off"
                                                                                            min={-9007199254740991}
                                                                                            step={1}
+                                                                                           type='number'
                                                                                            className="ant-input-number-input"
                                                                                            aria-valuenow={100}
                                                                                            // defaultValue={data?.minimum_amount}
@@ -1464,6 +1476,7 @@ useEffect(()=>{
                                                                                        autoComplete="off"
                                                                                        min={-9007199254740991}
                                                                                        step={1}
+                                                                                       type='number'
                                                                                        className="ant-input-number-input"
                                                                                        aria-valuenow={60}
                                                                                        defaultValue={data?.deliveryTime}
@@ -1559,6 +1572,7 @@ useEffect(()=>{
                                                                                        autoComplete="off"
                                                                                        min={-9007199254740991}
                                                                                        step={1}
+                                                                                       type='number'
                                                                                        className="ant-input-number-input"
                                                                                        aria-valuenow="0.25"
                                                                                        defaultValue={data?.odds}
@@ -1654,6 +1668,7 @@ useEffect(()=>{
                                                                                        autoComplete="off"
                                                                                        min={-9007199254740991}
                                                                                        step={1}
+                                                                                       type='number'
                                                                                        className="ant-input-number-input"
                                                                                        aria-valuenow={100000}
                                                                                        defaultValue={data?.maximum_amount}

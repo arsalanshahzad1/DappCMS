@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { MyContext } from '../Context/MyContext';
 import apis from '../Services';
+import { toast } from 'react-hot-toast';
 
 const EditWalletManagement = ({ data, index }) => {
     const{alluserWallets,getAllUserWallet}=useContext(MyContext)
@@ -50,7 +51,8 @@ console.log("account type not defined",data);
             "state": walletUpdate?.state
         })
 
-        toast.success(resut.data?.message, { id: 1 });
+        console.log("BYYYYYY",resut);
+        toast.success(resut?.data?.message);
         setWalletUpdate("")
         setshowEdit(false)
         getAllUserWallet();
@@ -485,6 +487,7 @@ useEffect(()=>{},[alluserWallets])
                                                                                             autoComplete="off"
                                                                                             min={-9007199254740991}
                                                                                             step={1}
+                                                                                            type='number'
                                                                                             className="ant-input-number-input"
                                                                                             fdprocessedid="sga8k8"
                                                                                             aria-valuenow={0}
@@ -1156,6 +1159,7 @@ useEffect(()=>{},[alluserWallets])
                                                                                             autoComplete="off"
                                                                                             min={-9007199254740991}
                                                                                             step={1}
+                                                                                            type='number'
                                                                                             className="ant-input-number-input"
                                                                                             fdprocessedid="sga8k8"
                                                                                             aria-valuenow={0}
