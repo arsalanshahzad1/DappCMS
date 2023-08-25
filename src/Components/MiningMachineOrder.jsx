@@ -1,11 +1,26 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { MyContext } from "../Context/MyContext";
 import EditMiningOrder from "../Forms/EditMiningOrder";
 import { toast } from "react-hot-toast";
 import apis from "../Services";
 
 function MiningMachineOrder() {
-const { miningOrder} =useContext(MyContext);
+const { miningOrder,getMiningProductProduct, miningProduct} =useContext(MyContext);
+
+const [filter ,setfilter] = useState(miningOrder) 
+
+useEffect(()=>{
+  getMiningProductProduct();
+},[])
+
+useEffect(()=>{
+  if(miningOrder.length > 0)
+  {
+    setfilter(miningOrder)
+  }
+},[miningOrder])
+
+
 const [showAdd, setShowAdd] = useState(false);
 const [showProduct, setShowProduct] = useState(0);
 
@@ -15,6 +30,18 @@ const [addMiningOrder, setMiningOrder] = useState({
   productId: "",
   userId: "",
   amount: "",
+});
+
+console.log(miningProduct,miningOrder);
+
+const [showSearch, setShowSearch] = useState(0)
+const [search, SetSearch] = useState({
+  product_name: "",
+  productId:"",
+  user_address: "",
+  status: "",
+  result: "",
+  createdAt: "",
 });
 
 const handleInputChange2 = (name, value) => {
@@ -35,11 +62,29 @@ const handleInputChange = (event) => {
 
 
 
+
+const handleInputChange3 = (name, value) => {
+  // const { name, value } = event.target;
+  SetSearch((prevState) => ({
+    ...prevState,
+    [name]: value, // Update the corresponding property based on the input name
+  }));
+};
+
+const handleInputChange4 = (event) => {
+  const { name, value } = event.target;
+  SetSearch((prevState) => ({
+    ...prevState,
+    [name]: value, // Update the corresponding property based on the input name
+  }));
+};
+
+
 const CreateMiningProduct = async () => {
 
   if (!addMiningOrder?.productId == "" && !addMiningOrder?.userId == "" && !addMiningOrder?.amount == "") {
 
-      const resut = await apis.createMiningOrder({
+      const resut = await apis.getSearchedMiningOrder({
           "productId": addMiningOrder?.productId,
           "userId": addMiningOrder?.userId,
           "amount": addMiningOrder?.amount,  
@@ -53,6 +98,35 @@ const CreateMiningProduct = async () => {
 }
 
 
+const getSearchedMiningOrder = async ()=> {
+  if(!search?.productId=="" && !search?.user_address=="" && !search?.status =="" &&
+  !search?.createdAt==""){
+
+    try {
+      const result = await apis.getSearchedMiningOrder({
+        "productId": search.productId,
+        "user_address":search.user_address,
+        "status":search.status,
+        "createdAt":search.createdAt
+      })   
+     
+      if(result.status){
+        setfilter(result.data?.data)
+      }
+
+    } catch (error) {
+     console.log("Record Not Found");
+    }
+    
+  }
+  else
+  {
+    toast.error("Please fill all fields");
+  }
+  
+
+}
+
 
 
 
@@ -60,7 +134,9 @@ return (
     <div>
       <div data-v-c86d1862 className="ant-card">
         <div className="ant-card-body">
-          <div data-v-c86d1862 className="table-page-search-wrapper">
+          
+          
+        <div data-v-19524346 className="table-page-search-wrapper">
             <form data-v-19524346 className="ant-form ant-form-inline">
               <div
                 data-v-19524346
@@ -72,6 +148,8 @@ return (
                   className="ant-col ant-col-sm-24 ant-col-md-12 ant-col-lg-11 ant-col-xl-10"
                   style={{ paddingLeft: "12px", paddingRight: "12px" }}
                 >
+
+
                   <div data-v-19524346 className="ant-row ant-form-item">
                     <div
                       className="ant-col ant-form-item-label"
@@ -85,109 +163,33 @@ return (
                         </font>
                       </label>
                     </div>
+
+
+
                     <div className="ant-col ant-form-item-control-wrapper">
                       <div className="ant-form-item-control">
                         <span className="ant-form-item-children">
-                          <span
+                          <span onClick={() => setshowPopUp(3)}
                             data-v-19524346
                             className="query-group-cust ant-calendar-picker"
                             style={{ minWidth: "195px" }}
                           >
                             <div className>
                               <input
-                                readOnly="true"
                                 placeholder="Please select a start time"
                                 className="ant-calendar-picker-input ant-input"
+                                type="date"
+                                onChange={(e) => {handleInputChange3("createdAt", e.target.value) }}
                               />
-                              <i
-                                aria-label="icon: calendar"
-                                className="anticon anticon-calendar ant-calendar-picker-icon"
-                              >
-                                <svg
-                                  viewBox="64 64 896 896"
-                                  data-icon="calendar"
-                                  width="1em"
-                                  height="1em"
-                                  fill="currentColor"
-                                  aria-hidden="true"
-                                  focusable="false"
-                                  className
-                                >
-                                  <path d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z" />
-                                </svg>
-                              </i>
                             </div>
                           </span>
+
                           <span
                             data-v-19524346
                             className="query-group-split-cust"
                           />
-                          <span
-                            data-v-19524346
-                            className="query-group-cust ant-calendar-picker"
-                            style={{ minWidth: "195px" }}
-                          >
-                            <div className>
-                              <input
-                                readOnly="true"
-                                placeholder="Please select an end time"
-                                className="ant-calendar-picker-input ant-input"
-                              />
-                              <i
-                                aria-label="icon: calendar"
-                                className="anticon anticon-calendar ant-calendar-picker-icon"
-                              >
-                                <svg
-                                  viewBox="64 64 896 896"
-                                  data-icon="calendar"
-                                  width="1em"
-                                  height="1em"
-                                  fill="currentColor"
-                                  aria-hidden="true"
-                                  focusable="false"
-                                  className
-                                >
-                                  <path d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z" />
-                                </svg>
-                              </i>
-                            </div>
-                          </span>
                         </span>
-                        {/**/}
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
-                <div
-                  data-v-19524346
-                  className="ant-col ant-col-sm-24 ant-col-md-8 ant-col-lg-7 ant-col-xl-6"
-                  style={{ paddingLeft: "12px", paddingRight: "12px" }}
-                >
-                  <div data-v-19524346 className="ant-row ant-form-item">
-                    <div
-                      className="ant-col ant-form-item-label"
-                      style={{ width: "45%" }}
-                    >
-                      <label title="username" className>
-                        <font style={{ verticalAlign: "inherit" }}>
-                          <font style={{ verticalAlign: "inherit" }}>
-                            username
-                          </font>
-                        </font>
-                      </label>
-                    </div>
-                    <div className="ant-col ant-form-item-control-wrapper">
-                      <div className="ant-form-item-control">
-                        <span className="ant-form-item-children">
-                          <input
-                            data-v-19524346
-                            placeholder="please enter user name"
-                            type="text"
-                            className="ant-input"
-                          />
-                        </span>
-                        {/**/}
                       </div>
                     </div>
                   </div>
@@ -227,9 +229,10 @@ return (
                               className="ant-select-selection ant-select-selection--single"
                             >
                               <div className="ant-select-selection__rendered">
-                                <div
+                                <div onClick={() => setShowSearch(1)}
                                   unselectable="on"
-                                  className="ant-select-selection__placeholder"
+                                  
+                                  className={search.product_name ? "ant-select-selection__placeholder1" : "ant-select-selection__placeholder"}
                                   style={{
                                     display: "block",
                                     userSelect: "none",
@@ -237,7 +240,8 @@ return (
                                 >
                                   <font style={{ verticalAlign: "inherit" }}>
                                     <font style={{ verticalAlign: "inherit" }}>
-                                      Please select a product
+                                    {search.product_name ? search.product_name : "Please select a product" }
+                                  
                                     </font>
                                   </font>
                                 </div>
@@ -268,6 +272,25 @@ return (
                             </div>
                           </div>
                         </span>
+                        {showSearch == 1 &&
+                          <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '100%', left: '0px', top: '30px', display: 'flex' }}><div id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)', width: "100%" }}>
+                            <ul role="listbox" onClick={() => { setShowSearch(0) }} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
+                            {console.log(miningProduct)}
+                            {miningProduct?.map((data, index) => {
+                              return (
+                                  <li onClick={() => { handleInputChange3("product_name",data?.product_name), handleInputChange3("productId",data?._id)}} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                    <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
+                                      <font style={{ verticalAlign: 'inherit' }}>
+                                        <font style={{ verticalAlign: 'inherit' }}>
+                                          {data?.product_name}
+                                        </font>
+                                      </font>
+                                    </span>
+                                  </li>
+                                )
+                              })}
+                            </ul></div></div>
+                        }
                       </div>
                     </div>
                   </div>
@@ -279,6 +302,44 @@ return (
                 >
                   <div data-v-19524346 className="ant-row ant-form-item">
                     <div
+                      className="ant-col ant-form-item-label"
+                      style={{ width: "45%" }}
+                    >
+                      <label title="username" className>
+                        <font style={{ verticalAlign: "inherit" }}>
+                          <font style={{ verticalAlign: "inherit" }}>
+                            userAddress
+                          </font>
+                        </font>
+                      </label>
+                    </div>
+                    <div className="ant-col ant-form-item-control-wrapper">
+                      <div className="ant-form-item-control">
+                        <span className="ant-form-item-children">
+                          <input
+                            data-v-19524346
+                            placeholder="please enter user name"
+                            type="text"
+                            className="ant-input"
+                            name="user_address"
+                            value={search.user_address}
+                            onChange={handleInputChange4}
+
+                          />
+                        </span>
+                        {/**/}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  data-v-19524346
+                  className="ant-col ant-col-sm-24 ant-col-md-8 ant-col-lg-7 ant-col-xl-6"
+                  style={{ paddingLeft: "12px", paddingRight: "12px" }}
+                >
+                  <div data-v-19524346 className="ant-row ant-form-item">
+                    <div 
                       className="ant-col ant-form-item-label"
                       style={{ width: "50%" }}
                     >
@@ -310,9 +371,9 @@ return (
                               className="ant-select-selection ant-select-selection--single"
                             >
                               <div className="ant-select-selection__rendered">
-                                <div
+                                <div onClick={() => setShowSearch(3)}
                                   unselectable="on"
-                                  className="ant-select-selection__placeholder"
+                                  className={search?.status ? "ant-select-selection__placeholder1": "ant-select-selection__placeholder"}
                                   style={{
                                     display: "block",
                                     userSelect: "none",
@@ -320,7 +381,7 @@ return (
                                 >
                                   <font style={{ verticalAlign: "inherit" }}>
                                     <font style={{ verticalAlign: "inherit" }}>
-                                      Please select an order status
+                                     {search?.status ? search?.status : "Please select an order status"} 
                                     </font>
                                   </font>
                                 </div>
@@ -349,6 +410,32 @@ return (
                                 </i>
                               </span>
                             </div>
+                            {showSearch == 3 &&
+                          <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '100%', left: '0px', top: '30px', display: 'flex' }}><div id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)', width: "100%" }}>
+                            <ul role="listbox" onClick={() => { setShowSearch(0) }} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
+                                
+                                <li onClick={() => { handleInputChange3("status","completed") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                    <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
+                                      <font style={{ verticalAlign: 'inherit' }}>
+                                        <font style={{ verticalAlign: 'inherit' }}>
+                                          completed 
+                                        </font>
+                                      </font>
+                                    </span>
+                                </li>
+                                   
+                                <li onClick={() => { handleInputChange3("status","progress") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                    <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
+                                      <font style={{ verticalAlign: 'inherit' }}>
+                                        <font style={{ verticalAlign: 'inherit' }}>
+                                          progress 
+                                        </font>
+                                      </font>
+                                    </span>
+                                </li>
+                              
+                            </ul></div></div>
+                        }
                           </div>
                         </span>
                         {/**/}
@@ -356,14 +443,15 @@ return (
                     </div>
                   </div>
                 </div>
-
+               
+                
                 <div
                   data-v-19524346
                   className="ant-col ant-col-sm-24 ant-col-md-8 ant-col-lg-7 ant-col-xl-6"
                   style={{
                     paddingLeft: "12px",
                     paddingRight: "12px",
-                    margin: "5px 0",
+                    margin: "10px 0",
                   }}
                 >
                   <span
@@ -371,7 +459,7 @@ return (
                     className="table-page-search-submitButtons"
                     style={{ float: "left", overflow: "hidden" }}
                   >
-                    <button
+                    <button onClick={()=>getSearchedMiningOrder()}
                       data-v-19524346
                       type="button"
                       className="ant-btn ant-btn-primary"
@@ -401,7 +489,7 @@ return (
                         </font>
                       </span>
                     </button>
-                    <button
+                    <button onClick={()=>setfilter(miningOrder)}
                       data-v-19524346
                       type="button"
                       className="ant-btn ant-btn-primary"
@@ -437,6 +525,9 @@ return (
               </div>
             </form>
           </div>
+          
+          
+          
           <div data-v-c86d1862 className="table-operator">
             <button onClick={() => setShowAdd(true)}
               data-v-c86d1862
@@ -1271,7 +1362,9 @@ return (
                               </tr>
                             </thead>
                             <tbody className="ant-table-tbody">
-                            {miningOrder?.map((data,index)=>{
+                            {filter.length > 0 ? 
+                            
+                            filter?.map((data,index)=>{
                               return(
                               <tr
                                 className="ant-table-row ant-table-row-level-0"
@@ -1474,6 +1567,8 @@ return (
                               </tr>
                               )
                             })
+                            :
+                            <>Record Not Found</>
                             }
                    
                             </tbody>

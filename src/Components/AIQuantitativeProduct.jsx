@@ -6,11 +6,22 @@ import { toast } from "react-hot-toast";
 
 function AIQuantitativeProduct() {
     const { getproducts, quantitativeProduct, getQuantitativeProduct } = useContext(MyContext)
+    
+    const [filter ,setfilter] = useState(quantitativeProduct)
+    useEffect(()=>{
+        if(quantitativeProduct.length > 0)
+        {
+          setfilter(quantitativeProduct)
+        }
+      },[quantitativeProduct])
+    
+    
     const [showAdd, setShowAdd] = useState(false);
     const [selectedImagesNFT, setSelectedImagesNFT] = useState("");
     const [testingImage, setTestingImage] = useState('')
     const [showStatus, setShowStatus]=useState(false)
     const [showCurrency, setshowCurrency] = useState(false);
+    
     const [addQuantitaveProduct, setQuantitaveProduct] = useState({
         product_name: "",
         product_life: "",
@@ -27,6 +38,32 @@ function AIQuantitativeProduct() {
         product_name: "",
         product_status: ""
     })
+
+    const getSearchedQuantitativeProduct = async ()=> {
+        if(!search?.product_status=="" && !search?.product_status==""){
+    
+          try {
+            const result = await apis.getSearchedQuantitativeProduct({
+              "product_name": search.product_name,
+              "product_status":search.product_status,
+            })   
+           
+            if(result.status){
+              setfilter(result.data?.data)
+            }
+    
+          } catch (error) {
+           console.log("Record Not Found");
+          }
+          
+        }
+        else
+        {
+          toast.error("Please fill all fields");
+        }
+        
+    
+    }
 
 
 
@@ -165,6 +202,11 @@ function AIQuantitativeProduct() {
     }
 
 
+
+
+
+
+    // getSearchedQuantitativeProduct
 
 
     useEffect(() => {
@@ -461,7 +503,7 @@ function AIQuantitativeProduct() {
                                         className="table-page-search-submitButtons"
                                         style={{ float: "left", overflow: "hidden" }}
                                     >
-                                        <button
+                                        <button onClick={()=>getSearchedQuantitativeProduct()}
                                             data-v-140419ff
                                             type="button"
                                             className="ant-btn ant-btn-primary"
@@ -491,7 +533,7 @@ function AIQuantitativeProduct() {
                                                 </font>
                                             </span>
                                         </button>
-                                        <button
+                                        <button onClick={()=>setfilter(quantitativeProduct)}
                                             data-v-140419ff
                                             type="button"
                                             className="ant-btn ant-btn-primary"
@@ -603,8 +645,8 @@ function AIQuantitativeProduct() {
                                                     style={{ overflowX: "scroll" }}
                                                 >
                                                     <table
-                                                        className="ant-table-fixed"
-                                                        style={{ width: "max-content" }}
+                                                        className="ant-table-fixed "
+                                                        style={{ width: "max-content" , display:"contents"}}
                                                     >
                                                         <colgroup>
                                                             <col className="ant-table-selection-col" />
@@ -875,7 +917,9 @@ function AIQuantitativeProduct() {
 
                                                             {/* start Here */}
 
-                                                            {quantitativeProduct?.map((data, index) => {
+                                                            {filter.length > 0 ?
+                                                            
+                                                            filter?.map((data, index) => {
                                                                 return (
                                                                     <tr
                                                                         className="ant-table-row ant-table-row-level-0"
@@ -1020,6 +1064,10 @@ function AIQuantitativeProduct() {
 
                                                                 )
                                                             })
+
+                                                            :
+                                                            <div className="d-flex justify-content-center align-items-center" >
+                                                            Record Not Found </div>
 
                                                             }
 

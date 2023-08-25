@@ -33,25 +33,30 @@ const createBackendServer = (baseURL) => {
     const getOneQuantitativeProduct = async (body) => await api.get(`admin/quantitative-product/${body}`)
     const createQuantitativeProduct = async (body) => await api.post(`admin/quantitative-product`, body)
     const UpdateQuantitativeProduct = async (prams, body) => await api.put(`admin/quantitative-product/${prams}`, body)
+    const getSearchedQuantitativeProduct = async (body) => await api.post(`admin/quantitative-search`,body)
 
     //QuantitativeOrder
     const getAllQuantitativeOrder = async () => await api.get(`admin/quantitative-order`);
     const getOneQuantitativeOrder = async (body) => await api.get(`admin/quantitative-order/${body}`)
     const createQuantitativeOrder = async (body) => await api.post(`admin/quantitative-order`, body)
     const UpdateQuantitativeOrder = async (prams, body) => await api.put(`admin/quantitative-order/${prams}`, body)
-
+    const getSearchedQuantitativeOrder = async (body) => await api.post(`admin/quantitative-order-search`,body)
+    
+   
 
     //MiningProduct 
     const getAllMiningProduct = async () => await api.get(`admin/mining-product`);
     const getOneMiningProduct = async (body) => await api.get(`admin/mining-product/${body}`)
     const createMiningProduct = async (body) => await api.post(`admin/mining-product`, body)
     const UpdateMiningProduct = async (prams, body) => await api.put(`admin/mining-product/${prams}`, body)
+    const getSearchedMiningProduct = async (body) => await api.post(`admin/mining-product-search`,body)
 
     //MiningOrder
     const getAllMiningOders = async () => await api.get(`admin/mining-order`);
     const getOneMiningOrder = async (body) => await api.get(`admin/mining-order/${body}`)
     const createMiningOrder = async (body) => await api.post(`admin/mining-order`, body)
     const UpdateMiningOrder = async (prams, body) => await api.put(`admin/mining-order/${prams}`, body)
+    const getSearchedMiningOrder = async (body) => await api.post(`admin/mining-order-search`,body)
 
     //SecondContractProduct
     const getAllSecondContracProduct = async () => await api.get(`admin/contract-product`);
@@ -59,8 +64,8 @@ const createBackendServer = (baseURL) => {
     const createSecondContracProduct = async (body) => await api.post(`admin/contract-product`, body)
     const UpdateSecondContracProduct = async (prams, body) => await api.put(`admin/contract-product/${prams}`, body)
     const getContractDetails = async (body, type) => await api.get(`coins-details${body}?type=${type}`);
-    const getAllContracCurrency = async (body) => await api.get(`contract?coin=${body}`);
-
+    const getSearchedContract = async (body) => await api.post(`admin/contract-order-search`,body)
+    
     //secondContractOrder
     const getAllSecondContracOrder = async () => await api.get(`admin/contract-order`);
     const getOneSecondContracOrder = async (body) => await api.get(`admin/contract-order/${body}`)
@@ -88,22 +93,26 @@ const createBackendServer = (baseURL) => {
         getOneQuantitativeProduct,
         createQuantitativeProduct,
         UpdateQuantitativeProduct,
+        getSearchedQuantitativeProduct,
 
         getAllQuantitativeOrder,
         getOneQuantitativeOrder,
         createQuantitativeOrder,
         UpdateQuantitativeOrder,
+        getSearchedQuantitativeOrder,
 
 
         getAllMiningProduct,
         getOneMiningProduct,
         createMiningProduct,
         UpdateMiningProduct,
+        getSearchedMiningProduct,
 
         getAllMiningOders,
         getOneMiningOrder,
         createMiningOrder,
         UpdateMiningOrder,
+        getSearchedMiningOrder,
 
 
         getAllSecondContracProduct,
@@ -116,6 +125,7 @@ const createBackendServer = (baseURL) => {
         getOneSecondContracOrder,
         createSecondContracOrder,
         UpdateSecondContracOrder,
+        getSearchedContract,
 
         createUser,
         getAllUser,

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { MyContext } from "../Context/MyContext";
 import { EditQuantitativeOerder } from "../Forms/EditQuantitativeOerder";
 import { toast } from "react-hot-toast";
@@ -9,7 +9,7 @@ function QuantitativeOrder() {
     const { quantitativeOrder, quantitativeProduct } = useContext(MyContext)
     const [showAdd, setShowAdd] = useState(false);
     const [showProduct, setShowProduct] = useState(0)
-    
+    const [filter ,setfilter] = useState(quantitativeOrder) 
     const [addQuantitativeOrder, setQuantitativeOrder] = useState({
         product_name: "",
         user_address:"",
@@ -17,7 +17,25 @@ function QuantitativeOrder() {
         userId: "",
         amount: "",
     });
+    ///This is add quantitave 
+    
+      useEffect(()=>{
+        if(quantitativeOrder.length > 0)
+        {
+          setfilter(quantitativeOrder)
+        }
+      },[quantitativeOrder])
 
+    const [showSearch, setShowSearch] = useState(0)
+   
+    const [search, SetSearch] = useState({
+        product_name:"",
+        productId: "",
+        user_address: "",
+        status: "",
+        createdAt: "",
+    });
+console.log("search",search);
     const handleInputChange2 = (name, value) => {
         // const { name, value } = event.target;
         setQuantitativeOrder((prevState) => ({
@@ -53,389 +71,449 @@ if (!addQuantitativeOrder?.productId == "" && !addQuantitativeOrder?.userId == "
     }
 }
 
+const handleInputChange3 = (name, value) => {
+  // const { name, value } = event.target;
+  SetSearch((prevState) => ({
+    ...prevState,
+    [name]: value, // Update the corresponding property based on the input name
+  }));
+};
 
+const handleInputChange4 = (event) => {
+  const { name, value } = event.target;
+  SetSearch((prevState) => ({
+    ...prevState,
+    [name]: value, // Update the corresponding property based on the input name
+  }));
+};
+
+const getSearchedContract = async ()=> {
+    if(!search?.productId=="" && !search?.user_address=="" && !search?.status =="" && 
+    !search?.createdAt==""){
+
+      try {
+        const result = await apis.getSearchedQuantitativeOrder({
+          "productId": search.productId,
+          "user_address":search.user_address,
+          "status":search.status,
+          "createdAt":search.createdAt
+        })   
+       
+        if(result.status){
+          setfilter(result.data?.data)
+        }
+
+      } catch (error) {
+       console.log("Record Not Found");
+      }
+      
+    }
+    else
+    {
+      toast.error("Please fill all fields");
+    }
+    
+
+}
 
 return (
         <div>
             <div data-v-731480cd className="ant-card">
                 <div className="ant-card-body">
-                    <div data-v-731480cd className="table-page-search-wrapper">
-                        <form data-v-19524346 className="ant-form ant-form-inline">
-                            <div
-                                data-v-19524346
-                                className="ant-row"
-                                style={{ marginLeft: "-12px", marginRight: "-12px" }}
-                            >
-                                <div
-                                    data-v-19524346
-                                    className="ant-col ant-col-sm-24 ant-col-md-12 ant-col-lg-11 ant-col-xl-10"
-                                    style={{ paddingLeft: "12px", paddingRight: "12px" }}
-                                >
-                                    <div data-v-19524346 className="ant-row ant-form-item">
-                                        <div
-                                            className="ant-col ant-form-item-label"
-                                            style={{ width: "35%" }}
-                                        >
-                                            <label title="creation date" className>
-                                                <font style={{ verticalAlign: "inherit" }}>
-                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                        creation date
-                                                    </font>
-                                                </font>
-                                            </label>
-                                        </div>
-                                        <div className="ant-col ant-form-item-control-wrapper">
-                                            <div className="ant-form-item-control">
-                                                <span className="ant-form-item-children">
-                                                    <span
-                                                        data-v-19524346
-                                                        className="query-group-cust ant-calendar-picker"
-                                                        style={{ minWidth: "195px" }}
-                                                    >
-                                                        <div className>
-                                                            <input
-                                                                readOnly="true"
-                                                                placeholder="Please select a start time"
-                                                                className="ant-calendar-picker-input ant-input"
-                                                            />
-                                                            <i
-                                                                aria-label="icon: calendar"
-                                                                className="anticon anticon-calendar ant-calendar-picker-icon"
-                                                            >
-                                                                <svg
-                                                                    viewBox="64 64 896 896"
-                                                                    data-icon="calendar"
-                                                                    width="1em"
-                                                                    height="1em"
-                                                                    fill="currentColor"
-                                                                    aria-hidden="true"
-                                                                    focusable="false"
-                                                                    className
-                                                                >
-                                                                    <path d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z" />
-                                                                </svg>
-                                                            </i>
-                                                        </div>
-                                                    </span>
-                                                    <span
-                                                        data-v-19524346
-                                                        className="query-group-split-cust"
-                                                    />
-                                                    <span
-                                                        data-v-19524346
-                                                        className="query-group-cust ant-calendar-picker"
-                                                        style={{ minWidth: "195px" }}
-                                                    >
-                                                        <div className>
-                                                            <input
-                                                                readOnly="true"
-                                                                placeholder="Please select an end time"
-                                                                className="ant-calendar-picker-input ant-input"
-                                                            />
-                                                            <i
-                                                                aria-label="icon: calendar"
-                                                                className="anticon anticon-calendar ant-calendar-picker-icon"
-                                                            >
-                                                                <svg
-                                                                    viewBox="64 64 896 896"
-                                                                    data-icon="calendar"
-                                                                    width="1em"
-                                                                    height="1em"
-                                                                    fill="currentColor"
-                                                                    aria-hidden="true"
-                                                                    focusable="false"
-                                                                    className
-                                                                >
-                                                                    <path d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z" />
-                                                                </svg>
-                                                            </i>
-                                                        </div>
-                                                    </span>
-                                                </span>
-                                                {/**/}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                    
+                    
+    <div data-v-19524346 className="table-page-search-wrapper">
+            <form data-v-19524346 className="ant-form ant-form-inline">
+              <div
+                data-v-19524346
+                className="ant-row"
+                style={{ marginLeft: "-12px", marginRight: "-12px" }}
+              >
+                <div
+                  data-v-19524346
+                  className="ant-col ant-col-sm-24 ant-col-md-12 ant-col-lg-11 ant-col-xl-10"
+                  style={{ paddingLeft: "12px", paddingRight: "12px" }}
+                >
 
-                                <div
-                                    data-v-19524346
-                                    className="ant-col ant-col-sm-24 ant-col-md-8 ant-col-lg-7 ant-col-xl-6"
-                                    style={{ paddingLeft: "12px", paddingRight: "12px" }}
-                                >
-                                    <div data-v-19524346 className="ant-row ant-form-item">
-                                        <div
-                                            className="ant-col ant-form-item-label"
-                                            style={{ width: "45%" }}
-                                        >
-                                            <label title="username" className>
-                                                <font style={{ verticalAlign: "inherit" }}>
-                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                        username
-                                                    </font>
-                                                </font>
-                                            </label>
-                                        </div>
-                                        <div className="ant-col ant-form-item-control-wrapper">
-                                            <div className="ant-form-item-control">
-                                                <span className="ant-form-item-children">
-                                                    <input
-                                                        data-v-19524346
-                                                        placeholder="please enter user name"
-                                                        type="text"
-                                                        className="ant-input"
-                                                    />
-                                                </span>
-                                                {/**/}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    data-v-19524346
-                                    className="ant-col ant-col-sm-24 ant-col-md-8 ant-col-lg-7 ant-col-xl-6"
-                                    style={{ paddingLeft: "12px", paddingRight: "12px" }}
-                                >
-                                    <div data-v-19524346 className="ant-row ant-form-item">
-                                        <div className="ant-col ant-form-item-label">
-                                            <label title="product" className>
-                                                <font style={{ verticalAlign: "inherit" }}>
-                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                        product
-                                                    </font>
-                                                </font>
-                                            </label>
-                                        </div>
-                                        <div
-                                            className="ant-col ant-form-item-control-wrapper"
-                                            style={{ width: "155px" }}
-                                        >
-                                            <div className="ant-form-item-control">
-                                                <span className="ant-form-item-children">
-                                                    <div
-                                                        data-v-17b4e467
-                                                        data-v-19524346
-                                                        tabIndex={0}
-                                                        className="ant-select ant-select-enabled"
-                                                    >
-                                                        <div
-                                                            role="combobox"
-                                                            aria-autocomplete="list"
-                                                            aria-haspopup="true"
-                                                            aria-controls="aeb04ccc-6d70-496f-e5e8-ff32de0bdbda"
-                                                            className="ant-select-selection ant-select-selection--single"
-                                                        >
-                                                            <div className="ant-select-selection__rendered">
-                                                                <div
-                                                                    unselectable="on"
-                                                                    className="ant-select-selection__placeholder"
-                                                                    style={{
-                                                                        display: "block",
-                                                                        userSelect: "none",
-                                                                    }}
-                                                                >
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            Please select a product
-                                                                        </font>
-                                                                    </font>
-                                                                </div>
-                                                            </div>
-                                                            <span
-                                                                unselectable="on"
-                                                                className="ant-select-arrow"
-                                                                style={{ userSelect: "none" }}
-                                                            >
-                                                                <i
-                                                                    aria-label="icon: down"
-                                                                    className="anticon anticon-down ant-select-arrow-icon"
-                                                                >
-                                                                    <svg
-                                                                        viewBox="64 64 896 896"
-                                                                        data-icon="down"
-                                                                        width="1em"
-                                                                        height="1em"
-                                                                        fill="currentColor"
-                                                                        aria-hidden="true"
-                                                                        focusable="false"
-                                                                        className
-                                                                    >
-                                                                        <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                    </svg>
-                                                                </i>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    data-v-19524346
-                                    className="ant-col ant-col-sm-24 ant-col-md-8 ant-col-lg-7 ant-col-xl-6"
-                                    style={{ paddingLeft: "12px", paddingRight: "12px" }}
-                                >
-                                    <div data-v-19524346 className="ant-row ant-form-item">
-                                        <div
-                                            className="ant-col ant-form-item-label"
-                                            style={{ width: "50%" }}
-                                        >
-                                            <label title="Order Status" className>
-                                                <font style={{ verticalAlign: "inherit" }}>
-                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                        Order Status
-                                                    </font>
-                                                </font>
-                                            </label>
-                                        </div>
-                                        <div
-                                            className="ant-col ant-form-item-control-wrapper"
-                                            style={{ width: "150px" }}
-                                        >
-                                            <div className="ant-form-item-control">
-                                                <span className="ant-form-item-children">
-                                                    <div
-                                                        data-v-17b4e467
-                                                        data-v-19524346
-                                                        tabIndex={0}
-                                                        className="ant-select ant-select-enabled"
-                                                    >
-                                                        <div
-                                                            role="combobox"
-                                                            aria-autocomplete="list"
-                                                            aria-haspopup="true"
-                                                            aria-controls="a44e9446-0656-4b5c-886d-b5f1eda69378"
-                                                            className="ant-select-selection ant-select-selection--single"
-                                                        >
-                                                            <div className="ant-select-selection__rendered">
-                                                                <div
-                                                                    unselectable="on"
-                                                                    className="ant-select-selection__placeholder"
-                                                                    style={{
-                                                                        display: "block",
-                                                                        userSelect: "none",
-                                                                    }}
-                                                                >
-                                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                                        <font style={{ verticalAlign: "inherit" }}>
-                                                                            Please select an order status
-                                                                        </font>
-                                                                    </font>
-                                                                </div>
-                                                            </div>
-                                                            <span
-                                                                unselectable="on"
-                                                                className="ant-select-arrow"
-                                                                style={{ userSelect: "none" }}
-                                                            >
-                                                                <i
-                                                                    aria-label="icon: down"
-                                                                    className="anticon anticon-down ant-select-arrow-icon"
-                                                                >
-                                                                    <svg
-                                                                        viewBox="64 64 896 896"
-                                                                        data-icon="down"
-                                                                        width="1em"
-                                                                        height="1em"
-                                                                        fill="currentColor"
-                                                                        aria-hidden="true"
-                                                                        focusable="false"
-                                                                        className
-                                                                    >
-                                                                        <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                                                                    </svg>
-                                                                </i>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </span>
-                                                {/**/}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div
-                                    data-v-19524346
-                                    className="ant-col ant-col-sm-24 ant-col-md-8 ant-col-lg-7 ant-col-xl-6"
-                                    style={{
-                                        paddingLeft: "12px",
-                                        paddingRight: "12px",
-                                        margin: "5px 0",
-                                    }}
-                                >
-                                    <span
-                                        data-v-19524346
-                                        className="table-page-search-submitButtons"
-                                        style={{ float: "left", overflow: "hidden" }}
-                                    >
-                                        <button
-                                            data-v-19524346
-                                            type="button"
-                                            className="ant-btn ant-btn-primary"
-                                        >
-                                            <i
-                                                aria-label="icon: search"
-                                                className="anticon anticon-search"
-                                            >
-                                                <svg
-                                                    viewBox="64 64 896 896"
-                                                    data-icon="search"
-                                                    width="1em"
-                                                    height="1em"
-                                                    fill="currentColor"
-                                                    aria-hidden="true"
-                                                    focusable="false"
-                                                    className
-                                                >
-                                                    <path d="M909.6 854.5L649.9 594.8C690.2 542.7 712 479 712 412c0-80.2-31.3-155.4-87.9-212.1-56.6-56.7-132-87.9-212.1-87.9s-155.5 31.3-212.1 87.9C143.2 256.5 112 331.8 112 412c0 80.1 31.3 155.5 87.9 212.1C256.5 680.8 331.8 712 412 712c67 0 130.6-21.8 182.7-62l259.7 259.6a8.2 8.2 0 0 0 11.6 0l43.6-43.5a8.2 8.2 0 0 0 0-11.6zM570.4 570.4C528 612.7 471.8 636 412 636s-116-23.3-158.4-65.6C211.3 528 188 471.8 188 412s23.3-116.1 65.6-158.4C296 211.3 352.2 188 412 188s116.1 23.2 158.4 65.6S636 352.2 636 412s-23.3 116.1-65.6 158.4z" />
-                                                </svg>
-                                            </i>
-                                            <span>
-                                                <font style={{ verticalAlign: "inherit" }}>
-                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                        Inquire
-                                                    </font>
-                                                </font>
-                                            </span>
-                                        </button>
-                                        <button
-                                            data-v-19524346
-                                            type="button"
-                                            className="ant-btn ant-btn-primary"
-                                            style={{ marginLeft: "8px" }}
-                                        >
-                                            <i
-                                                aria-label="icon: reload"
-                                                className="anticon anticon-reload"
-                                            >
-                                                <svg
-                                                    viewBox="64 64 896 896"
-                                                    data-icon="reload"
-                                                    width="1em"
-                                                    height="1em"
-                                                    fill="currentColor"
-                                                    aria-hidden="true"
-                                                    focusable="false"
-                                                    className
-                                                >
-                                                    <path d="M909.1 209.3l-56.4 44.1C775.8 155.1 656.2 92 521.9 92 290 92 102.3 279.5 102 511.5 101.7 743.7 289.8 932 521.9 932c181.3 0 335.8-115 394.6-276.1 1.5-4.2-.7-8.9-4.9-10.3l-56.7-19.5a8 8 0 0 0-10.1 4.8c-1.8 5-3.8 10-5.9 14.9-17.3 41-42.1 77.8-73.7 109.4A344.77 344.77 0 0 1 655.9 829c-42.3 17.9-87.4 27-133.8 27-46.5 0-91.5-9.1-133.8-27A341.5 341.5 0 0 1 279 755.2a342.16 342.16 0 0 1-73.7-109.4c-17.9-42.4-27-87.4-27-133.9s9.1-91.5 27-133.9c17.3-41 42.1-77.8 73.7-109.4 31.6-31.6 68.4-56.4 109.3-73.8 42.3-17.9 87.4-27 133.8-27 46.5 0 91.5 9.1 133.8 27a341.5 341.5 0 0 1 109.3 73.8c9.9 9.9 19.2 20.4 27.8 31.4l-60.2 47a8 8 0 0 0 3 14.1l175.6 43c5 1.2 9.9-2.6 9.9-7.7l.8-180.9c-.1-6.6-7.8-10.3-13-6.2z" />
-                                                </svg>
-                                            </i>
-                                            <span>
-                                                <font style={{ verticalAlign: "inherit" }}>
-                                                    <font style={{ verticalAlign: "inherit" }}>
-                                                        reset
-                                                    </font>
-                                                </font>
-                                            </span>
-                                        </button>
-                                    </span>
-                                </div>
-                            </div>
-                        </form>
+                  <div data-v-19524346 className="ant-row ant-form-item">
+                    <div
+                      className="ant-col ant-form-item-label"
+                      style={{ width: "35%" }}
+                    >
+                      <label title="creation date" className>
+                        <font style={{ verticalAlign: "inherit" }}>
+                          <font style={{ verticalAlign: "inherit" }}>
+                            creation date
+                          </font>
+                        </font>
+                      </label>
                     </div>
+
+
+
+                    <div className="ant-col ant-form-item-control-wrapper">
+                      <div className="ant-form-item-control">
+                        <span className="ant-form-item-children">
+                          <span onClick={() => setshowPopUp(3)}
+                            data-v-19524346
+                            className="query-group-cust ant-calendar-picker"
+                            style={{ minWidth: "195px" }}
+                          >
+                            <div className>
+                              <input
+                                placeholder="Please select a start time"
+                                className="ant-calendar-picker-input ant-input"
+                                type="date"
+                                onChange={(e) => {handleInputChange3("createdAt", e.target.value) }}
+                              />
+                            </div>
+                          </span>
+
+                          <span
+                            data-v-19524346
+                            className="query-group-split-cust"
+                          />
+                        </span>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  data-v-19524346
+                  className="ant-col ant-col-sm-24 ant-col-md-8 ant-col-lg-7 ant-col-xl-6"
+                  style={{ paddingLeft: "12px", paddingRight: "12px" }}
+                >
+                  <div data-v-19524346 className="ant-row ant-form-item">
+                    <div className="ant-col ant-form-item-label">
+                      <label title="product" className>
+                        <font style={{ verticalAlign: "inherit" }}>
+                          <font style={{ verticalAlign: "inherit" }}>
+                            product
+                          </font>
+                        </font>
+                      </label>
+                    </div>
+                    <div
+                      className="ant-col ant-form-item-control-wrapper"
+                      style={{ width: "155px" }}
+                    >
+                      <div className="ant-form-item-control">
+                        <span className="ant-form-item-children">
+                          <div
+                            data-v-17b4e467
+                            data-v-19524346
+                            tabIndex={0}
+                            className="ant-select ant-select-enabled"
+                          >
+                            <div
+                              role="combobox"
+                              aria-autocomplete="list"
+                              aria-haspopup="true"
+                              aria-controls="aeb04ccc-6d70-496f-e5e8-ff32de0bdbda"
+                              className="ant-select-selection ant-select-selection--single"
+                            >
+                              <div className="ant-select-selection__rendered">
+                                <div onClick={() => setShowSearch(1)}
+                                  unselectable="on"
+                                  
+                                  className={search.product_name ? "ant-select-selection__placeholder1" : "ant-select-selection__placeholder"}
+                                  style={{
+                                    display: "block",
+                                    userSelect: "none",
+                                  }}
+                                >
+                                  <font style={{ verticalAlign: "inherit" }}>
+                                    <font style={{ verticalAlign: "inherit" }}>
+                                    {search.product_name ? search.product_name : "Please select a product" }
+                                  
+                                    </font>
+                                  </font>
+                                </div>
+                              </div>
+                              <span
+                                unselectable="on"
+                                className="ant-select-arrow"
+                                style={{ userSelect: "none" }}
+                              >
+                                <i
+                                  aria-label="icon: down"
+                                  className="anticon anticon-down ant-select-arrow-icon"
+                                >
+                                  <svg
+                                    viewBox="64 64 896 896"
+                                    data-icon="down"
+                                    width="1em"
+                                    height="1em"
+                                    fill="currentColor"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    className
+                                  >
+                                    <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
+                                  </svg>
+                                </i>
+                              </span>
+                            </div>
+                          </div>
+                        </span>
+                        {showSearch == 1 &&
+                          <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '100%', left: '0px', top: '30px', display: 'flex' }}><div id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)', width: "100%" }}>
+                            <ul role="listbox" onClick={() => { setShowSearch(0) }} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
+                             
+                             {quantitativeProduct?.map((data, index) => {
+                                console.log("data1111",data);
+                                return (
+                                  <li onClick={() => { handleInputChange3("productId",data?._id), handleInputChange3("product_name",data?.product_name)}} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                    <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
+                                      <font style={{ verticalAlign: 'inherit' }}>
+                                        <font style={{ verticalAlign: 'inherit' }}>
+                                          {data?.product_name}
+                                        </font>
+                                      </font>
+                                    </span>
+                                  </li>
+                                )
+                              })}
+                            </ul></div></div>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  data-v-19524346
+                  className="ant-col ant-col-sm-24 ant-col-md-8 ant-col-lg-7 ant-col-xl-6"
+                  style={{ paddingLeft: "12px", paddingRight: "12px" }}
+                >
+                  <div data-v-19524346 className="ant-row ant-form-item">
+                    <div
+                      className="ant-col ant-form-item-label"
+                      style={{ width: "45%" }}
+                    >
+                      <label title="username" className>
+                        <font style={{ verticalAlign: "inherit" }}>
+                          <font style={{ verticalAlign: "inherit" }}>
+                            userAddress
+                          </font>
+                        </font>
+                      </label>
+                    </div>
+                    <div className="ant-col ant-form-item-control-wrapper">
+                      <div className="ant-form-item-control">
+                        <span className="ant-form-item-children">
+                          <input
+                            data-v-19524346
+                            placeholder="please enter user name"
+                            type="text"
+                            className="ant-input"
+                            name="user_address"
+                            value={search.user_address}
+                            onChange={handleInputChange4}
+
+                          />
+                        </span>
+                        {/**/}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  data-v-19524346
+                  className="ant-col ant-col-sm-24 ant-col-md-8 ant-col-lg-7 ant-col-xl-6"
+                  style={{ paddingLeft: "12px", paddingRight: "12px" }}
+                >
+                  <div data-v-19524346 className="ant-row ant-form-item">
+                    <div 
+                      className="ant-col ant-form-item-label"
+                      style={{ width: "50%" }}
+                    >
+                      <label title="Order Status" className>
+                        <font style={{ verticalAlign: "inherit" }}>
+                          <font style={{ verticalAlign: "inherit" }}>
+                            Order Status
+                          </font>
+                        </font>
+                      </label>
+                    </div>
+                    <div
+                      className="ant-col ant-form-item-control-wrapper"
+                      style={{ width: "150px" }}
+                    >
+                      <div className="ant-form-item-control">
+                        <span className="ant-form-item-children">
+                          <div
+                            data-v-17b4e467
+                            data-v-19524346
+                            tabIndex={0}
+                            className="ant-select ant-select-enabled"
+                          >
+                            <div
+                              role="combobox"
+                              aria-autocomplete="list"
+                              aria-haspopup="true"
+                              aria-controls="a44e9446-0656-4b5c-886d-b5f1eda69378"
+                              className="ant-select-selection ant-select-selection--single"
+                            >
+                              <div className="ant-select-selection__rendered">
+                                <div onClick={() => setShowSearch(3)}
+                                  unselectable="on"
+                                  className={search?.status ? "ant-select-selection__placeholder1": "ant-select-selection__placeholder"}
+                                  style={{
+                                    display: "block",
+                                    userSelect: "none",
+                                  }}
+                                >
+                                  <font style={{ verticalAlign: "inherit" }}>
+                                    <font style={{ verticalAlign: "inherit" }}>
+                                     {search?.status ? search?.status : "Please select an order status"} 
+                                    </font>
+                                  </font>
+                                </div>
+                              </div>
+                              <span
+                                unselectable="on"
+                                className="ant-select-arrow"
+                                style={{ userSelect: "none" }}
+                              >
+                                <i
+                                  aria-label="icon: down"
+                                  className="anticon anticon-down ant-select-arrow-icon"
+                                >
+                                  <svg
+                                    viewBox="64 64 896 896"
+                                    data-icon="down"
+                                    width="1em"
+                                    height="1em"
+                                    fill="currentColor"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    className
+                                  >
+                                    <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
+                                  </svg>
+                                </i>
+                              </span>
+                            </div>
+                            {showSearch == 3 &&
+                          <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '100%', left: '0px', top: '30px', display: 'flex' }}><div id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)', width: "100%" }}>
+                            <ul role="listbox" onClick={() => { setShowSearch(0) }} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
+                                
+                                <li onClick={() => { handleInputChange3("status","completed") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                    <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
+                                      <font style={{ verticalAlign: 'inherit' }}>
+                                        <font style={{ verticalAlign: 'inherit' }}>
+                                          completed 
+                                        </font>
+                                      </font>
+                                    </span>
+                                </li>
+                                   
+                                <li onClick={() => { handleInputChange3("status","progress") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                    <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
+                                      <font style={{ verticalAlign: 'inherit' }}>
+                                        <font style={{ verticalAlign: 'inherit' }}>
+                                          progress 
+                                        </font>
+                                      </font>
+                                    </span>
+                                </li>
+                              
+                            </ul></div></div>
+                        }
+                          </div>
+                        </span>
+                        {/**/}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+               
+                
+                <div
+                  data-v-19524346
+                  className="ant-col ant-col-sm-24 ant-col-md-8 ant-col-lg-7 ant-col-xl-6"
+                  style={{
+                    paddingLeft: "12px",
+                    paddingRight: "12px",
+                    margin: "10px 0",
+                  }}
+                >
+                  <span
+                    data-v-19524346
+                    className="table-page-search-submitButtons"
+                    style={{ float: "left", overflow: "hidden" }}
+                  >
+                    <button onClick={()=>getSearchedContract()}
+                      data-v-19524346
+                      type="button"
+                      className="ant-btn ant-btn-primary"
+                    >
+                      <i
+                        aria-label="icon: search"
+                        className="anticon anticon-search"
+                      >
+                        <svg
+                          viewBox="64 64 896 896"
+                          data-icon="search"
+                          width="1em"
+                          height="1em"
+                          fill="currentColor"
+                          aria-hidden="true"
+                          focusable="false"
+                          className
+                        >
+                          <path d="M909.6 854.5L649.9 594.8C690.2 542.7 712 479 712 412c0-80.2-31.3-155.4-87.9-212.1-56.6-56.7-132-87.9-212.1-87.9s-155.5 31.3-212.1 87.9C143.2 256.5 112 331.8 112 412c0 80.1 31.3 155.5 87.9 212.1C256.5 680.8 331.8 712 412 712c67 0 130.6-21.8 182.7-62l259.7 259.6a8.2 8.2 0 0 0 11.6 0l43.6-43.5a8.2 8.2 0 0 0 0-11.6zM570.4 570.4C528 612.7 471.8 636 412 636s-116-23.3-158.4-65.6C211.3 528 188 471.8 188 412s23.3-116.1 65.6-158.4C296 211.3 352.2 188 412 188s116.1 23.2 158.4 65.6S636 352.2 636 412s-23.3 116.1-65.6 158.4z" />
+                        </svg>
+                      </i>
+                      <span>
+                        <font style={{ verticalAlign: "inherit" }}>
+                          <font style={{ verticalAlign: "inherit" }}>
+                            Inquire
+                          </font>
+                        </font>
+                      </span>
+                    </button>
+                    <button onClick={()=>setfilter(quantitativeOrder)}
+                      data-v-19524346
+                      type="button"
+                      className="ant-btn ant-btn-primary"
+                      style={{ marginLeft: "8px" }}
+                    >
+                      <i
+                        aria-label="icon: reload"
+                        className="anticon anticon-reload"
+                      >
+                        <svg
+                          viewBox="64 64 896 896"
+                          data-icon="reload"
+                          width="1em"
+                          height="1em"
+                          fill="currentColor"
+                          aria-hidden="true"
+                          focusable="false"
+                          className
+                        >
+                          <path d="M909.1 209.3l-56.4 44.1C775.8 155.1 656.2 92 521.9 92 290 92 102.3 279.5 102 511.5 101.7 743.7 289.8 932 521.9 932c181.3 0 335.8-115 394.6-276.1 1.5-4.2-.7-8.9-4.9-10.3l-56.7-19.5a8 8 0 0 0-10.1 4.8c-1.8 5-3.8 10-5.9 14.9-17.3 41-42.1 77.8-73.7 109.4A344.77 344.77 0 0 1 655.9 829c-42.3 17.9-87.4 27-133.8 27-46.5 0-91.5-9.1-133.8-27A341.5 341.5 0 0 1 279 755.2a342.16 342.16 0 0 1-73.7-109.4c-17.9-42.4-27-87.4-27-133.9s9.1-91.5 27-133.9c17.3-41 42.1-77.8 73.7-109.4 31.6-31.6 68.4-56.4 109.3-73.8 42.3-17.9 87.4-27 133.8-27 46.5 0 91.5 9.1 133.8 27a341.5 341.5 0 0 1 109.3 73.8c9.9 9.9 19.2 20.4 27.8 31.4l-60.2 47a8 8 0 0 0 3 14.1l175.6 43c5 1.2 9.9-2.6 9.9-7.7l.8-180.9c-.1-6.6-7.8-10.3-13-6.2z" />
+                        </svg>
+                      </i>
+                      <span>
+                        <font style={{ verticalAlign: "inherit" }}>
+                          <font style={{ verticalAlign: "inherit" }}>
+                            reset
+                          </font>
+                        </font>
+                      </span>
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </form>
+          </div>
+
+
                     <div data-v-731480cd className="table-operator">
                         <button onClick={() => setShowAdd(true)}
                             data-v-731480cd
@@ -1144,8 +1222,9 @@ return (
                                                             </tr>
                                                         </thead>
                                                         <tbody className="ant-table-tbody">
-                                                        {console.log(quantitativeOrder,"quantitativeOrder")}
-                                                            {quantitativeOrder?.map((data, index) => {
+                                                     
+                                                        {filter.length > 0 ?
+                                                        filter?.map((data, index) => {
                                                                 return (
                                                                     <tr
                                                                         className="ant-table-row ant-table-row-level-0"
@@ -1326,7 +1405,12 @@ return (
                                                                 </td> */}
                                                                     </tr>
                                                                 )
-                                                            })}
+                                                            })
+                                                        :
+                                                        <>
+                                                        Record not Found
+                                                        </>
+                                                        }
 
                                                         </tbody>
                                                     </table>

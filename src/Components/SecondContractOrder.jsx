@@ -7,10 +7,20 @@ import { toast } from "react-hot-toast";
 function SecondContractOrder() {
   const { contractOrder, contractProduct, user } = useContext(MyContext)
 
-  const [filter ,setfilter] = useState([]) 
+  const [filter ,setfilter] = useState(contractOrder) 
+
+
+
+  useEffect(()=>{
+    if(contractOrder.length > 0)
+    {
+      setfilter(contractOrder)
+    }
+  },[contractOrder])
+
 
   const [search, SetSearch] = useState({
-    product_name: "",
+    productId : "",
     user_address: "",
     status: "",
     result: "",
@@ -21,7 +31,7 @@ function SecondContractOrder() {
   const [showProduct, setShowProduct] = useState(0)
   const [showSearch, setShowSearch] = useState(0)
 
-
+  ///This is add contract 
   const [addSecondOrder, setSecondOrder] = useState({
     product_name: "",
     user_address: "",
@@ -33,28 +43,35 @@ function SecondContractOrder() {
     expected: ""
   });
 
-  const filerData = () =>{
-    const filteredItems = contractOrder.filter(item => {
-      return (
-        item.createdAt === search.createdAt ||
-        item.user_address === search.user_address ||
-        item.result === search.result &&
-        item.status === search.status  
-      );
-    }); 
+  const getSearchedContract = async ()=> {
+    if(!search?.productId=="" && !search?.user_address=="" && !search?.status =="" && !search?.result=="" &&
+    !search?.createdAt==""){
 
-    setfilter(filteredItems)
+      try {
+        const result = await apis.getSearchedContract({
+          "productId": search.productId,
+          "user_address":search.user_address,
+          "status":search.status,
+          "result":search.result,
+          "createdAt":search.createdAt
+        })   
+       
+        if(result.status){
+          setfilter(result.data?.data)
+        }
 
-  }
+      } catch (error) {
+       console.log("Record Not Found");
+      }
+      
+    }
+    else
+    {
+      toast.error("Please fill all fields");
+    }
+    
 
-
-  console.log("filter",filter);
-
-
-
-
-
-
+}
 
   // Event handler to update the state on input change
   const handleInputChange = (event) => {
@@ -125,12 +142,11 @@ function SecondContractOrder() {
 
 
 
-
-
   return (
     <div>
       <div data-v-19524346 className="ant-card">
         <div className="ant-card-body">
+
           <div data-v-19524346 className="table-page-search-wrapper">
             <form data-v-19524346 className="ant-form ant-form-inline">
               <div
@@ -174,7 +190,7 @@ function SecondContractOrder() {
                                 placeholder="Please select a start time"
                                 className="ant-calendar-picker-input ant-input"
                                 type="date"
-                                // onClick={() => { e => handleInputChange3("product_name", e.target.value) }}
+                                onChange={(e) => {handleInputChange3("createdAt", e.target.value) }}
                               />
                             </div>
                           </span>
@@ -305,7 +321,7 @@ function SecondContractOrder() {
                             <ul role="listbox" onClick={() => { setShowSearch(0) }} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
                               {contractOrder?.map((data, index) => {
                                 return (
-                                  <li onClick={() => { handleInputChange3("product_name",data?.productId?.product_name) }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                  <li onClick={() => { handleInputChange3("product_name",data?.productId?._id) }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
                                     <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
                                       <font style={{ verticalAlign: 'inherit' }}>
                                         <font style={{ verticalAlign: 'inherit' }}>
@@ -440,19 +456,27 @@ function SecondContractOrder() {
                             {showSearch == 3 &&
                           <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '100%', left: '0px', top: '30px', display: 'flex' }}><div id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)', width: "100%" }}>
                             <ul role="listbox" onClick={() => { setShowSearch(0) }} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
-                              {contractOrder?.map((data, index) => {
-                                return (
-                                  <li onClick={() => { handleInputChange3("status",data?.status) }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                
+                                <li onClick={() => { handleInputChange3("status","completed") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
                                     <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
                                       <font style={{ verticalAlign: 'inherit' }}>
                                         <font style={{ verticalAlign: 'inherit' }}>
-                                          {data?.status}
+                                          completed 
                                         </font>
                                       </font>
                                     </span>
-                                  </li>
-                                )
-                              })}
+                                </li>
+                                   
+                                <li onClick={() => { handleInputChange3("status","progress") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                    <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
+                                      <font style={{ verticalAlign: 'inherit' }}>
+                                        <font style={{ verticalAlign: 'inherit' }}>
+                                          progress 
+                                        </font>
+                                      </font>
+                                    </span>
+                                </li>
+                              
                             </ul></div></div>
                         }
                           </div>
@@ -542,19 +566,35 @@ function SecondContractOrder() {
                               {showSearch == 2 &&
                           <div className="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" style={{ width: '100%', left: '0px', top: '30px', display: 'flex' }}><div id="edbb712f-f4d4-4f34-88e6-a4a5aa1e1b51" tabIndex={-1} className="ant-select-dropdown-content" style={{ overflow: 'auto', transform: 'translateZ(0px)', width: "100%" }}>
                             <ul role="listbox" onClick={() => {setShowSearch(0)}} tabIndex={0} className="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root">
-                              {contractOrder?.map((data, index) => {
-                                return (
-                                  <li onClick={() => { handleInputChange3("result",data?.result) }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                             
+                                  <li onClick={() => { handleInputChange3("result","draw") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
                                     <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
                                       <font style={{ verticalAlign: 'inherit' }}>
                                         <font style={{ verticalAlign: 'inherit' }}>
-                                          {data?.result}
+                                         draw
                                         </font>
                                       </font>
                                     </span>
                                   </li>
-                                )
-                              })}
+                                  <li onClick={() => { handleInputChange3("result","win") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                    <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
+                                      <font style={{ verticalAlign: 'inherit' }}>
+                                        <font style={{ verticalAlign: 'inherit' }}>
+                                         win
+                                        </font>
+                                      </font>
+                                    </span>
+                                  </li>
+                                  <li onClick={() => { handleInputChange3("result","loss") }} role="option" className="ant-select-dropdown-menu-item" unselectable="on" style={{ userSelect: 'none' }}>
+                                    <span data-v-17b4e467 title="BTC" style={{ display: 'inline-block', width: '100%' }}>
+                                      <font style={{ verticalAlign: 'inherit' }}>
+                                        <font style={{ verticalAlign: 'inherit' }}>
+                                         loss
+                                        </font>
+                                      </font>
+                                    </span>
+                                  </li>
+                                
                             </ul></div></div>
                         }
                             </div>
@@ -580,7 +620,7 @@ function SecondContractOrder() {
                     className="table-page-search-submitButtons"
                     style={{ float: "left", overflow: "hidden" }}
                   >
-                    <button onClick={()=>filerData()}
+                    <button onClick={()=>getSearchedContract()}
                       data-v-19524346
                       type="button"
                       className="ant-btn ant-btn-primary"
@@ -610,7 +650,7 @@ function SecondContractOrder() {
                         </font>
                       </span>
                     </button>
-                    <button onClick={()=>setfilter([])}
+                    <button onClick={()=>setfilter(contractOrder)}
                       data-v-19524346
                       type="button"
                       className="ant-btn ant-btn-primary"
@@ -646,6 +686,7 @@ function SecondContractOrder() {
               </div>
             </form>
           </div>
+
           <div data-v-19524346 className="table-operator">
             <button
               onClick={() => {
@@ -1353,7 +1394,7 @@ function SecondContractOrder() {
                               </tr>
                             </thead>
                             <tbody className="ant-table-tbody">
-                           {filter.length > 0 ? 
+                           {filter?.length > 0 ? 
                           <>
                             {filter?.map((data, index) => {
                                 return (
@@ -1599,248 +1640,8 @@ function SecondContractOrder() {
                           </> 
                           :
                           <>
-                            {contractOrder?.map((data, index) => {
-                                return (
-                                  <>
-                                    <tr
-                                      className="ant-table-row ant-table-row-level-0"
-                                    >
-                                      <td className="ant-table-selection-column">
-                                        <span>
-                                          <label className="ant-checkbox-wrapper">
-                                            <span className="ant-checkbox">
-                                              <input
-                                                type="checkbox"
-                                                className="ant-checkbox-input"
-                                                defaultValue
-                                              />
-                                              <span className="ant-checkbox-inner" />
-                                            </span>
-                                          </label>
-                                        </span>
-                                      </td>
-                                      <td
-                                        className="ant-table-row-cell-break-word"
-                                        style={{ textAlign: "center" }}
-                                      >
-                                        <font
-                                          style={{ verticalAlign: "inherit" }}
-                                        >
-                                          <font
-                                            style={{ verticalAlign: "inherit" }}
-                                          >
-                                            {index + 1}
-                                          </font>
-                                        </font>
-                                      </td>
-                                      <td
-                                        className
-                                        style={{ textAlign: "center" }}
-                                      >
-                                        <font
-                                          style={{ verticalAlign: "inherit" }}
-                                        >
-                                          <font
-                                            style={{ verticalAlign: "inherit" }}
-                                          >
-                                            {data?.productId?._id}
-                                          </font>
-                                        </font>
-                                      </td>
-                                      <td
-                                        className
-                                        style={{ textAlign: "center" }}
-                                      >
-                                        <font
-                                          style={{ verticalAlign: "inherit" }}
-                                        >
-                                          <font
-                                            style={{ verticalAlign: "inherit" }}
-                                          >
-                                            {data?.createdAt}
-                                          </font>
-                                        </font>
-                                      </td>
-                                      <td
-                                        className="ant-table-column-has-actions ant-table-column-has-sorters"
-                                        style={{ textAlign: "center" }}
-                                      >
-                                        <font
-                                          style={{ verticalAlign: "inherit" }}
-                                        >
-                                          <font
-                                            style={{ verticalAlign: "inherit" }}
-                                          >
-                                            60 seconds ?
-                                          </font>
-                                        </font>
-                                      </td>
-                                      <td
-                                        className
-                                        style={{ textAlign: "center" }}
-                                      >
-                                        <font
-                                          style={{ verticalAlign: "inherit" }}
-                                        >
-                                          <font
-                                            style={{ verticalAlign: "inherit" }}
-                                          >
-                                            60 ?
-                                          </font>
-                                        </font>
-                                      </td>
-                                      <td
-                                        className="ant-table-column-has-actions ant-table-column-has-sorters"
-                                        style={{ textAlign: "center" }}
-                                      >
-                                        <font
-                                          style={{ verticalAlign: "inherit" }}
-                                        >
-                                          <font
-                                            style={{ verticalAlign: "inherit" }}
-                                          >
-                                            {data?.user_address}
-                                          </font>
-                                        </font>
-                                      </td>
-                                      <td
-                                        className
-                                        style={{ textAlign: "center" }}
-                                      >
-                                        <font
-                                          style={{ verticalAlign: "inherit" }}
-                                        >
-                                          <font
-                                            style={{ verticalAlign: "inherit" }}
-                                          >
-                                            {data?.currency}
-                                          </font>
-                                        </font>
-                                      </td>
-                                      <td
-                                        className
-                                        style={{ textAlign: "center" }}
-                                      >
-                                        <font
-                                          style={{ verticalAlign: "inherit" }}
-                                        >
-                                          <font
-                                            style={{ verticalAlign: "inherit" }}
-                                          >
-                                            {data?.direction}
-                                          </font>
-                                        </font>
-                                      </td>
-                                      <td
-                                        className
-                                        style={{ textAlign: "center" }}
-                                      >
-                                        <font
-                                          style={{ verticalAlign: "inherit" }}
-                                        >
-                                          <font
-                                            style={{ verticalAlign: "inherit" }}
-                                          >
-                                            0.15?
-                                          </font>
-                                        </font>
-                                      </td>
-                                      <td
-                                        className="ant-table-column-has-actions ant-table-column-has-sorters"
-                                        style={{ textAlign: "center" }}
-                                      >
-                                        <font
-                                          style={{ verticalAlign: "inherit" }}
-                                        >
-                                          <font
-                                            style={{ verticalAlign: "inherit" }}
-                                          >
-                                            {data?.amount}
-                                          </font>
-                                        </font>
-                                      </td>
-                                      <td
-                                        className
-                                        style={{ textAlign: "center" }}
-                                      >
-                                        <font
-                                          style={{ verticalAlign: "inherit" }}
-                                        >
-                                          <font
-                                            style={{ verticalAlign: "inherit" }}
-                                          >
-                                            {data?.opening_price}
-                                          </font>
-                                        </font>
-                                      </td>
-                                      <td
-                                        className
-                                        style={{ textAlign: "center" }}
-                                      >
-                                        <font
-                                          style={{ verticalAlign: "inherit" }}
-                                        >
-                                          <font
-                                            style={{ verticalAlign: "inherit" }}
-                                          >
-                                            {data?.closed_price}
-                                          </font>
-                                        </font>
-                                      </td>
-                                      <td
-                                        className
-                                        style={{ textAlign: "center" }}
-                                      >
-                                        <font
-                                          style={{ verticalAlign: "inherit" }}
-                                        >
-                                          <font
-                                            style={{ verticalAlign: "inherit" }}
-                                          >
-                                            {data?.status}
-                                          </font>
-                                        </font>
-                                      </td>
-                                      <td
-                                        className="ant-table-column-has-actions ant-table-column-has-sorters"
-                                        style={{ textAlign: "center" }}
-                                      >
-                                        <font
-                                          style={{ verticalAlign: "inherit" }}
-                                        >
-                                          <font
-                                            style={{ verticalAlign: "inherit" }}
-                                          >
-                                            ?
-                                          </font>
-                                        </font>
-                                      </td>
-
-                                      <td
-                                        className="ant-table-column-has-actions ant-table-column-has-sorters"
-                                        style={{ textAlign: "center" }}
-                                      >
-                                        <font
-                                          style={{ verticalAlign: "inherit" }}
-                                        >
-                                          <font
-                                            style={{ verticalAlign: "inherit" }}
-                                          >
-                                            {data?.result}
-                                          </font>
-                                        </font>
-                                      </td>
-                                      <td
-                                        className="ant-table-fixed-columns-in-body ant-table-row-cell-break-word"
-                                        style={{ textAlign: "center" }}
-                                      >
-                                        <span data-v-19524346></span>
-                                      </td>
-                                    </tr>
-                                  </>
-                                )
-                              })}
-                          </>
+                            <>No Record Found</>
+                                                    </>
                           }
                         
                             </tbody>

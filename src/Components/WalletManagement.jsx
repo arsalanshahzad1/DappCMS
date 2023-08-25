@@ -14,8 +14,14 @@ const [search, setSearch]=useState({
   useragent:""
 })
 
-
-
+  // Event handler to update the state on input change
+const handleInputChange = (event) => {
+  const { name, value } = event.target;
+    setSearch((prevState) => ({
+       ...prevState,
+     [name]: value, // Update the corresponding property based on the input name
+  }));
+};
 
 
 
@@ -165,6 +171,7 @@ return (
                               type="text"
                               className="ant-input"
                               fdprocessedid="gnz2kd"
+                              onChange={(e)=>handleInputChange(e.target.value)}
                             />
                           </span>
                           {/**/}

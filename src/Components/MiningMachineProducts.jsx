@@ -6,6 +6,18 @@ import apis from "../Services";
 
 function MiningMachineProducts() {
     const { miningProduct, getMiningProductProduct } = useContext(MyContext)
+   
+    const [filter ,setfilter] = useState(miningProduct)
+    useEffect(()=>{
+        if(miningProduct.length > 0)
+        {
+          setfilter(miningProduct)
+        }
+      },[miningProduct])
+    
+   
+   
+   
     const [addMiningShow, setAddMiningShow] = useState(false)
     const [showCurrency, setshowCurrency] = useState(false);
     const [showStatus, setShowStatus]=useState(false)
@@ -28,6 +40,33 @@ function MiningMachineProducts() {
         product_name: "",
         product_status: ""
     })
+
+    const getSearchedMiningProduct = async ()=> {
+        if(!search?.product_status=="" && !search?.product_status==""){
+    
+          try {
+            const result = await apis.getSearchedMiningProduct({
+              "product_name": search.product_name,
+              "product_status":search.product_status,
+            })   
+           
+            if(result.status){
+              setfilter(result.data?.data)
+            }
+    
+          } catch (error) {
+           console.log("Record Not Found");
+          }
+          
+        }
+        else
+        {
+          toast.error("Please fill all fields");
+        }
+        
+    
+    }
+
 
     // Event handler to update the state on input change
     const handleInputChange = (event) => {
@@ -399,7 +438,7 @@ function MiningMachineProducts() {
                                         className="table-page-search-submitButtons"
                                         style={{ float: "left", overflow: "hidden" }}
                                     >
-                                        <button
+                                        <button onClick={()=>getSearchedMiningProduct()}
                                             data-v-140419ff
                                             type="button"
                                             className="ant-btn ant-btn-primary"
@@ -429,7 +468,7 @@ function MiningMachineProducts() {
                                                 </font>
                                             </span>
                                         </button>
-                                        <button
+                                        <button onClick={()=>setfilter(miningProduct)}
                                             data-v-140419ff
                                             type="button"
                                             className="ant-btn ant-btn-primary"
@@ -809,7 +848,11 @@ function MiningMachineProducts() {
                                                             </tr>
                                                         </thead>
                                                         <tbody className="ant-table-tbody">
-                                                            {miningProduct?.map((data, index) => {
+                                                            
+                                                            
+                                                    {filter.length > 0 ?
+
+                                                    filter?.map((data, index) => {
                                                                 return (
                                                                     <>
                                                                         <tr
@@ -901,7 +944,13 @@ function MiningMachineProducts() {
                                                                     </>
 
                                                                 )
-                                                            })}
+                                                            })
+                                                        :
+                                                        <>
+                                                        Record Not Found
+                                                        </>
+                                                        }
+
 
 
 
